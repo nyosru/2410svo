@@ -5,8 +5,14 @@
             @if(!empty($data_head))
                 <thead>
                 <tr>
-                    @foreach ($data_head as $header)
-                        <th class="px-4 py-2 border border-gray-300">{{ $header }}</th>
+                    <th class="px-4 py-2 border border-gray-300">{{ $data_head[8] }}</th>
+                    @foreach ($data_head as $k => $header)
+
+                        @if( $k == 8 )
+                            @continue
+                        @endif
+
+                        <th class="px-4 py-2 border border-gray-300">{{$k}} / {{ $header }}</th>
                     @endforeach
                 </tr>
                 </thead>
@@ -17,7 +23,11 @@
                 @if($index > 0)
                     <!-- Пропуск первой строки (заголовки) -->
                     <tr>
+                        <td class="px-4 py-2 border border-gray-300">{{ $row[8] }}</td>
                         @foreach ($row as $cell)
+                            @if( $k == 8 )
+                                @continue
+                            @endif
                             <td class="px-4 py-2 border border-gray-300">{{ $cell }}</td>
                         @endforeach
                     </tr>

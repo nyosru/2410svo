@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Svo;
 
-use Livewire\Component;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Component;
 
-class TrebsDataTable extends Component
+class Shop extends Component
 {
 
     public $data_head = [];
@@ -36,10 +36,6 @@ class TrebsDataTable extends Component
 
     public function render()
     {
-//        $filePath = 'svo/IMPot.csv';
-//        $file = Storage::get($filePath);
-//        dd( Storage::path($filePath ) );
-
-        return view('livewire.svo.trebs-data-table');
+        return view('livewire.svo.shop');
     }
 }
