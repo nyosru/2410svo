@@ -1,0 +1,3 @@
+<div>
+page: {{$page}}
+</div>
