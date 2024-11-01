@@ -4,6 +4,7 @@ env:
   VPS_IP: 91.218.230.97
   VPS_USERNAME: root
   DIR: /home/2410svo
+  DOCKER_CONTAINER_NAME: 2410svo
   DIR_DOCKER: /home/docker
   GIT_BRANCH: origin/main
 
@@ -32,20 +33,21 @@ jobs:
             git reset --hard ${{ env.GIT_BRANCH }}
 
 
-#  make-npm-i:
-#    runs-on: ubuntu-latest
-#    needs: deploy
-#    steps:
-#      - name: "make-npm-i"
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ env.VPS_IP }}
-#          username: ${{ env.VPS_USERNAME }}
-#          key: ${{ secrets.DEPLOY_KEY_DOCKER24 }}
-#          script: |
-#            cd ${{ env.DIR_DOCKER }}
+  update:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: "make-npm-i"
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.VPS_IP }}
+          username: ${{ env.VPS_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY_DOCKER24 }}
+          script: |
+            cd ${{ env.DIR_DOCKER }}
+            docker exec -it ${{ env.DOCKER_CONTAINER_NAME }} php artisan migrate
+            docker exec -it ${{ env.DOCKER_CONTAINER_NAME }} composer i --no-dev
 #            docker exec -it base12narek npm run prod
-#            docker exec -it base12narek composer i --no-dev
 #
 #  deploy_composer_stop:
 #    runs-on: ubuntu-latest
