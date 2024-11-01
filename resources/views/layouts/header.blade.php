@@ -15,7 +15,7 @@
         <a wire:navigate href="{{ route('trebs') }}"
            class=" p-2 {{ Route::is('trebs') ? 'bg-orange-500 text-white' : '' }}">Требы</a>
         <a wire:navigate href="{{ route('fin') }}"
-           class=" p-2 {{ Route::is('fin') ? 'bg-orange-500 text-white' : '' }}">Фин отчёт</a>
+           class=" p-2 {{ Route::is('fin') ? 'bg-orange-500 text-white' : '' }}">Фин&nbsp;отчёт</a>
         <a wire:navigate href="{{ route('page', ['page' => 'contact']) }}"
            class=" p-2 {{ Route::is('page') && request('page') === 'contact' ? 'bg-orange-500 text-white' : '' }}">Контакты</a>
     </nav>
@@ -27,14 +27,16 @@
         const nav = document.getElementById('mainNav');
 
         if (window.scrollY > 100) {
-            nav.classList.add('bg-red-100', 'fixed', 'top-0', 'left-0', 'w-full', 'flex', '1items-center', '1justify-between');
+            // nav.classList.add('bg-red-100', 'fixed', 'top-0', 'left-0', 'w-full', 'md:flex', '1items-center', '1justify-between');
+            nav.classList.add('bg-red-100', 'fixed', 'top-0', 'left-0', 'w-full', 'md:flex');
             if (!document.getElementById('smallLogo')) {
                 nav.insertAdjacentHTML('afterbegin', `
-                    <a href="/"><img id="smallLogo" src="/svo/image/logo.jpg" class="ml-4 w-12 h-12"></a>
+                    <a href="/" id="smallLogo"  ><img src="/svo/image/logo.jpg" class="ml-4 w-12 h-12"></a>
                 `);
             }
         } else {
-            nav.classList.remove('bg-red-100', 'fixed', 'top-0', 'left-0', 'w-full', 'flex', 'items-center', 'justify-between');
+            // nav.classList.remove('bg-red-100', 'fixed', 'top-0', 'left-0', 'w-full', 'md:flex', '1items-center', '1justify-between');
+            nav.classList.remove('bg-red-100', 'fixed', 'top-0', 'left-0', 'w-full', 'md:flex');
             const smallLogo = document.getElementById('smallLogo');
             if (smallLogo) {
                 smallLogo.remove();
