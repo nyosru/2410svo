@@ -8,18 +8,26 @@ use App\TDO\ShopCsvDataTdo;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Livewire\WithPagination;
 use PHPUnit\Framework\Exception;
 
 class Shop extends Component
 {
 
+    use WithPagination;
+
+//    protected $paginationTheme = 'tailwind';
+
 //    public $data_head = [];
     public $data;
+    public $search = '';
+    public $search_not_empty = true;
+    public $data_all;
     public $csvFile = 'svo/Dobro.csv';
 
     public function mount()
     {
-        $this->importCsvData();
+//        $this->importCsvData();
 
 ////        $filePath = 'IMPot.csv';
 //        $filePath = 'Dobro.csv';
@@ -107,13 +115,32 @@ class Shop extends Component
         }
     }
 
+    public function search()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
 //        $e = ShopItem::with('photos')->all();
-        $e = ShopItem::with('photos')->get();
+//        $this->data = ShopItem::with('photos')
+//        $this->data = ShopItem::with('photos')
+        $data = ShopItem::with('photos')
+            ->where('name', 'like', '%'.$this->search.'%')
+//            ->get()
+//            ->paginate(5)
+            ->paginate(10)
+//            ->simplePaginate(5)
+//            ->get()
+        ;
 //        $this->data = $e->toArray();
-        $this->data = $e;
+//        $this->data = $e['data'];
+//        $this->data_all = (array) $this->data->items();
+//        $this->data_all = $this->data->items();
 
-        return view('livewire.svo.shop');
+
+        $this->search_not_empty = ( empty($data1) ) ? false : true;
+
+        return view('livewire.svo.shop',['data1'=>$data]);
     }
 }

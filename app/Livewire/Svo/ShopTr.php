@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 class ShopTr extends Component
 {
     public $item;
+    public $nn = 1;
     public $quantities = 1; // Массив для хранения количества товаров
     public $inCart = false; // Проверка, добавлен ли товар в корзину
 

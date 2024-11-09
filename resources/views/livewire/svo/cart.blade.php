@@ -1,5 +1,5 @@
 <div class="md:container w-full md:mx-auto">
-    <h2 class="text-xl font-bold mb-4">Корзина</h2>
+    <h2 class="text-xl font-bold mb-4"><a href="{{ route('svo.shop') }}" class="text-blue-500">Добро</a> > Корзина</h2>
 
     @if(empty($cartItems))
         <p>Корзина пуста.</p>
@@ -19,11 +19,15 @@
             @foreach($cartItems as $item)
                 <tr>
                     <td class="px-4 py-2 border">
+{{--                        <img src="{{ $item['item']->photo->first() }}" />--}}
+{{--                        <br/>--}}
+{{--                        {{ $item['item']->photo->first() }}--}}
+{{--                        <br/>--}}
                         {{ $item['item']->name }}<br/>
                         <small>{{ $item['item']->additive }}</small>
                     </td>
-                    <td class="px-4 py-2 border text-center">
-                        <button wire:click="decrementQuantity({{ $item['item']->id }})" class="px-2 bg-gray-300">-</button>
+                    <td class="text-center">
+                    <button wire:click="decrementQuantity({{ $item['item']->id }})" class="px-2 bg-gray-300">-</button>
                         <button wire:click="decrementQuantity10({{ $item['item']->id }})" class="px-2 bg-gray-300">-10</button>
                         <input
 {{--                            type="number"--}}

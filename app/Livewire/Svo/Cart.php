@@ -12,8 +12,12 @@ class Cart extends Component
     public $name;
     public $phone;
 
+
     public function mount()
     {
+        // Проверяем, есть ли данные в сессии, и если да, устанавливаем их в переменные компонента
+        $this->name = Session::get('name', '');
+        $this->phone = Session::get('phone', '');
         $this->cartItems = Session::get('cart', []);
     }
 
@@ -97,6 +101,17 @@ class Cart extends Component
 
         Msg::sendTelegramm($msg,null,2, env('TOKEN_ORDER_TELEGA') );
         Session::put('cart', []);
+
+        // Сохраняем значения в сессии
+        Session::put('name', $this->name);
+        Session::put('phone', $this->phone);
+
+        // Обработка отправки заказа
+        // Добавьте логику для обработки заказа, например, сохранение в БД
+
+        // Очистка данных, если нужно
+        //Session::forget(['name', 'phone']);
+
         $this->redirectRoute('svo.cart.ok');
     }
 

@@ -1,54 +1,51 @@
 <div>
-    @if(!empty($data))
-        <table class="table-auto w-full border-collapse border border-gray-300">
+    <div class="py-3 text-center">
+        Быстрый поиск: <input wire:model.live="search" type="text" class="border border-2 p-1"/>
+    </div>
+    {{--    {{ $search }}--}}
+    {{--    {{ count($data1)  }}--}}
+    @if(count($data1) > 0 )
 
-            @if( 1 == 2 && !empty($data_head))
-                <thead>
+        {{--        <div class="container mx-auto my-4">--}}
+        {{--            <div class="mt-6">--}}
+        {{--                {{ $data1->links() }}--}}
+        {{--            </div>--}}
+        {{--        </div>--}}
 
-                {{--                <tr>--}}
-                {{--                    @foreach ($data_head as $k => $header)--}}
-                {{--                        <th class="px-4 py-2 border border-gray-300">{{ $k }} / {{ $header }}</th>--}}
-                {{--                    @endforeach--}}
-                {{--                </tr>--}}
+        <table class="shop-table table-auto w-full border-collapse border border-gray-300">
 
-                <tr>
-                    <th>0</th>
-                    @foreach ($data_head as $k => $header)
-                        {{--                        @if( $k == 0 || $k == 2 || $k == 4 || $k == 6 || $k == 8  || $k == 10 || $k == 13 || $k == 14 || $k == 15 || $k == 16 || $k == 17 || $k == 18 )--}}
-                        <th class="px-4 py-2 border border-gray-300">
-                            {{ $k }} /
-                            {{ $header }}</th>
-                        {{--                        @endif--}}
-                    @endforeach
-                    {{--                    @foreach ($data_head as $k => $header)--}}
-                    {{--                        @if( $k == 12 )--}}
-                    {{--                            <th class="px-4 py-2 border border-gray-300">--}}
-                    {{--                                --}}{{--                                {{ $k }} / --}}
-                    {{--                                {{ $header }}</th>--}}
-                    {{--                        @endif--}}
-                    {{--                    @endforeach--}}
-                </tr>
-                {{--                <tr>--}}
-                {{--                    @foreach ($data_head as $k => $header)--}}
-                {{--                        @if( $k == 1 || $k == 3 || $k == 5 || $k == 7 || $k == 9 || $k == 11 || $k == 19 || $k == 20 || $k == 21 || $k == 22 || $k == 23 || $k == 24 )--}}
-                {{--                            <th class="px-4 py-2 border border-gray-300">--}}
-                {{--                                --}}{{--                                {{ $k }} / --}}
-                {{--                                {{ $header }}</th>--}}
-                {{--                        @endif--}}
-                {{--                    @endforeach--}}
-                {{--                </tr>--}}
-
-                </thead>
-            @endif
-
-{{--            {{ dd($data) }}--}}
-            {{--            <tbody>--}}
-            @foreach ($data as $data1)
-                <livewire:svo.shop-tr :item=$data1 />
+            {{--            {{ dd($data) }}--}}
+            <tbody>
+            {{--                        {{dd($data->items())}}--}}
+            {{--            @foreach ($data as $index => $data1)--}}
+            {{--            @foreach ($data_all as $index => $data1)--}}
+            {{--            @foreach ($data as $index => $data1)--}}
+            {{--            {{ dd($data->items() ) }}--}}
+            {{--            {{ dd($data_all ) }}--}}
+            {{--                        @foreach ($data_all as $index => $data1)--}}
+            {{--            @foreach ($data as $index => $data1)--}}
+            {{--            @foreach ($data->items() as $index => $data1)--}}
+            @foreach ($data1 as $index=>$data12)
+                {{--                {{ print_r($data1) }}--}}
+                {{--{{ $data12->name }}--}}
+                {{--<br/>--}}
+                {{--            @foreach ($data as $data1)--}}
+                {{--                                {{ dd($data1) }}--}}
+                <livewire:svo.shop-tr :item=$data12
+                                      :key="$data12->id"
+                                      :nn="$index"
+                />
             @endforeach
-            {{--            </tbody>--}}
+            </tbody>
         </table>
+
+        <div class="container mx-auto my-4">
+            <div class="mt-6">
+                {{ $data1->links() }}
+            </div>
+        </div>
+
     @else
-        <p>Файл CSV не найден или пуст.</p>
+        <p class="text-center bg-yellow-300 p-5 rounded">Товаров не найдено ({{ $search }})</p>
     @endif
 </div>
