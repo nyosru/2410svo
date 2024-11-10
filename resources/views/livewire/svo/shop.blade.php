@@ -41,7 +41,7 @@
 
         <div class="container mx-auto my-4">
             <div class="mt-6">
-                {{ $data1->links() }}
+                {{ $data1->links($paginationView) }}
             </div>
         </div>
 

@@ -141,6 +141,7 @@ class Shop extends Component
 
         $this->search_not_empty = ( empty($data1) ) ? false : true;
 
-        return view('livewire.svo.shop',['data1'=>$data]);
+        return view('livewire.svo.shop',['data1'=>$data])
+            ->with('paginationView', 'svo.shop-pagination');
     }
 }
