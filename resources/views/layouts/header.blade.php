@@ -4,7 +4,8 @@
     >
 {{--        ЦПУСВО.рф--}}
         <a href="/" title="ЦПУСВО.рф">
-        <img src="/svo/image/logo.jpg" class="ml-[15%] w-[10rem]" />
+{{--        <img src="/svo/image/logo.jpg" class="ml-[15%] w-[10rem]" />--}}
+        <img src="/svo/image/logo2.png" class="ml-[15%] w-[10rem]" />
         </a>
     </div>
     <livewire:svo.menu />

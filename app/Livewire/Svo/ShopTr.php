@@ -12,7 +12,7 @@ class ShopTr extends Component
     public $item;
     public $nn = 1;
     public $quantities = 1; // Массив для хранения количества товаров
-    public $inCart = false; // Проверка, добавлен ли товар в корзину
+    public $inCart = 0; // Проверка, добавлен ли товар в корзину
 
 
     // Метод для увеличения количества
@@ -35,8 +35,11 @@ class ShopTr extends Component
         // Проверка, находится ли товар в корзине
         $cart = Session::get('cart', []);
         if (isset($cart[$this->item['id']])) {
-            $this->inCart = true;
+//            $this->inCart = true;
+            $this->inCart = $cart[$this->item['id']];
+            $this->quantities = $cart[$this->item['id']]['quantity'];
         }
+
     }
 
     // Метод добавления товара в корзину
@@ -52,7 +55,8 @@ class ShopTr extends Component
 
         // Сохраняем корзину в сессии
         Session::put('cart', $cart);
-        $this->inCart = true; // Меняем кнопку на "Перейти в корзину"
+//        $this->inCart = true; // Меняем кнопку на "Перейти в корзину"
+        $this->inCart = $this->quantities; // Меняем кнопку на "Перейти в корзину"
     }
 
     public function render()

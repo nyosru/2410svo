@@ -6,16 +6,18 @@
     {{--    {{ count($data1)  }}--}}
     @if(count($data1) > 0 )
 
+        <div class="container mx-auto my-4 lg:w-[80%]">
+
         {{--        <div class="container mx-auto my-4">--}}
         {{--            <div class="mt-6">--}}
         {{--                {{ $data1->links() }}--}}
         {{--            </div>--}}
         {{--        </div>--}}
 
-        <table class="shop-table table-auto w-full border-collapse border border-gray-300">
+{{--        <table class="shop-table table-auto w-full border-collapse border border-gray-300">--}}
 
             {{--            {{ dd($data) }}--}}
-            <tbody>
+{{--            <tbody>--}}
             {{--                        {{dd($data->items())}}--}}
             {{--            @foreach ($data as $index => $data1)--}}
             {{--            @foreach ($data_all as $index => $data1)--}}
@@ -36,10 +38,9 @@
                                       :nn="$index"
                 />
             @endforeach
-            </tbody>
-        </table>
+{{--            </tbody>--}}
+{{--        </table>--}}
 
-        <div class="container mx-auto my-4">
             <div class="mt-6">
                 {{ $data1->links($paginationView) }}
             </div>
