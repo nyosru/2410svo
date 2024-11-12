@@ -11,6 +11,7 @@ Route::get('/trebs', \App\Livewire\Svo\TrebsDataTable::class)->name('trebs');
 
 $d = function () {
     Route::get('/shop', \App\Livewire\Svo\Shop::class)->name('shop');
+    Route::get('/shop/scan',[\App\Http\Controllers\Svo\ShopScanDatafileController::class,'scan'])->name('shop.scan');
     Route::get('/shop/cart', \App\Livewire\Svo\Cart::class)->name('cart');
     Route::get('/shop/cart/ok', \App\Livewire\Svo\CartOk::class)->name('cart.ok');
 };
