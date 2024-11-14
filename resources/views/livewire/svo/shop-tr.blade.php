@@ -1,5 +1,5 @@
 <div
-    class="flex flex-col md:flex-row items-center border-b border-gray-300 py-4 px-2 @if( $nn % 2 === 0 ) bg-gray-100 @endif">
+    class="flex flex-col md:flex-row items-center border-b border-gray-300 py-4 px-2 @if( $nn % 2 !== 0 ) bg-gray-100 @endif">
     <!-- Фото товара -->
     <div class="flex-shrink-0 w-24 h-24">
         @foreach ($item->photos as $photo)
@@ -13,17 +13,17 @@
             {{ $item->name }}
             <small class="block text-gray-500">{{ $item->additive }}</small>
         </div>
+    </div>
 
-        <!-- Управление количеством товара -->
-{{--        <div class="flex items-center mt-2 md:mt-0 space-x-2">--}}
-{{--            <button wire:click="decrementQuantity({{ $item['id'] }})" class="px-2 bg-gray-300">-</button>--}}
-{{--            <input type="text" class="w-12 text-center border border-gray-300" wire:model="quantities" readonly/>--}}
-{{--            <button wire:click="incrementQuantity({{ $item['id'] }})" class="px-2 bg-gray-300">+</button>--}}
-{{--        </div>--}}
+    <!-- Блок для каждой цены с фиксированной шириной -->
+    <div class="flex ml-4 space-x-2">
+        <div class="text-lg font-semibold text-right pr-2" style="width: 100px; xborder: 1px solid green;">{{ number_format($item->price1,0,'','`') }}</div>
+        <div class="text-lg font-semibold text-right pr-2" style="width: 100px; xborder: 1px solid green;">{{ number_format($item->price2,0,'','`') }}</div>
+        <div class="text-lg font-semibold text-right pr-2" style="width: 100px; xborder: 1px solid green;">{{ number_format($item->price3,0,'','`') }}</div>
     </div>
 
     <!-- Блок для кнопок -->
-    <div class="xflex xitems-center mt-4 md:mt-0 ml-auto text-center">
+    <div class="xflex xitems-center mt-4 md:mt-0 ml-auto text-center w-full md:w-[150px]">
 
         <div class="block mb-2 mt-2">
             <!-- Кнопка уменьшения количества -->
@@ -38,9 +38,9 @@
 
 
         @if ($inCart)
-            <a href="{{ route('svo.cart') }}" class="bg-green-400 text-white px-3 py-1 rounded">Перейти в корзину</a>
+            <a href="{{ route('svo.cart') }}" class="block bg-green-400 xtext-white px-3 py-1 rounded">Перейти в&nbsp;корзину</a>
         @else
-            <button wire:click="addToCart" class="bg-yellow-400 text-white px-3 py-1 rounded">Купить</button>
+            <button wire:click="addToCart" class="block w-full bg-yellow-300 xtext-white px-3 py-1 rounded">Заказать</button>
         @endif
     </div>
 

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Svo;
 use App\Http\Controllers\Controller;
 use App\Models\ShopItem;
 use App\Models\ShopPhoto;
+use App\Models\SvoTrebItem;
 use App\TDO\ShopCsvDataTdo;
+use App\TDO\TrebsCsvDataTdo;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -14,22 +16,36 @@ use Illuminate\Support\Facades\Storage;
 class ShopScanDatafileController extends Controller
 {
 
-    public $csvFile = 'svo/Dobro.csv';
+    static public $csvFile = 'svo/Dobro.csv';
 
     /**
      * Импорт данных из CSV файла в базу данных
+     * @param $file
+     * @param $type
+     * @param Request $request
+     * @return Array
      */
-    public function scan(Request $request)
+
+    static public function scan($file = '', $type = ''): array
     {
         $return = [
-            'line_to_db' => 0
+            'input_file' => $file,
+            'type' => $type,
+            'line_to_db' => 0,
+            't' => time(),
+            'exp' => []
         ];
-        $filePath = $this->csvFile;
+//        $filePath = self::$csvFile;
+        $filePath = $file;
+        $return['file'] = $filePath;
+        $return['file_puth'] = Storage::path($filePath);
+        $return['file_e'] = Storage::exists($filePath);
+
+//        dd($return);
 
         if (Storage::exists($filePath)) {
             $fileContent = iconv('windows-1251', 'utf-8', Storage::get($filePath));
             $lines = array_filter(explode("\n", $fileContent));
-
             $return['file_have_line'] = count($lines);
 
             // Извлекаем заголовки и данные
@@ -37,10 +53,16 @@ class ShopScanDatafileController extends Controller
 
             if (!empty($lines)) {
                 // Очищаем таблицу перед импортом новых данных
-                Schema::disableForeignKeyConstraints();
-                ShopItem::truncate();
-                ShopPhoto::truncate();
-                Schema::enableForeignKeyConstraints();
+
+                if ($type == 'shop') {
+                    Schema::disableForeignKeyConstraints();
+                    ShopItem::truncate();
+                    ShopPhoto::truncate();
+                    Schema::enableForeignKeyConstraints();
+                } elseif ($type == 'trebs') {
+                    SvoTrebItem::truncate();
+                }
+
 
                 // Переименование файла после успешного импорта
                 if (1 == 2) {
@@ -60,30 +82,46 @@ class ShopScanDatafileController extends Controller
                     continue;
                 }
 
-                $return['line_to_db'] ++;
 
                 try {
                     $columns = explode(';', $line);
-                    // Создаем объект TDO для обработки данных
-                    $tdo = new ShopCsvDataTdo($columns);
-                    $shopItem = ShopItem::create($tdo->toArray());
 
-                    // Если есть фотографии, добавляем их
-                    if (!empty($tdo->photo)) {
-                        $photos = explode('+', $tdo->photo);
-                        foreach ($photos as $photoUrl) {
-                            if (!empty($photoUrl)) {
-                                ShopPhoto::create([
-                                    'shop_item_id' => $shopItem->id,
-                                    'photo_url' => trim($photoUrl),
-                                ]);
+                    // Создаем объект TDO для обработки данных
+                    if ($type == 'shop') {
+                        $tdo = new ShopCsvDataTdo($columns);
+
+                        $shopItem = ShopItem::create($tdo->toArray());
+
+                        // Если есть фотографии, добавляем их
+                        if (!empty($tdo->photo)) {
+                            $photos = explode('+', $tdo->photo);
+                            foreach ($photos as $photoUrl) {
+                                if (!empty($photoUrl)) {
+                                    ShopPhoto::create([
+                                        'shop_item_id' => $shopItem->id,
+                                        'photo_url' => trim($photoUrl),
+                                    ]);
+                                }
                             }
                         }
+                    } elseif ($type == 'trebs') {
+//                        dd($columns);
+                        $tdo = new TrebsCsvDataTdo($columns);
+//                        dd($tdo);
+//                        dd($tdo->toArray());
+                        $item = SvoTrebItem::create($tdo->toArray());
+//                        dd($tdo);
+//                        dd($item);
                     }
+
+                    $return['line_to_db']++;
+
                 } catch (Exception $exp) {
+                    $return['exp'][] = $exp;
                 }
             }
         }
-        return response()->json($return);
+//        return response()->json($return);
+        return $return;
     }
 }

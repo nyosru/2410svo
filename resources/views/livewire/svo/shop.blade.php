@@ -6,27 +6,39 @@
     {{--    {{ count($data1)  }}--}}
     @if(count($data1) > 0 )
 
-        <div class="container mx-auto my-4 lg:w-[80%]">
+        <div class="container mx-auto my-1 lg:w-[80%]">
 
-        {{--        <div class="container mx-auto my-4">--}}
-        {{--            <div class="mt-6">--}}
-        {{--                {{ $data1->links() }}--}}
-        {{--            </div>--}}
-        {{--        </div>--}}
+            <div
+                style="position: sticky; xtop: 60px;"
+                class="flex flex-col md:flex-row items-center border-b border-gray-300 py-2 px-2 bg-gray-200 top-[127px] md:top-[60px]">
+                <!-- Фото товара -->
+                <div class="flex-shrink-0 w-24 h-2">
+                    &nbsp;
+                </div>
 
-{{--        <table class="shop-table table-auto w-full border-collapse border border-gray-300">--}}
+                <!-- Информация о товаре -->
+                <div class="flex flex-col justify-between ml-4 flex-grow">
+                    <div class="text-lg font-semibold">
+                       Наименование
+                    </div>
+                </div>
 
-            {{--            {{ dd($data) }}--}}
-{{--            <tbody>--}}
-            {{--                        {{dd($data->items())}}--}}
-            {{--            @foreach ($data as $index => $data1)--}}
-            {{--            @foreach ($data_all as $index => $data1)--}}
-            {{--            @foreach ($data as $index => $data1)--}}
-            {{--            {{ dd($data->items() ) }}--}}
-            {{--            {{ dd($data_all ) }}--}}
-            {{--                        @foreach ($data_all as $index => $data1)--}}
-            {{--            @foreach ($data as $index => $data1)--}}
-            {{--            @foreach ($data->items() as $index => $data1)--}}
+                <!-- Блок для каждой цены с фиксированной шириной -->
+                <div class="flex ml-4 space-x-2">
+                    <div class="text-lg font-semibold text-right pr-2" style="width: 100px;">цена1</div>
+                    <div class="text-lg font-semibold text-right pr-2" style="width: 100px;">цена2</div>
+                    <div class="text-lg font-semibold text-right pr-2" style="width: 100px;">цена3</div>
+                </div>
+
+                <!-- Блок для кнопок -->
+                <div class="xflex xitems-center collapse md:visible md:w-[150px]">
+                    &nbsp;
+                </div>
+
+
+            </div>
+
+
             @foreach ($data1 as $index=>$data12)
                 {{--                {{ print_r($data1) }}--}}
                 {{--{{ $data12->name }}--}}
@@ -41,7 +53,7 @@
 {{--            </tbody>--}}
 {{--        </table>--}}
 
-            <div class="mt-6">
+            <div class="my-6">
                 {{ $data1->links($paginationView) }}
             </div>
         </div>

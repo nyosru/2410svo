@@ -7,7 +7,9 @@
                 <li ><span class="bg-gray-200 text-gray-500 px-3 py-2 rounded">Назад</span></li>
             @else
                 <li>
-                    <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="bg-white text-gray-800 px-3 py-2 rounded border">Назад</a>
+                    <a href="{{ $paginator->previousPageUrl() }}"
+                       wire:navigate
+                       rel="prev" class="bg-white text-gray-800 px-3 py-2 rounded border">Назад</a>
                 </li>
             @endif
 
@@ -23,7 +25,8 @@
                             <li ><span class="bg-blue-500 text-white px-3 py-2 rounded " >{{ $page }}</span></li>
                         @else
                             <li>
-                                <a href="{{ $url }}" class="bg-white text-gray-800 px-3 py-2 rounded border">{{ $page }}</a>
+                                <a href="{{ $url }}" wire:navigate
+                                   class="bg-white text-gray-800 px-3 py-2 rounded border">{{ $page }}</a>
                             </li>
                         @endif
                     @endforeach
@@ -33,7 +36,9 @@
             <!-- Next Page Link -->
             @if ($paginator->hasMorePages())
                 <li>
-                    <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="bg-white text-gray-800 px-3 py-2 rounded border">Вперед</a>
+                    <a href="{{ $paginator->nextPageUrl() }}"
+                       wire:navigate
+                       rel="next" class="bg-white text-gray-800 px-3 py-2 rounded border">Вперед</a>
                 </li>
             @else
                 <li><span class="bg-gray-200 text-gray-500 px-3 py-2 rounded">Вперед</span></li>
