@@ -2,51 +2,70 @@
 
 namespace App\Livewire\Svo;
 
+use App\Models\FinReport;
 use Livewire\Component;
-use Illuminate\Support\Facades\Storage;
+use Livewire\WithPagination;
 
 class FinDataTable extends Component
 {
-    public $data_head = [];
-    public $data = [];
+    use WithPagination;
 
-    public function mount()
+    public $data_head = [
+        'Вид<br/>Фирма',
+        'НомСчет<br/>НаимСчет',
+        'Затея<br/>МОЛ',
+        'ЗначениеДок<br/>НомСтр',
+        'Наименование<br/>Добавка',
+        'Комент<br/>Движ',
+        'ДебетНач<br/>ДебКолНач',
+        'КредитНач<br/>КредКолНач',
+        'Дебет<br/>ДебКол',
+        'Кредит<br/>КредКол',
+        'ДебетКон<br/>ДебКолКон',
+        'КредитКон<br/>КредКолКон',
+    ];
+
+    public $perPage = 50; // Количество строк на странице
+    public $source = 'model'; // Источник данных: 'file' или 'model'
+
+    public function updating($name, $value)
     {
-        $filePath = 'IMOCB.csv';
-        $filePath1 = 'svo/'.$filePath;
-        // Проверка, существует ли файл
-        if (Storage::exists($filePath1)) {
-            $file = Storage::get($filePath1);
-            $file = iconv('windows-1251', 'utf-8', $file);
-//            dd( Storage::path($file ) );
-            $lines = explode("\n", $file);
-
-            $n = 1;
-
-            // Чтение строк файла и преобразование их в массив
-            foreach ($lines as $line) {
-
-                if( $n > 50 )
-                    break;
-
-                $n++;
-
-                if( empty($this->data_head)) {
-//                $this->data[] = str_getcsv($line);
-                    $this->data_head = explode(';', $line);
-                }else{
-                    $this->data[] = explode(';', $line);
-                }
-            }
+        if ($name === 'perPage') {
+            $this->resetPage(); // Сбрасываем страницу при изменении количества записей
         }
     }
 
     public function render()
     {
-//        $filePath = 'svo/IMPot.csv';
-//        $file = Storage::get($filePath);
-//        dd( Storage::path($filePath ) );
+        $data = $this->source === 'file'
+            ? $this->loadFromFile()
+            : $this->loadFromModel();
 
-        return view('livewire.svo.fin-data-table');
+        return view('livewire.svo.fin-data-table', compact('data'));
+    }
+
+    private function loadFromFile()
+    {
+        $filePath = 'svo/IMOCB.csv';
+
+        if (!\Storage::exists($filePath)) {
+            return collect(); // Возвращаем пустую коллекцию, если файл отсутствует
+        }
+
+        $file = iconv('windows-1251', 'utf-8', \Storage::get($filePath));
+        $lines = explode("\n", $file);
+
+        $data = collect($lines)
+            ->map(fn($line) => explode(';', trim($line)))
+            ->filter(fn($row) => count($row) >= count($this->data_head))
+            ->skip(($this->page - 1) * $this->perPage) // Пропускаем записи для текущей страницы
+            ->take($this->perPage);
+
+        return $data->map(fn($row) => (object) $row); // Приводим к объекту для единообразия
+    }
+
+    private function loadFromModel()
+    {
+        return FinReport::paginate($this->perPage);
     }
 }

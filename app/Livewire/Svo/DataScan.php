@@ -29,6 +29,9 @@ class DataScan extends Component
         }elseif( $this->type_file == 'trebs' ) {
 //            $filePath = '/storage/app/private/svo/Trebs.csv';
             $savedFile = $this->uploadedFile->storeAs('svo', 'Trebs.csv');
+        }elseif( $this->type_file == 'fin' ) {
+//            $filePath = '/storage/app/private/svo/Trebs.csv';
+            $savedFile = $this->uploadedFile->storeAs('svo', 'IMOCB.csv');
         }
 
 //        $savedFile = $this->uploadedFile->storeAs('private/svo', basename($filePath));

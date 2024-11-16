@@ -4,15 +4,18 @@ namespace App\Http\Controllers\Svo;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Service\StringController;
+use App\Models\FinReport;
 use App\Models\ShopItem;
 use App\Models\ShopPhoto;
 use App\Models\SvoTrebItem;
+use App\TDO\FinReportTDO;
 use App\TDO\ShopCsvDataTdo;
 use App\TDO\TrebsCsvDataTdo;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ShopScanDatafileController extends Controller
 {
@@ -65,6 +68,8 @@ class ShopScanDatafileController extends Controller
                     Schema::enableForeignKeyConstraints();
                 } elseif ($type == 'trebs') {
                     SvoTrebItem::truncate();
+                } elseif ($type == 'fin') {
+//                    FinReport::truncate();
                 }
 
 
@@ -85,16 +90,23 @@ class ShopScanDatafileController extends Controller
 
                     // Применение транслитерации к каждому элементу заголовков
                     foreach (self::$header as &$headerElement) {
-                        $headerElement = StringController::transliterate($headerElement);
+                        if ($type == 'fin') {
+                            $headerElement = Str::snake(StringController::transliterate($headerElement));
+                        } else {
+                            $headerElement = StringController::transliterate($headerElement);
+                        }
                     }
 
                     $nn++;
                     continue;
                 }
 
+//                dd(self::$header);
+
                 try {
                     // Создаем объект TDO для обработки данных
                     if ($type == 'shop') {
+
                         $columns = explode(';', $line);
                         $tdo = new ShopCsvDataTdo($columns);
                         $shopItem = ShopItem::create($tdo->toArray());
@@ -111,17 +123,21 @@ class ShopScanDatafileController extends Controller
                                 }
                             }
                         }
-                    } elseif ($type == 'trebs') {
-                        $data = self::prepareDataTrebs($line);
+
+                    } elseif ($type == 'fin') {
+
+                        $data = self::prepareDataFinOtchet($line);
+                        $tdo = new FinReportTDO($data['data']);
+                        $item = FinReport::create($tdo->toArray());
 //                        dd($data);
-//                        dd($columns);
+
+                    } elseif ($type == 'trebs') {
+
+                        $data = self::prepareDataTrebs($line);
                         $tdo = new TrebsCsvDataTdo($data['data']);
-//                        dd($tdo);
-//                        dd($tdo->toArray());
 
                         if ($tdo->uroven == 2) {
                             $tdo->setUpId(self::$now_up_id[1]);
-//                            dd($tdo);
                         } elseif ($tdo->uroven == 3) {
                             $tdo->setUpId(self::$now_up_id[2]);
                         } elseif ($tdo->uroven == 4) {
@@ -134,13 +150,9 @@ class ShopScanDatafileController extends Controller
                             self::$now_up_id = [1 => $item->id];
                         } elseif ($item->uroven == 2) {
                             self::$now_up_id[2] = $item->id;
-//                            dd($item);
                         } elseif ($item->uroven == 3) {
                             self::$now_up_id[3] = $item->id;
                         }
-
-//                        dd($tdo);
-//                        dd($item);
                     }
 
                     $return['line_to_db']++;
@@ -169,6 +181,42 @@ class ShopScanDatafileController extends Controller
         $return['data'] = [];
         foreach ($columns as $k => $v) {
             $return['data'][self::$header[$k]] = $v;
+        }
+
+        return $return;
+    }
+
+    /**
+     * подготовка данных для добавления в дто фин отчёты
+     * @param String $line
+     * @return Array
+     * header\in\data
+     */
+    static public function prepareDataFinOtchet(string $line): array
+    {
+        $return = [];
+        $return['header'] = self::$header;
+        $return['in'] =
+        $columns = explode(';', $line);
+        $return['data'] = [];
+        foreach ($columns as $k => $v) {
+            if (self::$header[$k] == "debet_nach" ||
+                self::$header[$k] == "kredit_nach" ||
+                self::$header[$k] == "debet" ||
+                self::$header[$k] == "kredit" ||
+                self::$header[$k] == "debet_kon" ||
+                self::$header[$k] == "kredit_kon" ||
+                self::$header[$k] == "deb_kol_nach" ||
+                self::$header[$k] == "kred_kol_nach" ||
+                self::$header[$k] == "deb_kol" ||
+                self::$header[$k] == "kred_kol" ||
+                self::$header[$k] == "deb_kol_kon" ||
+                self::$header[$k] == "kred_kol_kon"
+            ) {
+                $return['data'][self::$header[$k]] = round((float)trim($v), 2);
+            } else {
+                $return['data'][self::$header[$k]] = trim($v);
+            }
         }
 
         return $return;

@@ -40,7 +40,7 @@
                 <br/>
                 @if( !empty( $row['curica'] ) )
                     <A href="{{$row['curica']}}"
-                       class="text-blue-700 underline" target="_blank" >Оплатить по QR</A>
+                       class="text-blue-700 underline" target="_blank">Оплатить по QR</A>
                 @endif
             </div>
 
@@ -56,9 +56,13 @@
             {{--            <div class="basis-1/6">--}}
             <div class="basis-[200px] text-center">
                 {{--            <div class="flex-1">--}}
-                <a class="text-blue-700 underline" href="{{ $row['mol_link'] }}" target="_blank">
-                    {{ $row['mol_name'] }}
-                </a>
+                @if( !empty( $row['mol_link'] ) )
+                    <a class="text-blue-700 underline" href="{{ $row['mol_link'] }}" target="_blank">
+                        @endif
+                        {{ $row['mol_name'] }}
+                        @if( !empty( $row['mol_link'] ) )
+                    </a>
+                @endif
                 <br/>
                 <a class="text-blue-700 underline" href="tel:{{ $row['mol_phone'] }}" target="_blank">
                     {{ $row['mol_phone'] }}
