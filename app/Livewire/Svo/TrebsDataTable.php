@@ -12,7 +12,7 @@ class TrebsDataTable extends Component
     public $data_head = [
 //        'Уровень',
         'Фирма',
-        'Затея',
+        'Затея<br/>Сделать перевод по&nbsp;QR',
 //        'МОЛ',
 //        'МОЛ ссылка',
 //        'МОЛ телефон',
