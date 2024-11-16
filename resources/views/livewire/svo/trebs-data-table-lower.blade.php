@@ -106,7 +106,7 @@
         @endif
 
         @if(!empty($row['children_count']) && $row['children_count'] > 0)
-            <div class="bg-orange-300 p-2 rounded ml-[{{ (( $row['uroven'] ?? 1 )-1)*40 }}px]">
+            <div class="bg-orange-200 p-2 rounded ml-[{{ (( $row['uroven'] ?? 1 )-1)*40 }}px]">
                 <a class="text-blue-700 underline" href="#"
                    wire:click.prevent="switchPodrobnee({{ $row['id'] }})">Подробнее @if(isset($show_podrobnee[$row['id']]) && $show_podrobnee[$row['id']])
                         ( скрыть )
