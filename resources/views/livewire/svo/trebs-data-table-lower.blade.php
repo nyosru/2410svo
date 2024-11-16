@@ -13,7 +13,7 @@
     @endif
 
     @foreach( $data as $row )
-        <div class="flex flex-row gap-2 bg-gray-200 p-2 rounded
+        <div class="flex flex-row gap-2 bg-gray-100 p-2 rounded
                         ml-[{{ ($row['uroven']-1)*40 }}px]
                         mb-[2px]
                         "
