@@ -19,7 +19,7 @@ class SvoTrebItem extends Model
     protected $fillable = [
         'firma',
         'zateya',
-        'mol',
+//        'mol',
         'mol_name',
         'mol_link',
         'mol_phone',
@@ -31,9 +31,21 @@ class SvoTrebItem extends Model
         'curica',
         'site_tab',
         'photo',
+
+        'uroven',
+        'up_id',
+
         'debet_kon',
         'kredit_kon',
         'debet_kol_kon',
         'kredit_kol_kon',
     ];
+
+
+    // Связь для дочерних элементов
+    public function children()
+    {
+        return $this->hasMany(self::class, 'up_id', 'id');
+    }
+
 }

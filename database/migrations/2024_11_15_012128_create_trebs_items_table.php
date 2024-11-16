@@ -17,9 +17,9 @@ return new class extends Migration {
             $table->string('zateya')->comment('')
                 ->nullable()
             ;
-            $table->string('mol')->comment('')
-                ->nullable()
-            ;
+//            $table->string('mol')->comment('')
+//                ->nullable()
+//            ;
             $table->string('mol_name')->comment('')
                 ->nullable()
             ;
@@ -65,6 +65,13 @@ return new class extends Migration {
             $table->decimal('kredit_kol_kon', 10, 2)->nullable()
                 ->comment('КредитКолКон')
             ;
+            $table->integer('uroven')->nullable()
+                ->comment('Уровень')
+            ;
+            $table->integer('up_id')->nullable()
+                ->comment('верхний Уровень')
+            ;
+
 //            $table->string('name')->comment('');
 //            $table->string('name')->comment('Наименование');
 //            $table->string('additive')->nullable()->comment('Добавка');

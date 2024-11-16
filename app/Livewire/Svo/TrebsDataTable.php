@@ -10,13 +10,18 @@ class TrebsDataTable extends Component
 {
 
     public $data_head = [
+        'Уровень',
         'Фирма',
         'Затея',
+//        'МОЛ',
         'МОЛ',
+//        'МОЛ ссылка',
+//        'МОЛ телефон',
+
         'ЗначениеДок',
         'НомСтр',
         'Наименование',
-        'Добавка',
+//        'Добавка',
         'Комент',
         'Курица',
         'СайтТаб',
@@ -28,8 +33,13 @@ class TrebsDataTable extends Component
     ];
     public $data = [];
 
-//    public function mount()
-//    {
+    public function mount()
+    {
+        $this->data = SvoTrebItem::query()
+            ->withCount('children') // Подсчёт связанных записей
+            ->get()
+            ->toArray();
+
 //        $filePath = 'IMPot.csv';
 //        $filePath1 = 'svo/'.$filePath;
 //        // Проверка, существует ли файл
@@ -54,13 +64,16 @@ class TrebsDataTable extends Component
 ////            $this->data = $t->get();
 //
 //        }
-//    }
+    }
+
+
+    public function toggleVisibility($index)
+    {
+        $this->expanded[$index] = !$this->expanded[$index]; // Переключаем состояние
+    }
 
     public function render()
     {
-
-        $this->data = SvoTrebItem::all()->toArray();
-
 //        $filePath = 'svo/IMPot.csv';
 //        $file = Storage::get($filePath);
 //        dd( Storage::path($filePath ) );

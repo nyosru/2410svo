@@ -5,6 +5,7 @@ namespace App\TDO;
 class TrebsCsvDataTdo
 {
     public $firma;
+    public $up_id = null;
     public $zateya = '';
     public $mol = '';
     public $mol_name = '';
@@ -25,26 +26,51 @@ class TrebsCsvDataTdo
 
     public function __construct(array $data)
     {
-        $this->firma = trim($data[0] ?? '');
-        $this->zateya = trim($data[1] ?? '');
-        $this->mol = trim($data[2] ?? '');
-        $this->mol_name = trim($data['mol_name'] ?? '');
-        $this->mol_link = trim($data['mol_link'] ?? '');
-        $this->mol_phone = trim($data['mol_phone'] ?? '');
-        $this->doc = trim($data[3] ?? '');
-        $this->nom_str = trim($data[4] ?? '');
-        $this->name = trim($data[5] ?? '');
-        $this->dops = trim($data[6] ?? '');
-        $this->comment = trim($data[7] ?? '');
-        $this->curica = trim($data[8] ?? '');
-        $this->site_tab = trim($data[9] ?? '');
-        $this->photo = trim($data[10] ?? '');
+        $this->firma = $data['Firma'] ?? '';
+        $this->zateya = $data['Zateya'] ?? '';
+
+//        $this->mol = $data['Mol'] ?? '';
+
+        $this->mol_name = $data['MOL'] ?? '';
+        $this->mol_phone = $data['Telefon'] ?? '';
+        $this->mol_link = $data['SaytTab'] ?? '';
+
+        $this->name = $data['Naimenovanie'] ?? '';
+        $this->dops = $data['Dobavka'] ?? '';
+        $this->comment = $data['Koment'] ?? '';
+
+        $this->curica = $data['Kuritsa'] ?? '';
+        $this->photo = $data['Foto'] ?? '';
+
+        $this->doc = $data['ZnachenieDok'] ?? '';
+        $this->nom_str = $data['NomStr'] ?? '';
+        $this->uroven = $data['Uroven'] ?? '';
+
+        if (!empty($data['up_id'])) {
+            $this->up_id = $data['up_id'];
+        }
 
         // Замена запятой на точку и округление чисел до 2 знаков после запятой
-        $this->debet_kon = isset($data[11]) ? round((float) str_replace(',', '.', trim($data[11])), 2) : 0.0;
-        $this->kredit_kon = isset($data[12]) ? round((float) str_replace(',', '.', trim($data[12])), 2) : 0.0;
-        $this->debet_kol_kon = isset($data[13]) ? round((float) str_replace(',', '.', trim($data[13])), 2) : 0.0;
-        $this->kredit_kol_kon = isset($data[14]) ? round((float) str_replace(',', '.', trim($data[14])), 2) : 0.0;
+        if (!empty($data['DebetKon'])) {
+            $this->debet_kon = round((float)str_replace(',', '.', trim($data['DebetKon'])), 2);
+        }
+
+        if (!empty($data['KreditKon'])) {
+            $this->kredit_kon = round((float)str_replace(',', '.', trim($data['KreditKon'])), 2);
+        }
+
+        if (!empty($data['DebKolKon'])) {
+            $this->debet_kol_kon = round((float)str_replace(',', '.', trim($data['DebKolKon'])), 2);
+        }
+
+        if (!empty($data['KredKolKon'])) {
+            $this->kredit_kol_kon = round((float)str_replace(',', '.', trim($data['KredKolKon'])), 2);
+        }
+    }
+
+    public function setUpId( $val )
+    {
+        $this->up_id = $val;
     }
 
     public function toArray()
@@ -67,7 +93,9 @@ class TrebsCsvDataTdo
             'debet_kon' => $this->debet_kon,
             'kredit_kon' => $this->kredit_kon,
             'debet_kol_kon' => $this->debet_kol_kon,
-            'kredit_kol_kon' => $this->kredit_kol_kon
+            'kredit_kol_kon' => $this->kredit_kol_kon,
+            'uroven' => $this->uroven,
+            'up_id' => $this->up_id,
         ];
     }
 }
