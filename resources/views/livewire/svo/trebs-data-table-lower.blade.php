@@ -10,7 +10,7 @@
 {{--                        {{ $l }}/--}}
                         {!! $header  !!}</div>
                 @else
-                    <div class="basis-[100px] font-bold text-center"
+                    <div class="basis-[150px] font-bold text-center"
 {{--                         @if($l<=6) style="border-right: 1px solid gray;" @endif --}}
                     >{!! $header  !!}</div>
                 @endif
@@ -62,22 +62,16 @@
 
             {{--            <div class="flex-1">--}}
             {{--            <div class="basis-1/8">--}}
-            <div class="basis-[100px] text-right">
+            <div class="basis-[150px] text-right">
                 {{ (isset($row['debet_kon']) && $row['debet_kon'] > 0) ? number_format($row['debet_kon'],2,'.','`') : '-' }}
-            </div>
-            {{--            <div class="flex-1">--}}
-            {{--            <div class="basis-1/8">--}}
-            <div class="basis-[100px]  text-right">
-                {{ (isset($row['kredit_kon']) && $row['kredit_kon'] > 0) ? number_format($row['kredit_kon'],2,'.','`') : '-' }}
-            </div>
-            {{--            <div class="flex-1">--}}
-            {{--            <div class="basis-1/8">--}}
-            <div class="basis-[100px] text-right ">
+                <br/>
                 {{ (isset($row['debet_kol_kon']) && $row['debet_kol_kon'] > 0) ? number_format($row['debet_kol_kon'],2,'.','`') : '-' }}
             </div>
             {{--            <div class="flex-1">--}}
             {{--            <div class="basis-1/8">--}}
-            <div class="basis-[100px]  text-right">
+            <div class="basis-[150px]  text-right">
+                {{ (isset($row['kredit_kon']) && $row['kredit_kon'] > 0) ? number_format($row['kredit_kon'],2,'.','`') : '-' }}
+                <br/>
                 {{ (isset($row['kredit_kol_kon']) && $row['kredit_kol_kon'] > 0) ? number_format($row['kredit_kol_kon'],2,'.','`') : '-' }}
             </div>
 
