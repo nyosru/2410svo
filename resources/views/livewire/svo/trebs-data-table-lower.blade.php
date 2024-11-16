@@ -1,12 +1,18 @@
 <div class="block w-[1200px] mx-auto pl-[{{ (( $row['uroven'] ?? 1 )-1)*40 }}px]">
 
     @if( empty($upup) && !empty($data_head))
-        <div class="flex flex-row gap-2 bg-gray-200 p-2 rounded">
+        <div class="flex flex-row gap-2 bg-gray-200 p-2 rounded" style="position:sticky; top: 60px;">
             @foreach ($data_head as $l => $header)
                 @if( $l <= 3)
-                    <div class="basis-[200px] font-bold text-center">{{ $l }}/{!! $header  !!}</div>
+                    <div class="basis-[200px] font-bold text-center"
+{{--                         style="border-right: 1px solid gray;"--}}
+                    >
+{{--                        {{ $l }}/--}}
+                        {!! $header  !!}</div>
                 @else
-                    <div class="basis-[100px] font-bold text-center">{!! $header  !!}</div>
+                    <div class="basis-[100px] font-bold text-center"
+{{--                         @if($l<=6) style="border-right: 1px solid gray;" @endif --}}
+                    >{!! $header  !!}</div>
                 @endif
             @endforeach
         </div>
@@ -33,6 +39,14 @@
 
 
             {{--            <div class="basis-1/6">--}}
+            <div class="basis-[200px] ">
+                {{--            <div class="flex-1">--}}
+                {{ $row['name'] }}
+                <br/>
+                <span class="text-sm">{{ $row['dops'] }}</span>
+            </div>
+
+            {{--            <div class="basis-1/6">--}}
             <div class="basis-[200px] text-center">
                 {{--            <div class="flex-1">--}}
                 <a class="text-blue-700 underline" href="{{ $row['mol_link'] }}" target="_blank">
@@ -45,13 +59,6 @@
             </div>
 
 
-            {{--            <div class="basis-1/6">--}}
-            <div class="basis-[200px] ">
-                {{--            <div class="flex-1">--}}
-                {{ $row['name'] }}
-                <br/>
-                <span class="text-sm">{{ $row['dops'] }}</span>
-            </div>
 
             {{--            <div class="flex-1">--}}
             {{--            <div class="basis-1/8">--}}

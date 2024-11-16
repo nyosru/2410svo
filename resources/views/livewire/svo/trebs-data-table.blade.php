@@ -1,4 +1,4 @@
-<div>
+<div class="mb-[100px]">
 {{--    <div class="flex flex-col gap-4">--}}
         {{--    {{ print_r($data) }}--}}
         {{--    <style>--}}
