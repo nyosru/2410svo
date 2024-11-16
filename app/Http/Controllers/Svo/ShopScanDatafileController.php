@@ -134,7 +134,7 @@ class ShopScanDatafileController extends Controller
                     } elseif ($type == 'trebs') {
 
                         $data = self::prepareDataTrebs($line);
-                        $tdo = new TrebsCsvDataTdo($data['data']);
+                        $tdo = new \App\TDO\TrebsCsvDataTdo($data['data']);
 
                         if ($tdo->uroven == 2) {
                             $tdo->setUpId(self::$now_up_id[1]);
