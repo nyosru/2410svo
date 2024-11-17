@@ -3,7 +3,7 @@
 
 {{--        {{ print_r($row,true) }}--}}
 
-        <div class="flex flex-row xbg-gray-200  ml-[{{ (( $row['uroven'] ?? 1 )-1)*20 }}px]
+        <div class="flex flex-row hover:bg-gray-100  ml-[{{ (( $row['uroven'] ?? 1 )-1)*20 }}px]
          @if($row['uroven'] > 1) border-l border-l-[10px] border-orange-200 @endif
         ">
             <div class="flex flex-col flex-grow">
@@ -88,7 +88,7 @@
                 <div class="flex-1 p-1 text-center border border-gray-300 w-full">
                     {{--                    Аналог--}}
                     @if( !empty($row['analog'] ) )
-                        <a href="mailto:{{$row['analog'] }}" class="text-blue-700 underline">Аналог</a>
+                        <a href="@if( strpos( $row['analog'] ,'@'))mailto:@endif{{$row['analog'] }}" class="text-blue-700 underline">Аналог</a>
                     @endif
                 </div>
             </div>
