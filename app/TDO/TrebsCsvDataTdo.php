@@ -127,7 +127,9 @@ class TrebsCsvDataTdo
             'doc' => $this->doc,
             'nom_str' => $this->nom_str,
             'name' => $this->name,
+
             'dops' => $this->dops,
+
             'comment' => $this->comment,
             'curica' => $this->curica,
             'site_tab' => $this->site_tab,

@@ -82,9 +82,10 @@
                 <div class="flex-1 p-1 text-center border border-gray-300 w-full">
                     {{--                    Аналог--}}
                     @if( !empty($row['analog'] ) )
-                        <a href="@if( strpos( $row['analog'] ,'@'))mailto:@endif{{$row['analog'] }}"
+                        <a href="#" wire:click.prevent="switchAnalogi({{$row['id']}})"
                            class="text-blue-700 underline">Аналог</a>
                     @endif
+
                 </div>
             </div>
             <div class="flex flex-col w-[110px] p-1 text-center border border-gray-300">
@@ -95,6 +96,16 @@
         {{--        {{ print_r($row,true) }}--}}
 
 
+
+        @if( isset($show_analogi[$row['id']]) && $show_analogi[$row['id']] )
+
+            <div class="flex flex-row-reverse">
+                <div class="bg-orange-100 p-6 rounded-lg shadow-lg w-[600px] table-animate ">
+                    Аналог:<br/>
+                    {{$row['analog'] }}
+                </div>
+            </div>
+        @endif
 
 
         @if( isset($show_for_ul[$row['id']]) && $show_for_ul[$row['id']] === true )
@@ -251,7 +262,8 @@
                         ( скрыть )
                     @endif </a>
 
-                <span wire:loading wire:target="switchPodrobnee({{ $row['id'] }})" class="hidden text-gray-500 ml-2">
+                <span wire:loading wire:target="switchPodrobnee({{ $row['id'] }})"
+                      class="hidden text-gray-500 ml-2">
 Загружаю...
 </span>
 

@@ -16,6 +16,7 @@ class TrebsDataTableLower extends Component
     public $data_head;
     public $show_podrobnee = false;
     public $show_for_ul = false;
+    public $show_analogi = [];
 
     public $loading_details = [];
 
@@ -36,6 +37,14 @@ class TrebsDataTableLower extends Component
                 ->withCount('children') // Подсчёт связанных записей
                 ->get()
                 ->toArray();
+        }
+    }
+
+    public function switchAnalogi($id){
+        if (!isset($this->show_analogi[$id])) {
+            $this->show_analogi[$id] = true;
+        } else {
+            $this->show_analogi[$id] = !$this->show_analogi[$id];
         }
     }
 
