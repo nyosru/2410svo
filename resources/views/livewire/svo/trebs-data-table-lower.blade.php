@@ -102,7 +102,7 @@
             <div class="flex flex-row-reverse">
                 <div class="bg-orange-100 p-6 rounded-lg shadow-lg w-[600px] table-animate ">
                     Аналог:<br/>
-                    {{$row['analog'] }}
+                    {!! $row['analog'] !!}
                 </div>
             </div>
         @endif
