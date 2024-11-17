@@ -36,7 +36,8 @@
                     </div>
 
                 </div>
-                <div class="flex-1 p-1 text-center border border-gray-300">{{$row['site_tab'] ?? ''}}</div>
+                <div class="flex-1 p-1 text-center border border-gray-300">
+                    {{$row['site_tab'] ?? ''}} &nbsp;</div>
                 {{--            <div class="flex-1 p-2 text-center">КодТ</div>--}}
 
             </div>
