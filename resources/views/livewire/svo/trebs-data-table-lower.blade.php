@@ -78,6 +78,9 @@
                     {{--                    Аналог--}}
                 </div>
             </div>
+            <div class="flex flex-col w-[110px] p-1 text-center border border-gray-300">
+                {{$row['uroven'] ?? '-'}}
+            </div>
 
         </div>
         {{--        {{ print_r($row,true) }}--}}
