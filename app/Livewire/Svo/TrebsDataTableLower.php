@@ -9,12 +9,13 @@ class TrebsDataTableLower extends Component
 {
 
     public $upup = [];
-    public $up_id  ;
-    public $up_uroven ;
+    public $up_id;
+    public $up_uroven;
     public $data = [];
     public $data_row;
     public $data_head;
     public $show_podrobnee = false;
+    public $show_for_ul = false;
 
     public $loading_details = [];
 
@@ -38,15 +39,22 @@ class TrebsDataTableLower extends Component
         }
     }
 
+    public function switchForUl($id)
+    {
+        if (!isset($this->show_for_ul[$id])) {
+            $this->show_for_ul[$id] = true;
+        } else {
+            $this->show_for_ul[$id] = !$this->show_for_ul[$id];
+        }
+    }
+
     public function switchPodrobnee($id)
     {
-
         if (!isset($this->show_podrobnee[$id])) {
             $this->show_podrobnee[$id] = true;
         } else {
             $this->show_podrobnee[$id] = !$this->show_podrobnee[$id];
         }
-
     }
 
     public function render()

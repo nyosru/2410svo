@@ -90,11 +90,11 @@ class ShopScanDatafileController extends Controller
 
                     // Применение транслитерации к каждому элементу заголовков
                     foreach (self::$header as &$headerElement) {
-                        if ($type == 'fin' || $type == 'shop') {
+//                        if ($type == 'fin' || $type == 'shop') {
                             $headerElement = Str::snake(StringController::transliterate($headerElement));
-                        } else {
-                            $headerElement = StringController::transliterate($headerElement);
-                        }
+//                        } else {
+//                            $headerElement = StringController::transliterate($headerElement);
+//                        }
                     }
 
                     $nn++;
@@ -131,7 +131,11 @@ class ShopScanDatafileController extends Controller
 
                     } elseif ($type == 'trebs') {
                         $data = self::prepareDataTrebs($line);
+//                        dd($data);
                         $tdo = new \App\TDO\TrebsCsvDataTdo($data['data']);
+
+//                        if( $data['data']['uroven'] == 2 )
+//                            dd([$data,$tdo]);
 
                         if ($tdo->uroven == 2) {
                             $tdo->setUpId(self::$now_up_id[1]);

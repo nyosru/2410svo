@@ -39,6 +39,18 @@ class SvoTrebItem extends Model
         'kredit_kon',
         'debet_kol_kon',
         'kredit_kol_kon',
+
+
+        'analog',
+        'poluchatel',
+        'i_n_n' ,
+        'k_p_p',
+        'rschet' ,
+        'bank' ,
+        'b_i_k' ,
+        'kor_schet' ,
+        'adres_banka' ,
+
     ];
 
 

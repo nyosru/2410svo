@@ -1,4 +1,46 @@
 <div class="mb-[100px] block w-[1200px] mx-auto bg-white shadow-md rounded-lg overflow-hidden border border-gray-300">
+
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .table-animate {
+            opacity: 0;
+            animation: fadeIn 2s ease-out forwards;
+        }
+
+        .copy-btn {
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .copy-btn:hover {
+            background-color: #3b82f6;
+        }
+
+
+    </style>
+
+    <script>
+        function copyToClipboard(id) {
+            var copyText = document.getElementById(id).textContent; // Получаем текст из span
+            navigator.clipboard.writeText(copyText).then(() => {
+                alert('Скопировано: ' + copyText);
+            }).catch(err => {
+                console.error('Ошибка при копировании: ', err);
+            });
+        }
+    </script>
+
+
+
     <!-- Header Row -->
     <div class="flex flex-row bg-gray-200
 {{--sticky top-[40px]--}}
