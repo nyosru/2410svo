@@ -31,9 +31,6 @@ class FinReportTDO
     public ?float $deb_kol_kon;
     public ?float $kred_kol_kon;
 
-
-
-
     public function __construct(array $data)
     {
         $this->vid = $data['vid'] ?? '';

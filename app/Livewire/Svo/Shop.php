@@ -68,8 +68,8 @@ class Shop extends Component
 
         // Выполняем запрос с регулярным выражением
         $data = ShopItem::with('photos')
-            ->where('name', 'REGEXP', $searchPattern)
-            ->orWhere('additive', 'REGEXP', $searchPattern)
+            ->where('naimenovanie', 'REGEXP', $searchPattern)
+            ->orWhere('dobavka', 'REGEXP', $searchPattern)
             ->paginate(10);
 
         // Проверяем, есть ли результаты поиска

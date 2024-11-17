@@ -4,38 +4,46 @@ namespace App\TDO;
 
 class ShopCsvDataTdo
 {
-    public $name;
-    public $additive;
-    public $code;
-    public $photo;
-    public $stock_balance;
-    public $price1;
-    public $price2;
-    public $price3;
 
-    public function __construct(array $data)
-    {
-        $this->name = trim($data[0]);
-        $this->additive = trim($data[1]);
-        $this->code = trim($data[2]);
-        $this->photo = trim($data[3]);
-        $this->stock_balance = (float) trim($data[4]);
-        $this->price1 = (float) trim($data[5]);
-        $this->price2 = (float) trim($data[6]);
-        $this->price3 = (float) trim($data[7]);
+    public ?string $firma;
+    public string $naimenovanie;
+    public ?string $dobavka = null;
+    public ?string $kod_t;
+    public ?string $sayt_tab;
+    public ?string $foto;
+    public int $deb_kol_kon;
+    public float $tsena1;
+    public ?float $tsena2 = null;
+    public ?float $tsena3 = null;
+
+
+    public function __construct( array $data ){
+
+        $this->firma = $data['firma'] ?? null;
+        $this->naimenovanie = $data['naimenovanie'] ?? '';
+        $this->dobavka = $data['dobavka'] ?? null;
+        $this->kod_t = $data['kod_t'] ?? null;
+        $this->sayt_tab = $data['sayt_tab'] ?? null;
+        $this->foto = $data['foto'] ?? null;
+        $this->deb_kol_kon = $data['deb_kol_kon'] ?? 0;
+        $this->tsena1 = (float) $data['tsena1'] ?? 0;
+        $this->tsena2 = (float) $data['tsena2'] ?? 0;
+        $this->tsena3 = (float) $data['tsena3'] ?? 0;
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return [
-            'name' => $this->name,
-            'additive' => $this->additive,
-            'code' => $this->code,
-            'photo' => $this->photo,
-            'stock_balance' => $this->stock_balance,
-            'price1' => $this->price1,
-            'price2' => $this->price2,
-            'price3' => $this->price3,
+            'firma' => $this->firma,
+            'naimenovanie' => $this->naimenovanie,
+            'dobavka' => $this->dobavka,
+            'kod_t' => $this->kod_t,
+            'sayt_tab' => $this->sayt_tab,
+            'foto' => $this->foto,
+            'deb_kol_kon' => $this->deb_kol_kon,
+            'tsena1' => $this->tsena1,
+            'tsena2' => $this->tsena2,
+            'tsena3' => $this->tsena3,
         ];
     }
 }

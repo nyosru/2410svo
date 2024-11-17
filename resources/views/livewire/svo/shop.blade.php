@@ -6,52 +6,71 @@
     {{--    {{ count($data1)  }}--}}
     @if(count($data1) > 0 )
 
-        <div class="container mx-auto my-1 lg:w-[80%]">
+        <div class="container mx-auto xmy-1 w-[1200px]">
 
             <div
-                style="position: sticky; xtop: 60px;"
-                class="flex flex-col md:flex-row items-center border-b border-gray-300 py-2 px-2 bg-gray-200 top-[127px] md:top-[60px]">
+                class="
+                sticky top-[60px]
+
+                flex flex-row
+                text-lg font-semibold
+                bg-gray-200
+                ">
+
                 <!-- Фото товара -->
-                <div class="flex-shrink-0 w-24 h-2">
-                    &nbsp;
+                <div class="text-center
+                h-[114px] w-[150px] p-1
+                border border-1 border-blue-300
+                ">
+
                 </div>
 
                 <!-- Информация о товаре -->
-                <div class="flex flex-col justify-between ml-4 flex-grow">
-                    <div class="text-lg font-semibold">
-                       Наименование
+                <div class="flex flex-col flex-grow">
+
+                    <div class="flex flex-row w-full">
+                        <div class="w-[50%] text-center border border-1 border-blue-300 p-1">Фирма</div>
+                        <div class="w-[50%] text-center border border-1 border-blue-300 p-1">КодТ</div>
+                    </div>
+
+                    <div class="text-center border border-1 border-blue-300 p-1">
+                        Наименование Добавка
+                    </div>
+
+                    <div class="text-center border border-1 border-blue-300 p-1">
+                        СайтТаб
                     </div>
                 </div>
 
-                <!-- Блок для каждой цены с фиксированной шириной -->
-                <div class="flex ml-4 space-x-2">
-                    <div class="text-lg font-semibold text-right pr-2" style="width: 100px;">цена1</div>
-                    <div class="text-lg font-semibold text-right pr-2" style="width: 100px;">цена2</div>
-                    <div class="text-lg font-semibold text-right pr-2" style="width: 100px;">цена3</div>
-                </div>
-
                 <!-- Блок для кнопок -->
-                <div class="xflex xitems-center collapse md:visible md:w-[150px]">
-                    &nbsp;
+                <div class="
+                w-[200px] h-[114px] text-center
+                border border-1 border-blue-300
+                p-1">
+                    &nbsp;Кол-во
                 </div>
 
+                <!-- Блок для каждой цены с фиксированной шириной -->
+                <div class="flex flex-col w-[150px] text-right">
+                    <div class="w-[150px] border border-1 border-blue-300 p-1 pr-2">Цена 1</div>
+                    <div class="w-[150px] border border-1 border-blue-300 p-1 pr-2">Цена 2</div>
+                    <div class="w-[150px] border border-1 border-blue-300 p-1 pr-2">Цена 3</div>
+                </div>
 
             </div>
 
+            <style>
+                .shop-tr-item:nth-child(even) {
+                    background-color: rgb(240, 240, 240);
+                }
+            </style>
 
             @foreach ($data1 as $index=>$data12)
-                {{--                {{ print_r($data1) }}--}}
-                {{--{{ $data12->name }}--}}
-                {{--<br/>--}}
-                {{--            @foreach ($data as $data1)--}}
-                {{--                                {{ dd($data1) }}--}}
                 <livewire:svo.shop-tr :item=$data12
                                       :key="$data12->id"
                                       :nn="$index"
                 />
             @endforeach
-{{--            </tbody>--}}
-{{--        </table>--}}
 
             <div class="my-6">
                 {{ $data1->links($paginationView) }}

@@ -90,7 +90,7 @@ class ShopScanDatafileController extends Controller
 
                     // Применение транслитерации к каждому элементу заголовков
                     foreach (self::$header as &$headerElement) {
-                        if ($type == 'fin') {
+                        if ($type == 'fin' || $type == 'shop') {
                             $headerElement = Str::snake(StringController::transliterate($headerElement));
                         } else {
                             $headerElement = StringController::transliterate($headerElement);
@@ -106,14 +106,14 @@ class ShopScanDatafileController extends Controller
                 try {
                     // Создаем объект TDO для обработки данных
                     if ($type == 'shop') {
-
-                        $columns = explode(';', $line);
-                        $tdo = new ShopCsvDataTdo($columns);
+                        $columns = self::prepareDataShop($line);
+//                        dd($columns);
+                        $tdo = new ShopCsvDataTdo($columns['data']);
                         $shopItem = ShopItem::create($tdo->toArray());
 
                         // Если есть фотографии, добавляем их
-                        if (!empty($tdo->photo)) {
-                            $photos = explode('+', $tdo->photo);
+                        if (!empty($tdo->foto)) {
+                            $photos = explode('+', $tdo->foto);
                             foreach ($photos as $photoUrl) {
                                 if (!empty($photoUrl)) {
                                     ShopPhoto::create([
@@ -123,16 +123,13 @@ class ShopScanDatafileController extends Controller
                                 }
                             }
                         }
-
                     } elseif ($type == 'fin') {
-
                         $data = self::prepareDataFinOtchet($line);
                         $tdo = new FinReportTDO($data['data']);
                         $item = FinReport::create($tdo->toArray());
 //                        dd($data);
 
                     } elseif ($type == 'trebs') {
-
                         $data = self::prepareDataTrebs($line);
                         $tdo = new \App\TDO\TrebsCsvDataTdo($data['data']);
 
@@ -183,6 +180,30 @@ class ShopScanDatafileController extends Controller
             $return['data'][self::$header[$k]] = $v;
         }
 
+        return $return;
+    }
+
+    /**
+     * подготовка данных для добавления в дто shop
+     * @param String $line
+     * @return Array
+     * header\in\data
+     */
+    static public function prepareDataShop(string $line): array
+    {
+        $return = ['data' => []];
+        $return['in'] =
+        $columns = explode(';', $line);
+        foreach ($columns as $k => $v) {
+            if(
+                self::$header[$k] == 'tsena1' ||
+                self::$header[$k] == 'tsena2' ||
+                self::$header[$k] == 'tsena3' ){
+                $return['data'][self::$header[$k]] = round( (float) trim($v) , 2 );
+            }else {
+                $return['data'][self::$header[$k]] = trim($v);
+            }
+        }
         return $return;
     }
 
