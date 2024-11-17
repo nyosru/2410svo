@@ -23,9 +23,17 @@ class Shop extends Component
     public $search = '';
     public $search_not_empty = true;
     public $data_all;
+    public $firms;
 
     public function mount()
     {
+
+        $this->firms =
+        $firms = ShopItem::select('firma')  // Указываем нужное поле
+            ->distinct()      // Только уникальные значения
+            ->orderBy('firma') // Можно отсортировать
+            ->get();
+
 //        $this->importCsvData();
 
 ////        $filePath = 'IMPot.csv';

@@ -1,20 +1,14 @@
 <div>
     @foreach( $data as $row )
 
-{{--        {{ print_r($row,true) }}--}}
+        {{--        {{ print_r($row,true) }}--}}
 
         <div class="flex flex-row hover:bg-gray-100  ml-[{{ (( $row['uroven'] ?? 1 )-1)*20 }}px]
          @if($row['uroven'] > 1) border-l border-l-[10px] border-orange-200 @endif
         ">
             <div class="flex flex-col flex-grow">
                 <div class="p-1 text-center border border-gray-300">
-                    {{--                    {{ print_r($row,true) }}--}}
-                    {{--                    <br/>--}}
-                    {{--                    <br/>--}}
                     {{ $row['firma'] }}
-                    {{--                    {{ $row['mol_name'] }}--}}
-                    {{--                    {{ $row['mol_phone'] }}--}}
-
                     @if( !empty( $row['mol_link'] ) )
                         <a class="text-blue-700 underline" href="{{ $row['mol_link'] }}" target="_blank">
                             @endif
@@ -88,7 +82,8 @@
                 <div class="flex-1 p-1 text-center border border-gray-300 w-full">
                     {{--                    Аналог--}}
                     @if( !empty($row['analog'] ) )
-                        <a href="@if( strpos( $row['analog'] ,'@'))mailto:@endif{{$row['analog'] }}" class="text-blue-700 underline">Аналог</a>
+                        <a href="@if( strpos( $row['analog'] ,'@'))mailto:@endif{{$row['analog'] }}"
+                           class="text-blue-700 underline">Аналог</a>
                     @endif
                 </div>
             </div>
@@ -130,7 +125,7 @@
                                      onclick="copyToClipboard('poluchatel{{ $row['id'] }}')"
                                      class="float-right inset-y-0 right-[5px] flex items-center mt-[4px] h-[25px] opacity-20 hover:opacity-50 cursor-pointer"
                                 />
-                                <span id="poluchatel{{ $row['id'] }}" >  {{ $row['poluchatel'] }}</span></td>
+                                <span id="poluchatel{{ $row['id'] }}">  {{ $row['poluchatel'] }}</span></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 p-2">Банк:</td>
@@ -141,7 +136,7 @@
                                      onclick="copyToClipboard('bank{{ $row['id'] }}')"
                                      class="float-right inset-y-0 right-[5px] flex items-center mt-[4px] h-[25px] opacity-20 hover:opacity-50 cursor-pointer"
                                 />
-                                <span id="bank{{ $row['id'] }}" >  {{ $row['bank'] }}</span></td>
+                                <span id="bank{{ $row['id'] }}">  {{ $row['bank'] }}</span></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 p-2">Адрес Банка:</td>
@@ -152,7 +147,7 @@
                                      onclick="copyToClipboard('adres_banka{{ $row['id'] }}')"
                                      class="float-right inset-y-0 right-[5px] flex items-center mt-[4px] h-[25px] opacity-20 hover:opacity-50 cursor-pointer"
                                 />
-                                <span id="adres_banka{{ $row['id'] }}" > {{ $row['adres_banka'] }}</span></td>
+                                <span id="adres_banka{{ $row['id'] }}"> {{ $row['adres_banka'] }}</span></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 p-2">БИК:</td>
@@ -163,7 +158,7 @@
                                      onclick="copyToClipboard('b_i_k{{ $row['id'] }}')"
                                      class="float-right inset-y-0 right-[5px] flex items-center mt-[4px] h-[25px] opacity-20 hover:opacity-50 cursor-pointer"
                                 />
-                                <span id="b_i_k{{ $row['id'] }}" > {{ $row['b_i_k'] }}</span></td>
+                                <span id="b_i_k{{ $row['id'] }}"> {{ $row['b_i_k'] }}</span></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 p-2">ИНН:</td>
@@ -174,7 +169,7 @@
                                      onclick="copyToClipboard('inn{{ $row['id'] }}')"
                                      class="float-right inset-y-0 right-[5px] flex items-center mt-[4px] h-[25px] opacity-20 hover:opacity-50 cursor-pointer"
                                 />
-                                <span id="inn{{ $row['id'] }}" > {{ $row['i_n_n'] }}</span></td>
+                                <span id="inn{{ $row['id'] }}"> {{ $row['i_n_n'] }}</span></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 p-2">КПП:</td>
@@ -185,7 +180,7 @@
                                      onclick="copyToClipboard('kpp{{ $row['id'] }}')"
                                      class="float-right inset-y-0 right-[5px] flex items-center mt-[4px] h-[25px] opacity-20 hover:opacity-50 cursor-pointer"
                                 />
-                                <span id="kpp{{ $row['id'] }}" >  {{ $row['k_p_p'] }}</span></td>
+                                <span id="kpp{{ $row['id'] }}">  {{ $row['k_p_p'] }}</span></td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 p-2">Расчётный Счёт:</td>
@@ -196,24 +191,37 @@
                                      onclick="copyToClipboard('rs{{ $row['id'] }}')"
                                      class="float-right inset-y-0 right-[5px] flex items-center mt-[4px] h-[25px] opacity-20 hover:opacity-50 cursor-pointer"
                                 />
-                                <span id="rs{{ $row['id'] }}" >{{ $row['rschet'] }}</span>
-</td>
+                                <span id="rs{{ $row['id'] }}">{{ $row['rschet'] }}</span>
+                            </td>
                         </tr>
                         <tr>
                             <td class="border border-gray-300 p-2">Кор Счёт:</td>
                             <td class="border border-gray-300 p-2">
-{{--                                <button--}}
-{{--                                    class="ml-4 bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600 copy-btn"--}}
-{{--                                    data-copy="{{ $row['b_i_k'] }}">--}}
-{{--                                    <img src="/icon/copy.svg" class="w-[16px]" />--}}
-{{--                                </button>--}}
+                                {{--                                <button--}}
+                                {{--                                    class="ml-4 bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600 copy-btn"--}}
+                                {{--                                    data-copy="{{ $row['b_i_k'] }}">--}}
+                                {{--                                    <img src="/icon/copy.svg" class="w-[16px]" />--}}
+                                {{--                                </button>--}}
 
                                 <img src="/icon/copy.svg"
                                      title="копировать в буфер обмена"
                                      onclick="copyToClipboard('ks{{ $row['id'] }}')"
                                      class="float-right inset-y-0 right-[5px] flex items-center mt-[4px] h-[25px] opacity-20 hover:opacity-50 cursor-pointer"
                                 />
-                                <span id="ks{{ $row['id'] }}" >{{ $row['kor_schet'] }}</span>
+                                <span id="ks{{ $row['id'] }}">{{ $row['kor_schet'] }}</span>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-2">Назначение платежа:</td>
+                            <td class="border border-gray-300 p-2">
+
+                                <img src="/icon/copy.svg"
+                                     title="копировать в буфер обмена"
+                                     onclick="copyToClipboard('dobavka_bank{{ $row['id'] }}')"
+                                     class="float-right inset-y-0 right-[5px] flex items-center mt-[4px] h-[25px] opacity-20 hover:opacity-50 cursor-pointer"
+                                />
+                                <span id="dobavka_bank{{ $row['id'] }}">{{ $row['dobavka_bank'] }}</span>
 
                             </td>
                         </tr>

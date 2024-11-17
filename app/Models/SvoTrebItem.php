@@ -51,6 +51,8 @@ class SvoTrebItem extends Model
         'kor_schet' ,
         'adres_banka' ,
 
+        'dobavka_bank'
+
     ];
 
 

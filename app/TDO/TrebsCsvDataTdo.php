@@ -34,6 +34,7 @@ class TrebsCsvDataTdo
     public ?int $b_i_k = null;
     public ?string $kor_schet = null;
     public ?string $adres_banka = null;
+    public ?string $dobavka_bank = null;
 
     public function __construct(array $data)
     {
@@ -85,6 +86,10 @@ class TrebsCsvDataTdo
         }
         if (!empty($data['adres_banka'])) {
             $this->adres_banka = $data['adres_banka'];
+        }
+
+        if (!empty($data['dobavka_bank'])) {
+            $this->dobavka_bank = $data['dobavka_bank'];
         }
 
         // Замена запятой на точку и округление чисел до 2 знаков после запятой
@@ -143,6 +148,7 @@ class TrebsCsvDataTdo
             'b_i_k' => $this->b_i_k,
             'kor_schet' => $this->kor_schet,
             'adres_banka' => $this->adres_banka,
+            'dobavka_bank' => $this->dobavka_bank,
 
         ];
     }
