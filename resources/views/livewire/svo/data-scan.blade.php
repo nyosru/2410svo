@@ -42,21 +42,24 @@
                 <label class="block bg-green-200 p-1"><b>Загрузить картинки</b></label>
                 <br/>
                 <input type="file" wire:model="uploadedImages" multiple class="mt-2"/>
-                @error('uploadedImages') <div class="text-red-500">{{ $message }}</div> @enderror
-                @error('uploadedImages.*') <div class="text-red-500">{{ $message }}</div> @enderror
+                @error('uploadedImages')
+                <div class="text-red-500">{{ $message }}</div> @enderror
+                @error('uploadedImages.*')
+                <div class="text-red-500">{{ $message }}</div> @enderror
                 <br/>
                 <button type="submit" class="bg-blue-300 p-2 rounded mt-4">Загрузить картинки</button>
             </form>
         </div>
         <div class="w-1/4 pl-4">
             <div class="block bg-yellow-200 p-1"><b>картинки<br/>
-                ещё&nbsp;не&nbsp;загружены:</b>
+                    ещё&nbsp;не&nbsp;загружены:</b>
             </div>
-
+            @if( !empty($shopPhotosWithoutPhotos) )
                 @foreach( $shopPhotosWithoutPhotos as $image )
                     {{ $image }}
                     <br/>
-            @endforeach
+                @endforeach
+            @endif
 
         </div>
     </div>
