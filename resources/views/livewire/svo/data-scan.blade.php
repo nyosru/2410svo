@@ -59,6 +59,8 @@
                     {{ $image }}
                     <br/>
                 @endforeach
+            @else
+                Отлично, все фотки загружены
             @endif
 
         </div>

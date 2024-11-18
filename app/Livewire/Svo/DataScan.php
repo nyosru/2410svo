@@ -22,7 +22,7 @@ class DataScan extends Component
 
     public function mount()
     {
-
+        $this->checkNoFiles();
     }
 
 
