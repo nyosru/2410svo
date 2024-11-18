@@ -62,4 +62,17 @@ class SvoTrebItem extends Model
         return $this->hasMany(self::class, 'up_id', 'id');
     }
 
+    /**
+     * Связь "многие к одному" с Photo.
+     */
+    public function photoLoaded()
+    {
+        return $this->belongsTo(Photo::class, 'photo', 'image');
+    }
+
+    public function qrLoaded()
+    {
+        return $this->belongsTo(Photo::class, 'curica', 'image');
+    }
+
 }

@@ -1,4 +1,10 @@
 <div>
+
+    {{--    <pre class="text-[10px]" style="max-height: 350px; overflow: auto;">--}}
+    {{--        {{ print_r($item) }}--}}
+    {{--        {{ print_r($item->photos->photoLoaded->image_loaded) }}--}}
+    {{--</pre>--}}
+
     <div
         class="shop-tr-item
                 flex flex-row
@@ -8,14 +14,18 @@
 
         <!-- Фото товара -->
         <div class="text-center
-                h-[114px] w-[150px] p-1
+                xh-[114px] w-[150px] p-1
                 border border-1 border-gray-300
+                text-[10px]
                 ">
-            @foreach ($item->photos as $photo)
-{{--                {{ $photo->photo_url }}--}}
-                            <img src="{{ $photo->photo_url }}" alt="Фото {{ $item->name }}"
-                                 class="w-[10px] h-[10px] xw-full xh-full object-cover">
-            @endforeach
+
+                @if($item->photos->isNotEmpty())
+                    @foreach($item->photos as $photo)
+                        @if(!empty($photo->photoLoaded->image_loaded) )
+                            <img src="{{ $photo->photoLoaded->image_loaded  }}" class="mx-auto w-[120px]" />
+                        @endif
+                    @endforeach
+                @endif
 
         </div>
 
@@ -33,16 +43,17 @@
 
             <div class="text-center border border-1 border-gray-300 p-1">
                 @if( !empty($item->sayt_tab) )
-                <a href="{{ $item->sayt_tab }}" class="text-blue-400 underline" target="_blank">{{$item->sayt_tab}}</a>
-                    @endif
+                    <a href="{{ $item->sayt_tab }}" class="text-blue-400 underline"
+                       target="_blank">{{$item->sayt_tab}}</a>
+                @endif
             </div>
         </div>
 
         <!-- Блок для кнопок -->
         <div class="
-                w-[200px] h-[114px] text-center
-                border border-1 border-gray-300
-                p-1">
+w-[200px] h-[114px] text-center
+border border-1 border-gray-300
+p-1">
 
             <div class="block mb-2 mt-2">
                 <!-- Кнопка уменьшения количества -->
@@ -77,7 +88,7 @@
 
 
     </div>
-{{--    {{ print_r($item->getAttributes(),true) }}--}}
+    {{--    {{ print_r($item->getAttributes(),true) }}--}}
 </div>
 
 
@@ -165,7 +176,7 @@
 
                 <td class="px-4 py-2
 {{--    border border-t-2 border-t-gray-500--}}
-    ">{{ $item->name }}
+">{{ $item->name }}
                     <br/>
                     <small>
                         {{ $item->additive }}

@@ -67,6 +67,9 @@
                         -
                     @endif
 
+                    {{$row->curica ?? 'x'}}
+                    {{$row->qrLoaded->image_loaded ?? 'x'}}
+
                 </div>
                 <div class="flex-1 p-1 text-center border border-gray-300 w-full">
 
@@ -90,6 +93,15 @@
             </div>
             <div class="flex flex-col w-[110px] p-1 text-center border border-gray-300">
                 {{$row['uroven'] ?? '-'}}
+
+{{--                @if($row->photoLoaded()->isNotEmpty())--}}
+{{--                    @foreach($row->photoLoaded() as $photo)--}}
+                        @if(!empty($row->photoLoaded->image_loaded) )
+                            <img src="{{ $row->photoLoaded->image_loaded  }}" class="mx-auto w-[120px]" />
+                        @endif
+{{--                    @endforeach--}}
+{{--                @endif--}}
+
             </div>
 
         </div>
@@ -98,11 +110,12 @@
 
 
         @if( isset($show_analogi[$row['id']]) && $show_analogi[$row['id']] )
-
             <div class="flex flex-row-reverse">
                 <div class="bg-orange-100 p-6 rounded-lg shadow-lg w-[600px] table-animate ">
+
                     Аналог:<br/>
                     {!! $row['analog'] !!}
+
                 </div>
             </div>
         @endif

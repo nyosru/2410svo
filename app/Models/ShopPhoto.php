@@ -15,4 +15,14 @@ class ShopPhoto extends Model
     {
         return $this->belongsTo(ShopItem::class);
     }
+
+
+    /**
+     * Связь "многие к одному" с Photo.
+     */
+    public function photoLoaded()
+    {
+        return $this->belongsTo(Photo::class, 'photo_url', 'image');
+    }
+
 }
