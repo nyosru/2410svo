@@ -63,7 +63,11 @@
             <div class="flex flex-col w-[110px] ">
                 <div class="flex-1 p-1 text-center border border-gray-300 w-full">
 
-                    @if( !empty( $row['curica'] ) )
+                    @if( !empty( $row['curica'] ) && empty($row['qr_loaded']['image_loaded']) )
+                        файл qr кода {{ $row['curica'] }} не загружен
+                    @endif
+
+                    @if( !empty( $row['curica'] ) && !empty($row['qr_loaded']['image_loaded']) )
 
                         <A href="{{$row['curica']}}"
                            wire:click.prevent="switchQr({{$row['id']}})"
