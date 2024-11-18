@@ -1,7 +1,10 @@
 <div>
     @foreach( $data as $row )
 
-        {{--        {{ print_r($row,true) }}--}}
+{{--        <pre style="max-height: 150px; overflow: auto;">--}}
+{{--                {{ print_r($row,true) }}--}}
+{{--</pre>--}}
+
 
         <div class="flex flex-row hover:bg-gray-100  ml-[{{ (( $row['uroven'] ?? 1 )-1)*20 }}px]
          @if($row['uroven'] > 1) border-l border-l-[10px] border-orange-200 @endif
@@ -61,14 +64,20 @@
                 <div class="flex-1 p-1 text-center border border-gray-300 w-full">
 
                     @if( !empty( $row['curica'] ) )
+
                         <A href="{{$row['curica']}}"
-                           class="text-blue-700 underline" target="_blank">Курица</A>
+                           wire:click.prevent="switchQr({{$row['id']}})"
+                           class="text-blue-700 underline" target="_blank">QR&nbsp;код для&nbsp;перевода</A>
+
+                        @if( isset($show_qr[$row['id']]) && $show_qr[$row['id']] )
+                            @if(!empty($row['qr_loaded']['image_loaded']) )
+                                <img src="{{ $row['qr_loaded']['image_loaded'] }}" class="mx-auto w-[120px]"/>
+                            @endif
+                        @endif
+
                     @else
                         -
                     @endif
-
-                    {{$row->curica ?? 'x'}}
-                    {{$row->qrLoaded->image_loaded ?? 'x'}}
 
                 </div>
                 <div class="flex-1 p-1 text-center border border-gray-300 w-full">
@@ -94,13 +103,13 @@
             <div class="flex flex-col w-[110px] p-1 text-center border border-gray-300">
                 {{$row['uroven'] ?? '-'}}
 
-{{--                @if($row->photoLoaded()->isNotEmpty())--}}
-{{--                    @foreach($row->photoLoaded() as $photo)--}}
-                        @if(!empty($row->photoLoaded->image_loaded) )
-                            <img src="{{ $row->photoLoaded->image_loaded  }}" class="mx-auto w-[120px]" />
-                        @endif
-{{--                    @endforeach--}}
-{{--                @endif--}}
+                {{--                @if($row->photoLoaded()->isNotEmpty())--}}
+                {{--                    @foreach($row->photoLoaded() as $photo)--}}
+                @if(!empty($row->photoLoaded->image_loaded) )
+                    <img src="{{ $row->photoLoaded->image_loaded  }}" class="mx-auto w-[120px]"/>
+                @endif
+                {{--                    @endforeach--}}
+                {{--                @endif--}}
 
             </div>
 

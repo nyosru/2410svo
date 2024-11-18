@@ -66,8 +66,11 @@
             <div class="flex-1 p-1 text-center border border-gray-300">&nbsp;</div>
         </div>
         <div class="flex flex-col w-[110px] ">
-            <div class="flex-1 p-1 text-center border border-gray-300">Курица</div>
-            <div class="flex-1 p-1 text-center border border-gray-300">Для ЮЛ</div>
+            <div class="flex-1 p-1 text-center border border-gray-300">QR&nbsp;код
+{{--                <br/>--}}
+{{--                <span class="text-[10px]">для&nbsp;перевода</span>--}}
+            </div>
+            <div class="flex-1 p-1 text-center border border-gray-300">Для ЮрЛиц</div>
             <div class="flex-1 p-1 text-center border border-gray-300">Аналог</div>
         </div>
         <div class="flex flex-col w-[110px] text-center p-1">

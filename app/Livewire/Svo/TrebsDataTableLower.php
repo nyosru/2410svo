@@ -17,6 +17,7 @@ class TrebsDataTableLower extends Component
     public $show_podrobnee = false;
     public $show_for_ul = false;
     public $show_analogi = [];
+    public $show_qr = [];
 
     public $loading_details = [];
 
@@ -26,6 +27,7 @@ class TrebsDataTableLower extends Component
         if (empty($this->up_id)) {
             $this->data = SvoTrebItem::query()
                 ->with('photoLoaded')
+                ->with('qrLoaded')
 //                ->whereId($this->upup['id'])
                 ->whereUroven(1)
                 ->withCount('children') // Подсчёт связанных записей
@@ -34,6 +36,7 @@ class TrebsDataTableLower extends Component
         } else {
             $this->data = SvoTrebItem::query()
                 ->with('photoLoaded')
+                ->with('qrLoaded')
                 ->whereUp_id($this->up_id)
                 ->whereUroven($this->up_uroven + 1)
                 ->withCount('children') // Подсчёт связанных записей
@@ -42,7 +45,17 @@ class TrebsDataTableLower extends Component
         }
     }
 
-    public function switchAnalogi($id){
+    public function switchQr($id)
+    {
+        if (!isset($this->show_qr[$id])) {
+            $this->show_qr[$id] = true;
+        } else {
+            $this->show_qr[$id] = !$this->show_qr[$id];
+        }
+    }
+
+    public function switchAnalogi($id)
+    {
         if (!isset($this->show_analogi[$id])) {
             $this->show_analogi[$id] = true;
         } else {
