@@ -57,10 +57,10 @@ class DataScan extends Component
     public function scanFile()
     {
         // Валидация для основного файла
-        $this->validate([
-            'type_file' => 'required',
-            'uploadedFile1' => 'required|file',
-        ]);
+//        $this->validate([
+//            'type_file' => 'required',
+//            'uploadedFile1' => 'required|file',
+//        ]);
 
         // Сохранение файла в зависимости от выбранного типа
         try {
@@ -75,6 +75,8 @@ class DataScan extends Component
             // Вызов сканирования и сохранение результата
             $this->scanResult = (array)ShopScanDatafileController::scan($savedFile, $this->type_file);
 //dd($this->scanResult);
+            $this->checkNoFiles();
+
             session()->flash('message', 'Файл успешно сканирован!');
 
         } catch (\Exception $e) {
