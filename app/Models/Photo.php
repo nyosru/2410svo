@@ -18,6 +18,7 @@ class Photo extends Model
     protected $fillable = [
         'image',
         'image_loaded',
+        'preview_loaded'
     ];
 
 

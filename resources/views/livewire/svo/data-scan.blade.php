@@ -3,7 +3,7 @@
     <!-- Сообщения об успехе или ошибках -->
     @if (session()->has('message'))
         <div class="mt-4 mb-4 p-4 bg-green-200 text-green-800 rounded">
-            <strong>Успех!</strong> {{ session('message') }}
+            <strong>Успех!</strong> {!! session('message') !!}
         </div>
 
     @endif

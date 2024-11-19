@@ -71,7 +71,9 @@
                         @foreach($row['trebs_photo'] as $tp)
                             @if( !empty($tp['photo_loaded']['image_loaded']) )
 
-                                <img src="{{ $tp['photo_loaded']['image_loaded'] }}"
+                                <img
+{{--                                    src="{{ $tp['photo_loaded']['image_loaded'] }}"--}}
+                                    src="{{ $tp['photo_loaded']['preview_loaded'] }}"
                                      class="w-[150px] inline cursor-pointer rounded shadow hover:opacity-75 transition"
                                      onclick="showModal('{{ $tp['photo_loaded']['image_loaded'] }}')"
                                 />

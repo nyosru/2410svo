@@ -10,6 +10,14 @@ use App\Models\TrebsPhoto;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
+
+use Imagine\Gd\Imagine;
+use Imagine\Image\Box;
+use Imagine\Image\ImageInterface;
+
+
+
+
 class DataScan extends Component
 {
     use WithFileUploads;
@@ -136,15 +144,28 @@ class DataScan extends Component
                 }
 
                 if ($save) {
+
                     $imageName = $image->store('images', 'public');
+
+                    // Генерация имени для превью
+                    $extension = pathinfo($imageName, PATHINFO_EXTENSION);
+                    $baseName = pathinfo($imageName, PATHINFO_FILENAME);
+                    $previewName = $baseName . '.prev200.' . $extension;
+                    $previewPath = 'images/' . $previewName;
+                    $previewCreated = $this->createPreview( public_path('/storage/'.$imageName), public_path('/storage/' . $previewPath ) );
+
+                    \Log::info( '$previewCreated' , [ '$previewCreated' => $previewCreated ] );
 
                     // Обновить или создать запись в photo
                     Photo::updateOrCreate(
                         ['image' => $originalFileName], // Условие поиска
-                        ['image_loaded' => '/storage/' . $imageName] // Поля для обновления
+                        [
+                            'image_loaded' => '/storage/' . $imageName, // Поля для обновления
+                        'preview_loaded' => '/storage/' . $previewPath
+                        ]
                     );
 
-                    $saved .= $originalFileName . ' ';
+                    $saved .= $originalFileName . ' <img src="'.'/storage/' . $previewPath.'" class="w-[100px]" /> ';
                 }else{
                     \Log::info('не нашли ', ['line' => __LINE__ ]);
                 }
@@ -165,4 +186,39 @@ class DataScan extends Component
     {
         return view('livewire.svo.data-scan');
     }
+
+
+
+    public function createPreview($filePath, $previewPath)
+    {
+        try {
+            $imagine = new Imagine();
+
+            // Загружаем изображение
+            $image = $imagine->open($filePath);
+
+            // Получаем размеры оригинального изображения
+            $originalSize = $image->getSize();
+
+            // Устанавливаем ширину 200px, высота рассчитывается автоматически
+            $width = 200;
+            $height = (int)($originalSize->getHeight() * ($width / $originalSize->getWidth()));
+
+            $size = new Box($width, $height);
+
+            // Меняем размер изображения с сохранением пропорций
+            $image->resize($size, ImageInterface::FILTER_LANCZOS);
+
+            // Сохраняем превью
+            $image->save($previewPath);
+
+            return true;
+        } catch (\Exception $e) {
+            \Log::error('Ошибка при создании превью: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+
+
 }
