@@ -1,9 +1,9 @@
 <div>
     @foreach( $data as $row )
 
-{{--        <pre style="max-height: 350px; overflow: auto;">--}}
-{{--                        {{ print_r($row,true) }}--}}
-{{--        </pre>--}}
+        {{--        <pre style="max-height: 350px; overflow: auto;">--}}
+        {{--                        {{ print_r($row,true) }}--}}
+        {{--        </pre>--}}
 
         <div class="flex flex-row hover:bg-gray-100  ml-[{{ (( $row['uroven'] ?? 1 )-1)*20 }}px]
          @if($row['uroven'] > 1) border-l border-l-[10px] border-orange-200 @endif
@@ -42,71 +42,71 @@
 
                     @if( !empty($row['trebs_photo']) )
 
-
-{{--                        <div class="container mx-auto p-4">--}}
-                            <!-- Галерея превью -->
-{{--                            <div class="grid grid-cols-3 gap-4">--}}
-{{--                                <img--}}
-{{--                                    src="preview1.jpg"--}}
-{{--                                    alt="Preview 1"--}}
-{{--                                    class="cursor-pointer rounded shadow hover:opacity-75 transition"--}}
-{{--                                    onclick="showModal('fullsize1.jpg')"--}}
-{{--                                />--}}
-{{--                                <img--}}
-{{--                                    src="preview2.jpg"--}}
-{{--                                    alt="Preview 2"--}}
-{{--                                    class="cursor-pointer rounded shadow hover:opacity-75 transition"--}}
-{{--                                    onclick="showModal('fullsize2.jpg')"--}}
-{{--                                />--}}
-{{--                                <img--}}
-{{--                                    src="preview3.jpg"--}}
-{{--                                    alt="Preview 3"--}}
-{{--                                    class="cursor-pointer rounded shadow hover:opacity-75 transition"--}}
-{{--                                    onclick="showModal('fullsize3.jpg')"--}}
-{{--                                />--}}
+                        {{--                        <div class="container mx-auto p-4">--}}
+                        <!-- Галерея превью -->
+                        {{--                            <div class="grid grid-cols-3 gap-4">--}}
+                        {{--                                <img--}}
+                        {{--                                    src="preview1.jpg"--}}
+                        {{--                                    alt="Preview 1"--}}
+                        {{--                                    class="cursor-pointer rounded shadow hover:opacity-75 transition"--}}
+                        {{--                                    onclick="showModal('fullsize1.jpg')"--}}
+                        {{--                                />--}}
+                        {{--                                <img--}}
+                        {{--                                    src="preview2.jpg"--}}
+                        {{--                                    alt="Preview 2"--}}
+                        {{--                                    class="cursor-pointer rounded shadow hover:opacity-75 transition"--}}
+                        {{--                                    onclick="showModal('fullsize2.jpg')"--}}
+                        {{--                                />--}}
+                        {{--                                <img--}}
+                        {{--                                    src="preview3.jpg"--}}
+                        {{--                                    alt="Preview 3"--}}
+                        {{--                                    class="cursor-pointer rounded shadow hover:opacity-75 transition"--}}
+                        {{--                                    onclick="showModal('fullsize3.jpg')"--}}
+                        {{--                                />--}}
 
 
 
 
                         @foreach($row['trebs_photo'] as $tp)
-                            @if( !empty($tp['photo_loaded']['image_loaded']) )
+                            {{--                            @if( !empty($tp['photo_loaded']['image_loaded']) )--}}
+                            @if( !empty($tp['photo_loaded']['image_loaded']) && !empty($tp['photo_loaded']['preview_loaded']) )
 
                                 <img
-{{--                                    src="{{ $tp['photo_loaded']['image_loaded'] }}"--}}
+                                    {{--                                    src="{{ $tp['photo_loaded']['image_loaded'] }}"--}}
                                     src="{{ $tp['photo_loaded']['preview_loaded'] }}"
-                                     class="w-[150px] inline cursor-pointer rounded shadow hover:opacity-75 transition"
-                                     onclick="showModal('{{ $tp['photo_loaded']['image_loaded'] }}')"
+                                    class="w-[150px] inline cursor-pointer rounded shadow hover:opacity-75 transition"
+                                    onclick="showModal('{{ $tp['photo_loaded']['image_loaded'] }}')"
                                 />
-{{--                                        <img--}}
-{{--                                            src="preview1.jpg"--}}
-{{--                                            alt="Preview 1"--}}
-{{--                                            class="cursor-pointer rounded shadow hover:opacity-75 transition"--}}
-{{--                                            onclick="showModal('fullsize1.jpg')"--}}
-{{--                                        />--}}
+                                {{--                                        <img--}}
+                                {{--                                            src="preview1.jpg"--}}
+                                {{--                                            alt="Preview 1"--}}
+                                {{--                                            class="cursor-pointer rounded shadow hover:opacity-75 transition"--}}
+                                {{--                                            onclick="showModal('fullsize1.jpg')"--}}
+                                {{--                                        />--}}
 
                             @endif
                         @endforeach
 
 
-{{--                            </div>--}}
+                        {{--                            </div>--}}
 
-                            <!-- Модальное окно -->
-                            <div
-                                id="imageModal"
-                                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
-                                onclick="hideModal()"
-                            >
-                                <div class="relative bg-white p-4 rounded shadow-lg max-w-4xl">
-{{--                                    <button--}}
-{{--                                        class="absolute top-2 right-2 text-gray-600 hover:text-gray-800"--}}
-{{--                                        onclick="hideModal(event)"--}}
-{{--                                    >--}}
-{{--                                        ✕--}}
-{{--                                    </button>--}}
-                                    <img id="modalImage" src="" alt="Full-size" class="rounded max-w-full max-h-screen" />
-                                </div>
+                        <!-- Модальное окно -->
+                        <div
+                            id="imageModal"
+                            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
+                            onclick="hideModal()"
+                        >
+                            <div class="relative bg-white p-4 rounded shadow-lg max-w-4xl">
+                                {{--                                    <button--}}
+                                {{--                                        class="absolute top-2 right-2 text-gray-600 hover:text-gray-800"--}}
+                                {{--                                        onclick="hideModal(event)"--}}
+                                {{--                                    >--}}
+                                {{--                                        ✕--}}
+                                {{--                                    </button>--}}
+                                <img id="modalImage" src="" alt="Full-size" class="rounded max-w-full max-h-screen"/>
                             </div>
-{{--                        </div>--}}
+                        </div>
+                        {{--                        </div>--}}
 
                     @endif
 
