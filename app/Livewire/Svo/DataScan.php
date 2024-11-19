@@ -39,7 +39,7 @@ class DataScan extends Component
 
 
     public function checkFiles(){
-        $this->listFiles = Photo::whereNotNull('image_loaded')->whereNotNull('image_loaded')->pluck('image');
+        $this->listFiles = Photo::whereNotNull('image_loaded')->whereNotNull('preview_loaded')->pluck('image','image_loaded');
     }
 
     public function checkNoFiles()

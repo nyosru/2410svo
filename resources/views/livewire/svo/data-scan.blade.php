@@ -69,10 +69,10 @@
             <div class="block bg-green-200 p-1"><b>картинки<br/>
                     которые загружены:</b>
             </div>
-            {{--            {{ print_r($listFiles) }}--}}
+            {{--                        {{ print_r($listFiles) }}--}}
             @if( !empty( $listFiles ) )
-                @foreach( $listFiles as $f )
-                    {{ $f }}<br/>
+                @foreach( $listFiles as $k => $f )
+                    <a href="{{ $k }}" target="_blank" class="text-blue-400 underline">{{ $f }}</a><br/>
                 @endforeach
             @else
                 <br/>
