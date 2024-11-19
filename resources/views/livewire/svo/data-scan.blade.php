@@ -63,6 +63,23 @@
                 Отлично, все фотки загружены
             @endif
 
+            <br/>
+            <br/>
+
+            <div class="block bg-green-200 p-1"><b>картинки<br/>
+                    которые загружены:</b>
+            </div>
+            {{--            {{ print_r($listFiles) }}--}}
+            @if( !empty( $listFiles ) )
+                @foreach( $listFiles as $f )
+                    {{ $f }}<br/>
+                @endforeach
+            @else
+                <br/>
+                <button wire:click="checkFiles" class="bg-green-300 p-1 rounded">Показать</button>
+                <br/>
+
+            @endif
         </div>
     </div>
 

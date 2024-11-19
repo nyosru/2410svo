@@ -27,6 +27,7 @@ class DataScan extends Component
     public $uploadedImages = [];  // Для хранения нескольких изображений
     public $scanResult;
     public $shopPhotosWithoutPhotos;
+    public $listFiles = [];
 
 
     public function mount()
@@ -37,8 +38,13 @@ class DataScan extends Component
 
 
 
+    public function checkFiles(){
+        $this->listFiles = Photo::whereNotNull('image_loaded')->whereNotNull('image_loaded')->pluck('image');
+    }
+
     public function checkNoFiles()
     {
+        $this->listFiles = [];
 //        return;
         // Получаем уникальные названия файлов из ShopPhoto
         $shopPhotos = ShopPhoto::doesntHave('photoLoaded')
