@@ -41,7 +41,7 @@ class Shop extends Component
         }, $keywords));
 
         // Базовый запрос
-        $query = ShopItem::with('photos.photoLoaded','qrLoaded')->whereNotNull('foto');
+        $query = ShopItem::with('photos.photoLoaded')->whereNotNull('foto');
 
         // Фильтр по поисковому запросу
         if (!empty($this->search)) {

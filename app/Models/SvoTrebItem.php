@@ -65,9 +65,9 @@ class SvoTrebItem extends Model
     /**
      * Связь "многие к одному" с Photo.
      */
-    public function photoLoaded()
+    public function trebsPhoto()
     {
-        return $this->belongsTo(Photo::class, 'photo', 'image');
+        return $this->hasMany(TrebsPhoto::class,  'svo_trebs_item_id', 'id' );
     }
 
     public function qrLoaded()

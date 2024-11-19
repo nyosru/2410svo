@@ -30,11 +30,11 @@ class Photo extends Model
     }
 
     /**
-     * Связь "один ко многим" с SvoTrebItem
+     * Связь "один ко многим" с моделью TrebsPhoto.
      */
     public function trebsPhotos()
     {
-        return $this->hasMany(SvoTrebItem::class, 'photo', 'image');
+        return $this->hasMany(TrebsPhoto::class, 'photo_url', 'image');
     }
 
 }

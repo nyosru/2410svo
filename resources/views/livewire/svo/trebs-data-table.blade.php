@@ -37,6 +37,34 @@
                 console.error('Ошибка при копировании: ', err);
             });
         }
+
+        function toggleBlock(blockId) {
+            const block = document.getElementById(blockId);
+            if (block) {
+                block.style.display = (block.style.display === 'none' || block.style.display === '')
+                    ? 'block'
+                    : 'none';
+            } else {
+                console.warn(`Элемент с id="${blockId}" не найден.`);
+            }
+        }
+
+        function showModal(imageUrl) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+
+            modalImage.src = imageUrl; // Устанавливаем изображение
+            modal.classList.remove('hidden'); // Показываем модальное окно
+        }
+
+        function hideModal(event) {
+            const modal = document.getElementById('imageModal');
+
+            if (event?.target?.id === 'imageModal' || !event) {
+                modal.classList.add('hidden'); // Скрываем модальное окно
+            }
+        }
+
     </script>
 
 

@@ -26,8 +26,15 @@ class TrebsDataTableLower extends Component
 //        if ($this->upup['children_count'] > 0) {
         if (empty($this->up_id)) {
             $this->data = SvoTrebItem::query()
-                ->with('photoLoaded')
-                ->with('qrLoaded')
+                ->with([
+
+//                    'trebsPhoto.photoLoaded' => function ($query) {
+//                        $query->select('image_loaded'); // Выбираем только нужные столбцы
+//                    }
+'trebsPhoto.photoLoaded'
+                    ,
+                    'qrLoaded'
+                ])
 //                ->whereId($this->upup['id'])
                 ->whereUroven(1)
                 ->withCount('children') // Подсчёт связанных записей
@@ -35,8 +42,16 @@ class TrebsDataTableLower extends Component
                 ->toArray();
         } else {
             $this->data = SvoTrebItem::query()
-                ->with('photoLoaded')
-                ->with('qrLoaded')
+                ->with([
+//                    'trebsPhoto.photoLoaded:image_loaded'
+//                    'trebsPhoto.photoLoaded' => function ($query) {
+//                        $query->select('image_loaded'); // Выбираем только нужные столбцы
+//                    }
+                    'trebsPhoto.photoLoaded'
+                    ,
+                    'qrLoaded'
+                ])
+//                ->with(['trebsPhoto','qrLoaded'])
                 ->whereUp_id($this->up_id)
                 ->whereUroven($this->up_uroven + 1)
                 ->withCount('children') // Подсчёт связанных записей

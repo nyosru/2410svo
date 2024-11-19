@@ -6,6 +6,7 @@ use App\Http\Controllers\Svo\ShopScanDatafileController;
 use App\Models\Photo;
 use App\Models\ShopPhoto;
 use App\Models\SvoTrebItem;
+use App\Models\TrebsPhoto;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -30,6 +31,7 @@ class DataScan extends Component
 
     public function checkNoFiles()
     {
+//        return;
         // Получаем уникальные названия файлов из ShopPhoto
         $shopPhotos = ShopPhoto::doesntHave('photoLoaded')
             ->select('photo_url')
@@ -37,10 +39,10 @@ class DataScan extends Component
             ->pluck('photo_url');
 
         // Получаем уникальные названия файлов из SvoTrebItem
-        $svoTrebPhotos = SvoTrebItem::doesntHave('photoLoaded')
-            ->select('photo')
+        $svoTrebPhotos = TrebsPhoto::doesntHave('photoLoaded')
+            ->select('photo_url')
             ->distinct()
-            ->pluck('photo');
+            ->pluck('photo_url');
 
         // Объединяем результаты и удаляем повторы
         $this->shopPhotosWithoutPhotos = $shopPhotos->merge($svoTrebPhotos)
@@ -72,24 +74,29 @@ class DataScan extends Component
 
             // Вызов сканирования и сохранение результата
             $this->scanResult = (array)ShopScanDatafileController::scan($savedFile, $this->type_file);
-
+//dd($this->scanResult);
             session()->flash('message', 'Файл успешно сканирован!');
+
         } catch (\Exception $e) {
             session()->flash('error', 'Ошибка при сканировании файла: ' . $e->getMessage());
         }
+        return ;
     }
 
     public function uploadImages()
     {
         // Валидация изображений
-        $this->validate([
-            'uploadedImages' => 'required|array|min:1',  // Минимум одно изображение
-            'uploadedImages.*' => 'image|max:5024',       // Ограничение для изображений
-        ]);
+//        $this->validate([
+//            'uploadedImages' => 'required|array|min:1',  // Минимум одно изображение
+//            'uploadedImages.*' => 'image|max:5024',       // Ограничение для изображений
+//        ]);
 
         try {
+
             $saved = '';
+
             foreach ($this->uploadedImages as $image) {
+
                 // Получаем оригинальное имя файла
                 $originalFileName = $image->getClientOriginalName();
 
@@ -104,13 +111,15 @@ class DataScan extends Component
                 try {
                     ShopPhoto::where('photo_url', $originalFileName)->firstOrFail();
                     $save = true;
+                    \Log::info('нашли ', ['line' => __LINE__ ]);
                 } catch (\Exception $ex) {
                 }
 
                 if (!$save) {
                     try {
-                        SvoTrebItem::where('photo', $originalFileName)->firstOrFail();
+                        TrebsPhoto::where('photo_url', $originalFileName)->firstOrFail();
                         $save = true;
+                        \Log::info('нашли ', ['line' => __LINE__ ]);
                     } catch (\Exception $ex) {
                     }
                 }
@@ -119,6 +128,7 @@ class DataScan extends Component
                     try {
                         SvoTrebItem::where('curica', $originalFileName)->firstOrFail();
                         $save = true;
+                        \Log::info('нашли ', ['line' => __LINE__ ]);
                     } catch (\Exception $ex) {
                     }
                 }
@@ -133,7 +143,10 @@ class DataScan extends Component
                     );
 
                     $saved .= $originalFileName . ' ';
+                }else{
+                    \Log::info('не нашли ', ['line' => __LINE__ ]);
                 }
+
             }
 
             session()->flash('message', 'Картинки успешно загружены! (time:' . time() . ') файлы: ' . $saved);

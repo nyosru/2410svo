@@ -8,6 +8,7 @@ use App\Models\FinReport;
 use App\Models\ShopItem;
 use App\Models\ShopPhoto;
 use App\Models\SvoTrebItem;
+use App\Models\TrebsPhoto;
 use App\TDO\FinReportTDO;
 use App\TDO\ShopCsvDataTdo;
 use App\TDO\TrebsCsvDataTdo;
@@ -61,16 +62,17 @@ class ShopScanDatafileController extends Controller
             if (!empty($lines)) {
                 // Очищаем таблицу перед импортом новых данных
 
+                Schema::disableForeignKeyConstraints();
                 if ($type == 'shop') {
-                    Schema::disableForeignKeyConstraints();
                     ShopItem::truncate();
                     ShopPhoto::truncate();
-                    Schema::enableForeignKeyConstraints();
                 } elseif ($type == 'trebs') {
                     SvoTrebItem::truncate();
+                    TrebsPhoto::truncate();
                 } elseif ($type == 'fin') {
 //                    FinReport::truncate();
                 }
+                Schema::enableForeignKeyConstraints();
 
 
                 // Переименование файла после успешного импорта
@@ -91,7 +93,7 @@ class ShopScanDatafileController extends Controller
                     // Применение транслитерации к каждому элементу заголовков
                     foreach (self::$header as &$headerElement) {
 //                        if ($type == 'fin' || $type == 'shop') {
-                            $headerElement = Str::snake(StringController::transliterate($headerElement));
+                        $headerElement = Str::snake(StringController::transliterate($headerElement));
 //                        } else {
 //                            $headerElement = StringController::transliterate($headerElement);
 //                        }
@@ -132,7 +134,7 @@ class ShopScanDatafileController extends Controller
                     } elseif ($type == 'trebs') {
                         $data = self::prepareDataTrebs($line);
 //                        dd($data);
-                        $tdo = new \App\TDO\TrebsCsvDataTdo($data['data']);
+                        $tdo = new TrebsCsvDataTdo($data['data']);
 
 //                        if( $data['data']['uroven'] == 2 )
 //                            dd([$data,$tdo]);
@@ -147,6 +149,25 @@ class ShopScanDatafileController extends Controller
 
                         $item = SvoTrebItem::create($tdo->toArray());
 
+//                    dd(__LINE__);
+
+
+                        // Если есть фотографии, добавляем их
+                        if (!empty($tdo->photo)) {
+//                            dd($tdo->photo);
+                            $photos = explode('+', $tdo->photo);
+//                            dd($photos);
+                            foreach ($photos as $photoUrl) {
+                                if (!empty($photoUrl)) {
+                                    TrebsPhoto::create([
+                                        'svo_trebs_item_id' => $item->id,
+                                        'photo_url' => trim($photoUrl),
+                                    ]);
+                                }
+                            }
+                        }
+
+
                         if ($item->uroven == 1) {
                             self::$now_up_id = [1 => $item->id];
                         } elseif ($item->uroven == 2) {
@@ -155,13 +176,14 @@ class ShopScanDatafileController extends Controller
                             self::$now_up_id[3] = $item->id;
                         }
                     }
-
+//                    dd(__LINE__);
                     $return['line_to_db']++;
                 } catch
                 (Exception $exp) {
                     $return['exp'][] = $exp;
                 }
             }
+//            dd(__LINE__);
         }
 //        return response()->json($return);
         return $return;
@@ -199,12 +221,12 @@ class ShopScanDatafileController extends Controller
         $return['in'] =
         $columns = explode(';', $line);
         foreach ($columns as $k => $v) {
-            if(
+            if (
                 self::$header[$k] == 'tsena1' ||
                 self::$header[$k] == 'tsena2' ||
-                self::$header[$k] == 'tsena3' ){
-                $return['data'][self::$header[$k]] = round( (float) trim($v) , 2 );
-            }else {
+                self::$header[$k] == 'tsena3') {
+                $return['data'][self::$header[$k]] = round((float)trim($v), 2);
+            } else {
                 $return['data'][self::$header[$k]] = trim($v);
             }
         }
