@@ -16,8 +16,6 @@ use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
 
 
-
-
 class DataScan extends Component
 {
     use WithFileUploads;
@@ -36,16 +34,20 @@ class DataScan extends Component
     }
 
 
-
-
-    public function checkFiles(){
-        $this->listFiles = Photo::whereNotNull('image_loaded')->whereNotNull('preview_loaded')->pluck('image','image_loaded');
+    public function checkFiles()
+    {
+        $this->listFiles = Photo::whereNotNull('image_loaded')->whereNotNull('preview_loaded')->pluck(
+            'image',
+            'image_loaded'
+        );
     }
 
-    public function checkNoFiles()
+    public function checkNoFiles(): array
     {
-        $this->listFiles = [];
+
+//        $this->listFiles = [];
 //        return;
+
         // Получаем уникальные названия файлов из ShopPhoto
         $shopPhotos = ShopPhoto::doesntHave('photoLoaded')
             ->select('photo_url')
@@ -58,14 +60,27 @@ class DataScan extends Component
             ->distinct()
             ->pluck('photo_url');
 
+        // Получаем уникальные названия файлов из SvoTrebItem
+        $svoTrebQrPhotos = SvoTrebItem::doesntHave('qrLoaded')
+            ->select('curica')
+            ->distinct()
+            ->pluck('curica');
+
         // Объединяем результаты и удаляем повторы
         $this->shopPhotosWithoutPhotos = $shopPhotos->merge($svoTrebPhotos)
+            ->merge($svoTrebQrPhotos)
             ->unique()
             ->sort()
-            ->values(); // Преобразуем в индексированный массив
+            ->filter(function ($value) {
+                return is_string($value); // Оставляем только строки
+            })
+            ->values() // Преобразуем в индексированный массив
+            ->toArray(); // Преобразуем коллекцию в массив
+
+//        dd($this->shopPhotosWithoutPhotos->toArray());
+
+        return $this->shopPhotosWithoutPhotos;
     }
-
-
 
 
     public function scanFile()
@@ -92,11 +107,10 @@ class DataScan extends Component
             $this->checkNoFiles();
 
             session()->flash('message', 'Файл успешно сканирован!');
-
         } catch (\Exception $e) {
             session()->flash('error', 'Ошибка при сканировании файла: ' . $e->getMessage());
         }
-        return ;
+        return;
     }
 
     public function uploadImages()
@@ -108,11 +122,9 @@ class DataScan extends Component
 //        ]);
 
         try {
-
             $saved = '';
 
             foreach ($this->uploadedImages as $image) {
-
                 // Получаем оригинальное имя файла
                 $originalFileName = $image->getClientOriginalName();
 
@@ -127,7 +139,7 @@ class DataScan extends Component
                 try {
                     ShopPhoto::where('photo_url', $originalFileName)->firstOrFail();
                     $save = true;
-                    \Log::info('нашли ', ['line' => __LINE__ ]);
+                    \Log::info('нашли ', ['line' => __LINE__]);
                 } catch (\Exception $ex) {
                 }
 
@@ -135,7 +147,7 @@ class DataScan extends Component
                     try {
                         TrebsPhoto::where('photo_url', $originalFileName)->firstOrFail();
                         $save = true;
-                        \Log::info('нашли ', ['line' => __LINE__ ]);
+                        \Log::info('нашли ', ['line' => __LINE__]);
                     } catch (\Exception $ex) {
                     }
                 }
@@ -144,13 +156,12 @@ class DataScan extends Component
                     try {
                         SvoTrebItem::where('curica', $originalFileName)->firstOrFail();
                         $save = true;
-                        \Log::info('нашли ', ['line' => __LINE__ ]);
+                        \Log::info('нашли ', ['line' => __LINE__]);
                     } catch (\Exception $ex) {
                     }
                 }
 
                 if ($save) {
-
                     $imageName = $image->store('images', 'public');
 
                     // Генерация имени для превью
@@ -158,24 +169,26 @@ class DataScan extends Component
                     $baseName = pathinfo($imageName, PATHINFO_FILENAME);
                     $previewName = $baseName . '.prev200.' . $extension;
                     $previewPath = 'images/' . $previewName;
-                    $previewCreated = $this->createPreview( public_path('/storage/'.$imageName), public_path('/storage/' . $previewPath ) );
+                    $previewCreated = $this->createPreview(
+                        public_path('/storage/' . $imageName),
+                        public_path('/storage/' . $previewPath)
+                    );
 
-                    \Log::info( '$previewCreated' , [ '$previewCreated' => $previewCreated ] );
+                    \Log::info('$previewCreated', ['$previewCreated' => $previewCreated]);
 
                     // Обновить или создать запись в photo
                     Photo::updateOrCreate(
                         ['image' => $originalFileName], // Условие поиска
                         [
                             'image_loaded' => '/storage/' . $imageName, // Поля для обновления
-                        'preview_loaded' => '/storage/' . $previewPath
+                            'preview_loaded' => '/storage/' . $previewPath
                         ]
                     );
 
-                    $saved .= $originalFileName . ' <img src="'.'/storage/' . $previewPath.'" class="w-[100px]" /> ';
-                }else{
-                    \Log::info('не нашли ', ['line' => __LINE__ ]);
+                    $saved .= $originalFileName . ' <img src="' . '/storage/' . $previewPath . '" class="w-[100px]" /> ';
+                } else {
+                    \Log::info('не нашли ', ['line' => __LINE__]);
                 }
-
             }
 
             session()->flash('message', 'Картинки успешно загружены! (time:' . time() . ') файлы: ' . $saved);
@@ -192,7 +205,6 @@ class DataScan extends Component
     {
         return view('livewire.svo.data-scan');
     }
-
 
 
     public function createPreview($filePath, $previewPath)
@@ -224,7 +236,6 @@ class DataScan extends Component
             return false;
         }
     }
-
 
 
 }

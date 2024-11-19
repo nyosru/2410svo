@@ -32,7 +32,7 @@
         function copyToClipboard(id) {
             var copyText = document.getElementById(id).textContent; // Получаем текст из span
             navigator.clipboard.writeText(copyText).then(() => {
-                alert('Скопировано: ' + copyText);
+                // alert('Скопировано: ' + copyText);
             }).catch(err => {
                 console.error('Ошибка при копировании: ', err);
             });
@@ -101,9 +101,9 @@
             <div class="flex-1 p-1 text-center border border-gray-300">Для ЮрЛиц</div>
             <div class="flex-1 p-1 text-center border border-gray-300">Аналог</div>
         </div>
-        <div class="flex flex-col w-[110px] text-center p-1">
-            Уровень
-        </div>
+{{--        <div class="flex flex-col w-[110px] text-center p-1">--}}
+{{--            Уровень--}}
+{{--        </div>--}}
     </div>
 
 

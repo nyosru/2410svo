@@ -185,9 +185,9 @@
 
                 </div>
             </div>
-            <div class="flex flex-col w-[110px] p-1 text-center border border-gray-300">
-                {{$row['uroven'] ?? '-'}}
-            </div>
+            {{--            <div class="flex flex-col w-[110px] p-1 text-center border border-gray-300">--}}
+            {{--                {{$row['uroven'] ?? '-'}}--}}
+            {{--            </div>--}}
 
         </div>
         {{--        {{ print_r($row,true) }}--}}
@@ -201,6 +201,11 @@
                 <div class="flex flex-row-reverse">
                     <div class="bg-orange-100 p-6 rounded-lg shadow-lg w-[600px] table-animate ">
 
+                        <span
+                            onclick="toggleBlock('analog{{ $row['id'] }}'); return false;"
+                            class="float-right cursor-pointer text-white py-1 px-2 rounded bg-red-200 hover:bg-red-600 text-[10px]">
+                            X
+                        </span>
                         Аналог:<br/>
                         {!! $row['analog'] !!}
 
@@ -216,7 +221,13 @@
             <div class="m-2" id="ul{{ $row['id'] }}" style="display: none;">
                 <div class="flex flex-row-reverse">
                     <div class="bg-orange-100 p-6 rounded-lg shadow-lg w-[600px] table-animate ">
-                        <h3 class="text-lg font-bold mb-4">Данные для ЮрЛиц</h3>
+                                                <span
+                                                    onclick="toggleBlock('ul{{ $row['id'] }}'); return false;"
+                                                    class="float-right cursor-pointer text-white py-1 px-2 rounded bg-red-200 hover:bg-red-600 text-[10px]">
+                            X
+                        </span>
+
+                        <h3 class="text-lg font-bold mb-4">Данные для Юр.Лиц</h3>
                         <table class="w-full border border-gray-200">
                             <tbody>
                             {{--                    @for ($i = 1; $i <= 5; $i++)--}}
@@ -345,11 +356,11 @@
                             </tbody>
                         </table>
 
-                        <button
-                            wire:click.prevent="switchForUl({{ $row['id'] }})"
-                            class="mt-4 bg-red-200 text-white px-4 py-2 rounded hover:bg-red-400">
-                            Закрыть
-                        </button>
+                        {{--                        <button--}}
+                        {{--                            wire:click.prevent="switchForUl({{ $row['id'] }})"--}}
+                        {{--                            class="mt-4 bg-red-200 text-white px-4 py-2 rounded hover:bg-red-400">--}}
+                        {{--                            Закрыть--}}
+                        {{--                        </button>--}}
                     </div>
                 </div>
             </div>
