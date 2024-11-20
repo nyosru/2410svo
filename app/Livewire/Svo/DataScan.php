@@ -45,6 +45,7 @@ class DataScan extends Component
      */
     public function checkFiles()
     {
+
         $t1 = Photo::whereNotNull('image_loaded')->whereNotNull('preview_loaded')->pluck('preview_loaded');
         $t = Photo::whereNotNull('image_loaded')->whereNotNull('preview_loaded')->pluck('image_loaded');
 
