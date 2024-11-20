@@ -28,6 +28,7 @@
             <div class="w-[1200px]">
                 @if(count($data1) > 0)
 
+                    @if( 1 == 2 )
                     <div class="
                         sticky top-[60px]
                         flex flex-row
@@ -65,6 +66,7 @@
                             <div class="w-[150px] border border-1 border-blue-300 p-1 pr-2">Цена 3</div>
                         </div>
                     </div>
+                @endif
 
                     @foreach ($data1 as $index=>$data12)
                         <livewire:svo.shop-tr :item="$data12" :key="$data12->id" :nn="$index"/>

@@ -27,6 +27,77 @@
     <meta name="msapplication-TileImage" content="/svo/favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ff5555">
 
+    <script>
+
+        function toggleBlock(blockId) {
+            const block = document.getElementById(blockId);
+            if (block) {
+                block.style.display = (block.style.display === 'none' || block.style.display === '')
+                    ? 'block'
+                    : 'none';
+            } else {
+                console.warn(`Элемент с id="${blockId}" не найден.`);
+            }
+        }
+
+        function showModal(imageUrl) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+
+            modalImage.src = imageUrl; // Устанавливаем изображение
+            modal.classList.remove('hidden'); // Показываем модальное окно
+        }
+
+        function hideModal(event) {
+            const modal = document.getElementById('imageModal');
+
+            if (event?.target?.id === 'imageModal' || !event) {
+                modal.classList.add('hidden'); // Скрываем модальное окно
+            }
+        }
+
+        function copyToClipboard(id) {
+            var copyText = document.getElementById(id).textContent; // Получаем текст из span
+            navigator.clipboard.writeText(copyText).then(() => {
+                // alert('Скопировано: ' + copyText);
+            }).catch(err => {
+                console.error('Ошибка при копировании: ', err);
+            });
+        }
+
+    </script>
+
+
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .table-animate {
+            opacity: 0;
+            animation: fadeIn 2s ease-out forwards;
+        }
+
+        .copy-btn {
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .copy-btn:hover {
+            background-color: #3b82f6;
+        }
+
+
+    </style>
+
+
 </head>
 <body>
 
@@ -38,6 +109,23 @@
 </main>
 
 @include('layouts/footer')
+
+<!-- Модальное окно -->
+<div
+    id="imageModal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden table-animate"
+    onclick="hideModal()"
+>
+    <div class="relative bg-white p-4 rounded shadow-lg max-w-4xl">
+        {{--                                    <button--}}
+        {{--                                        class="absolute top-2 right-2 text-gray-600 hover:text-gray-800"--}}
+        {{--                                        onclick="hideModal(event)"--}}
+        {{--                                    >--}}
+        {{--                                        ✕--}}
+        {{--                                    </button>--}}
+        <img id="modalImage" src="" alt="Full-size" class="rounded max-w-full max-h-screen"/>
+    </div>
+</div>
 
 @livewireScripts
 @stack('scripts')

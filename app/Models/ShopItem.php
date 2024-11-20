@@ -11,16 +11,20 @@ class ShopItem extends Model
     use HasFactory;
 
     protected $fillable = [
-        "firma" ,
-    "naimenovanie" ,
-    "dobavka" ,
-    "kod_t" ,
-    "sayt_tab" ,
-    "foto" ,
-    "deb_kol_kon" ,
-    "tsena1" ,
-    "tsena2" ,
-    "tsena3"     ];
+        "firma",
+        "naimenovanie",
+        "dobavka",
+        "kod_t",
+        "sayt_tab",
+
+        "analog",
+        "foto",
+
+        "deb_kol_kon",
+        "tsena1",
+        "tsena2",
+        "tsena3"
+    ];
 
 
     // Добавляем связь с фотографиями

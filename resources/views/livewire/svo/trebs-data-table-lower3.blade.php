@@ -82,6 +82,22 @@
                             @endif
                         @endforeach
 
+                        <!-- Модальное окно -->
+                        <div
+                            id="imageModal"
+                            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden table-animate"
+                            onclick="hideModal()"
+                        >
+                            <div class="relative bg-white p-4 rounded shadow-lg max-w-4xl">
+                                {{--                                    <button--}}
+                                {{--                                        class="absolute top-2 right-2 text-gray-600 hover:text-gray-800"--}}
+                                {{--                                        onclick="hideModal(event)"--}}
+                                {{--                                    >--}}
+                                {{--                                        ✕--}}
+                                {{--                                    </button>--}}
+                                <img id="modalImage" src="" alt="Full-size" class="rounded max-w-full max-h-screen"/>
+                            </div>
+                        </div>
                         {{--                        </div>--}}
 
                     @endif

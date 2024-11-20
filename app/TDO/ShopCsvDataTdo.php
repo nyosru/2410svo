@@ -11,6 +11,7 @@ class ShopCsvDataTdo
     public ?string $kod_t;
     public ?string $sayt_tab;
     public ?string $foto;
+    public ?string $analog;
     public float $deb_kol_kon;
     public float $tsena1;
     public ?float $tsena2 = null;
@@ -24,6 +25,7 @@ class ShopCsvDataTdo
         $this->dobavka = $data['dobavka'] ?? null;
         $this->kod_t = $data['kod_t'] ?? null;
         $this->sayt_tab = $data['sayt_tab'] ?? null;
+        $this->analog = $data['analog'] ?? null;
         $this->foto = $data['foto'] ?? null;
         $this->deb_kol_kon = (float)$data['deb_kol_kon'] ?? 0;
         $this->tsena1 = (float)$data['tsena1'] ?? 0;
@@ -40,6 +42,7 @@ class ShopCsvDataTdo
             'kod_t' => $this->kod_t,
             'sayt_tab' => $this->sayt_tab,
             'foto' => $this->foto,
+            'analog' => $this->analog,
             'deb_kol_kon' => $this->deb_kol_kon,
             'tsena1' => $this->tsena1,
             'tsena2' => $this->tsena2,

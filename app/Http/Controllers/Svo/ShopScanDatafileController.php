@@ -70,7 +70,7 @@ class ShopScanDatafileController extends Controller
                     SvoTrebItem::truncate();
                     TrebsPhoto::truncate();
                 } elseif ($type == 'fin') {
-//                    FinReport::truncate();
+                    FinReport::truncate();
                 }
                 Schema::enableForeignKeyConstraints();
 
@@ -98,6 +98,8 @@ class ShopScanDatafileController extends Controller
 //                            $headerElement = StringController::transliterate($headerElement);
 //                        }
                     }
+
+//                    dd(self::$header);
 
                     $nn++;
                     continue;
