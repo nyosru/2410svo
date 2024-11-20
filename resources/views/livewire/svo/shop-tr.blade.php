@@ -56,9 +56,9 @@
         </div>
         <div class="flex flex-col w-[200px]">
             <div class="text-right">
-                {{ number_format($item->tsena1,0,'','`') }}<br/>
-                {{ number_format($item->tsena2,0,'','`') }}<br/>
-                {{ number_format($item->tsena3,0,'','`') }}<br/>
+                {{ number_format($item->tsena1,0,'','`') }} ₽<br/>
+                {{ number_format($item->tsena2,0,'','`') }} ₽<br/>
+                {{ number_format($item->tsena3,0,'','`') }} ₽<br/>
             </div>
             <div>
                 {{-- купить --}}
