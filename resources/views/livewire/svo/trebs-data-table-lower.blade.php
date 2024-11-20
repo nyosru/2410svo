@@ -9,7 +9,7 @@
          @if($row['uroven'] > 1) border-l border-l-[10px] border-orange-200 @endif
         ">
             <div class="flex flex-col flex-grow">
-                <div class="p-1 text-center border border-gray-300">
+                <div class="p-1 text-left border border-gray-300">
                     {{ $row['firma'] }}
                     @if( !empty( $row['mol_link'] ) )
                         <a class="text-blue-700 underline" href="{{ $row['mol_link'] }}" target="_blank">
@@ -93,7 +93,7 @@
                         <!-- Модальное окно -->
                         <div
                             id="imageModal"
-                            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
+                            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden table-animate"
                             onclick="hideModal()"
                         >
                             <div class="relative bg-white p-4 rounded shadow-lg max-w-4xl">
@@ -141,9 +141,13 @@
                     {{--                        файл qr кода {{ $row['curica'] }} не загружен--}}
                     {{--                    @endif--}}
 
+                    <nobr>
+                        <input type="text" value="{{$row['curica']}}" />
+                    </nobr>
+
                     @if( !empty( $row['curica'] ) && !empty($row['qr_loaded']['image_loaded']) )
 
-                        <A href="{{$row['curica']}}"
+                        <A href="#{{$row['curica']}}"
                            {{--                           wire:click.prevent="switchQr({{$row['id']}})"--}}
                            onclick="toggleBlock('qr{{ $row['id'] }}'); return false;"
                            class="text-blue-700 underline" target="_blank">QR&nbsp;код для&nbsp;перевода</A>

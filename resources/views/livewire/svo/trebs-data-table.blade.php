@@ -76,7 +76,7 @@
         <div class="flex flex-col flex-grow">
             <div class="p-1 text-center border border-gray-300">Фирма МОЛ Телефон Комент</div>
             <div class="flex flex-row ">
-                <div class="flex-1 p-1 text-center border border-gray-300">Наименование Добавка</div>
+                <div class="flex-1 p-1 text-center border border-gray-300">Наименование</div>
                 <div class="flex-1 p-1 text-center border border-gray-300">КодТ</div>
 
             </div>

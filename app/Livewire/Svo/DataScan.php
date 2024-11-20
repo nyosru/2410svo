@@ -7,6 +7,7 @@ use App\Models\Photo;
 use App\Models\ShopPhoto;
 use App\Models\SvoTrebItem;
 use App\Models\TrebsPhoto;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -44,7 +45,6 @@ class DataScan extends Component
 
     public function checkNoFiles(): array
     {
-
 //        $this->listFiles = [];
 //        return;
 
@@ -80,6 +80,42 @@ class DataScan extends Component
 //        dd($this->shopPhotosWithoutPhotos->toArray());
 
         return $this->shopPhotosWithoutPhotos;
+    }
+
+    public function listAllFiles(): array
+    {
+        $this->listFiles = [];
+//        return;
+
+        // Получаем уникальные названия файлов из ShopPhoto
+        $shopPhotos = ShopPhoto::select('photo_url')
+            ->distinct()
+            ->pluck('photo_url');
+
+        // Получаем уникальные названия файлов из SvoTrebItem
+        $svoTrebPhotos = TrebsPhoto::select('photo_url')
+            ->distinct()
+            ->pluck('photo_url');
+
+        // Получаем уникальные названия файлов из SvoTrebItem
+        $svoTrebQrPhotos = SvoTrebItem::select('curica')
+            ->distinct()
+            ->pluck('curica');
+
+        // Объединяем результаты и удаляем повторы
+        $this->listFiles = $shopPhotos->merge($svoTrebPhotos)
+            ->merge($svoTrebQrPhotos)
+            ->unique()
+            ->sort()
+            ->filter(function ($value) {
+                return is_string($value); // Оставляем только строки
+            })
+            ->values() // Преобразуем в индексированный массив
+            ->toArray(); // Преобразуем коллекцию в массив
+
+//        dd($this->shopPhotosWithoutPhotos->toArray());
+
+        return $this->listFiles;
     }
 
 
@@ -128,51 +164,32 @@ class DataScan extends Component
                 // Получаем оригинальное имя файла
                 $originalFileName = $image->getClientOriginalName();
 
+                // Получаем расширение файла
+                $fileExtension = $image->getClientOriginalExtension();
+
                 // Логируем каждое изображение перед загрузкой
                 \Log::info('Загружается изображение: ', ['image' => $originalFileName]);
 
                 // Сохраняем изображение в публичной папке 'images' и получаем имя файла
 //                $imageName = $image->storeAs('images', $originalFileName, 'public');
 
-                $save = false;
-
-                try {
-                    ShopPhoto::where('photo_url', $originalFileName)->firstOrFail();
-                    $save = true;
-                    \Log::info('нашли ', ['line' => __LINE__]);
-                } catch (\Exception $ex) {
-                }
-
-                if (!$save) {
-                    try {
-                        TrebsPhoto::where('photo_url', $originalFileName)->firstOrFail();
-                        $save = true;
-                        \Log::info('нашли ', ['line' => __LINE__]);
-                    } catch (\Exception $ex) {
-                    }
-                }
-
-                if (!$save) {
-                    try {
-                        SvoTrebItem::where('curica', $originalFileName)->firstOrFail();
-                        $save = true;
-                        \Log::info('нашли ', ['line' => __LINE__]);
-                    } catch (\Exception $ex) {
-                    }
-                }
-
-                if ($save) {
-                    $imageName = $image->store('images', 'public');
-
-                    // Генерация имени для превью
-                    $extension = pathinfo($imageName, PATHINFO_EXTENSION);
-                    $baseName = pathinfo($imageName, PATHINFO_FILENAME);
-                    $previewName = $baseName . '.prev200.' . $extension;
-                    $previewPath = 'images/' . $previewName;
-                    $previewCreated = $this->createPreview(
-                        public_path('/storage/' . $imageName),
-                        public_path('/storage/' . $previewPath)
+                if (in_array($originalFileName, $this->listAllFiles())) {
+//                    $imageName = $image->store('images', 'public');
+                    $imageName = $image->storeAs(
+                        'images',
+                        date('Ymd_HIs') . '.' . rand() . '.' . $fileExtension,
+                        'public'
                     );
+//                    \Log::info('111', ['$imageName' => $imageName]);
+
+                    $previewCreated = $this->createPreview($imageName);
+
+//                    \Log::info('$previewCreated', $previewCreated);
+
+                    if( ($previewCreated['result']) ) {
+                        $previewPath = 'storage/images/' . $previewCreated['preview_name'];
+                        $previewUrl = asset($previewPath);
+                    }
 
                     \Log::info('$previewCreated', ['$previewCreated' => $previewCreated]);
 
@@ -181,11 +198,11 @@ class DataScan extends Component
                         ['image' => $originalFileName], // Условие поиска
                         [
                             'image_loaded' => '/storage/' . $imageName, // Поля для обновления
-                            'preview_loaded' => '/storage/' . $previewPath
+                            'preview_loaded' => '/'.$previewPath
                         ]
                     );
 
-                    $saved .= $originalFileName . ' <img src="' . '/storage/' . $previewPath . '" class="w-[100px]" /> ';
+                    $saved .= $originalFileName . ' <img src="' . $previewUrl . '" class="w-[100px]" /> ';
                 } else {
                     \Log::info('не нашли ', ['line' => __LINE__]);
                 }
@@ -207,34 +224,63 @@ class DataScan extends Component
     }
 
 
-    public function createPreview($filePath, $previewPath)
+    public function createPreview($imageName)
     {
+        $return = [
+            'result' => false,
+            'preview_name' => ''
+        ];
+
+        \Log::info('start fn createPreview', [__LINE__, $imageName]);
+
         try {
-            $imagine = new Imagine();
+            // Обрезаем путь, если он начинается с /storage/
+            $imageName = str_replace('/storage/', '', $imageName);
 
-            // Загружаем изображение
-            $image = $imagine->open($filePath);
+            $originalFile = storage_path('app/public/' . $imageName);
+            $baseName = pathinfo($originalFile, PATHINFO_FILENAME);
+            $extension = pathinfo($originalFile, PATHINFO_EXTENSION);
+            $return['preview_name'] =
+            $previewName = $baseName . '.prev200.' . $extension;
+            $previewPath = storage_path('app/public/images/' . $previewName);
 
-            // Получаем размеры оригинального изображения
+            \Log::info('fn createPreview originalFile', [$originalFile]);
+            \Log::info('fn createPreview previewPath', [$previewPath]);
+
+            // Проверяем существование файла
+            if (!file_exists($originalFile)) {
+                throw new \Exception("Файл не найден: $originalFile");
+            }
+
+            // Проверяем MIME-тип
+            $mimeType = mime_content_type($originalFile);
+            if (!in_array($mimeType, ['image/jpeg', 'image/png'])) {
+                throw new \Exception("Неподдерживаемый формат файла: $mimeType");
+            }
+
+            $imagine = new \Imagine\Gd\Imagine();
+            $image = $imagine->open($originalFile);
+
             $originalSize = $image->getSize();
-
-            // Устанавливаем ширину 200px, высота рассчитывается автоматически
             $width = 200;
             $height = (int)($originalSize->getHeight() * ($width / $originalSize->getWidth()));
 
-            $size = new Box($width, $height);
+            $size = new \Imagine\Image\Box($width, $height);
+            $image->resize($size, \Imagine\Image\ImageInterface::FILTER_LANCZOS);
 
-            // Меняем размер изображения с сохранением пропорций
-            $image->resize($size, ImageInterface::FILTER_LANCZOS);
+            $image->save($previewPath, [
+                'jpeg_quality' => 85,
+                'format' => 'jpeg',
+            ]);
 
-            // Сохраняем превью
-            $image->save($previewPath);
+            \Log::info('Превью успешно создано', ['previewPath' => $previewPath]);
 
-            return true;
+            $return['result'] = true;
         } catch (\Exception $e) {
-            \Log::error('Ошибка при создании превью: ' . $e->getMessage());
-            return false;
+            \Log::error('Ошибка при создании превью: ' . $e->getMessage(), ['line' => __LINE__]);
         }
+
+        return $return;
     }
 
 
