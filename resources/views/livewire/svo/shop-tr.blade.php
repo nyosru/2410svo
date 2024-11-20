@@ -1,6 +1,6 @@
 <div class="w-[800px] mx-auto">
 
-{{--    {{ print_r($item->getAttributes()) }}--}}
+    {{--    {{ print_r($item->getAttributes()) }}--}}
     <div class="flex flex-row w-[900px] hover:bg-gray-100 ">
 
         <div class="w-[300px] flex items-center justify-center p-2">
@@ -71,31 +71,36 @@
                     </button>
                 @endif
             </div>
-            <div>
-                <a href="#"
-                   onclick="toggleBlock('analog{{ $item->id }}'); return false;"
-{{--                   class="text-blue-400 underline"--}}
-                   class="mt-1 block w-full bg-yellow-300 text-center px-3 py-1 rounded text-[14px]"
-                >предложить аналог</a>
-            </div>
+            @if( !empty($item->analog) )
+                <div>
+                    <a href="#"
+                       onclick="toggleBlock('analog{{ $item->id }}'); return false;"
+                       {{--                   class="text-blue-400 underline"--}}
+                       class="mt-1 block w-full bg-yellow-300 text-center px-3 py-1 rounded text-[14px]"
+                    >предложить аналог</a>
+                </div>
+            @endif
         </div>
     </div>
-    <div class="m-2" id="analog{{ $item->id }}" style="display: none;">
 
-        <div class="flex flex-row-reverse">
-            <div class="bg-orange-100 p-6 rounded-lg shadow-lg w-[600px] table-animate ">
+    @if( !empty($item->analog) )
+        <div class="m-2" id="analog{{ $item->id }}" style="display: none;">
+
+            <div class="flex flex-row-reverse">
+                <div class="bg-orange-100 p-6 rounded-lg shadow-lg w-[600px] table-animate ">
 
 <span
     onclick="toggleBlock('analog{{ $item->id }}'); return false;"
     class="float-right cursor-pointer text-white py-1 px-2 rounded bg-red-200 hover:bg-red-600 text-[10px]">
     X
 </span>
-                Аналог:<br/>
-                {!! $item->analog !!}
+                    Аналог:<br/>
+                    {!! $item->analog !!}
 
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 </div>
 
 
