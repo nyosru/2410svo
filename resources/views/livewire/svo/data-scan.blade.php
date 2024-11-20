@@ -47,7 +47,7 @@
 
 
             <!-- Результаты сканирования -->
-            <div class="w-full overflow-auto">
+            <div class="w-full overflow-auto" style="max-height: 200px; overflow: auto;">
                 @if($scanResult)
                     <div class="mt-4 p-4 border border-gray-300 bg-gray-100">
                         <h3>Результат сканирования:</h3>
@@ -122,18 +122,18 @@
             </div>
         </div>
 
-        <div class="w-1/2 md:w-1/4 pl-4 mb-[2vh]
+        <div class="w-1/2 md:w-1/4 mb-[2vh]
         bg-gradient-to-br from-orange-200 to-white
         ">
-            <h3 class="bg-orange-400 p-2">Файлы на сервере которые не используются на сайте</h3>
+            <h3 class="bg-orange-400 p-2">Файлы на сервере которые не используются на сайте ({{ $sizeNoFiles }}&nbsp;Mb)</h3>
 {{--            <button class="p-1 bg-green-300 rounded">Удалить все ({{ $sizeNoFiles }}Mb)</button>--}}
-            <br/>
+            <div class="p-2">
             <div class="w-full border border-1" style="max-height: 200px; overflow: auto;">
                 @foreach( $filesNoInDb as $f )
                     <a href="/storage/images/{{ $f }}" target="_blank">{{ $f }}</a> <br/>
                 @endforeach
             </div>
-
+            </div>
         </div>
     </div>
 

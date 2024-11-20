@@ -38,9 +38,9 @@
                 <div class="flex-1 p-1 text-center border border-gray-300">
 
                     {{$row['site_tab'] ?? ''}} &nbsp;
-                    <br/>
 
                     @if( !empty($row['trebs_photo']) )
+                        <br/>
 
                         {{--                        <div class="container mx-auto p-4">--}}
                         <!-- Галерея превью -->
@@ -64,31 +64,23 @@
                         {{--                                    onclick="showModal('fullsize3.jpg')"--}}
                         {{--                                />--}}
 
-
-
+                        {{--                        <pre class="text-left text-[10px]" style="overflow: auto; max-height: 150px;">--}}
+                        {{--{{ print_r($row['trebs_photo']) }}--}}
+                        {{--                            {{ print_r($row) }}--}}
+                        {{--                        </pre>--}}
 
                         @foreach($row['trebs_photo'] as $tp)
-                            {{--                            @if( !empty($tp['photo_loaded']['image_loaded']) )--}}
-                            @if( !empty($tp['photo_loaded']['image_loaded']) && !empty($tp['photo_loaded']['preview_loaded']) )
-
-                                <img
-                                    {{--                                    src="{{ $tp['photo_loaded']['image_loaded'] }}"--}}
-                                    src="{{ $tp['photo_loaded']['preview_loaded'] }}"
-                                    class="w-[150px] inline cursor-pointer rounded shadow hover:opacity-75 transition"
-                                    onclick="showModal('{{ $tp['photo_loaded']['image_loaded'] }}')"
-                                />
-                                {{--                                        <img--}}
-                                {{--                                            src="preview1.jpg"--}}
-                                {{--                                            alt="Preview 1"--}}
-                                {{--                                            class="cursor-pointer rounded shadow hover:opacity-75 transition"--}}
-                                {{--                                            onclick="showModal('fullsize1.jpg')"--}}
-                                {{--                                        />--}}
-
+                            @if( $tp['photo_url'] != $row['curica'] )
+                                @if( !empty($tp['photo_loaded']['image_loaded']) && !empty($tp['photo_loaded']['preview_loaded']) )
+                                    <img
+                                        {{--                                    src="{{ $tp['photo_loaded']['image_loaded'] }}"--}}
+                                        src="{{ $tp['photo_loaded']['preview_loaded'] }}"
+                                        class="w-[150px] inline cursor-pointer rounded shadow hover:opacity-75 transition"
+                                        onclick="showModal('{{ $tp['photo_loaded']['image_loaded'] }}')"
+                                    />
+                                @endif
                             @endif
                         @endforeach
-
-
-                        {{--                            </div>--}}
 
                         <!-- Модальное окно -->
                         <div
@@ -116,77 +108,89 @@
 
 
             </div>
-            <div class="flex flex-col w-[110px]">
-                <div class="flex-1 p-1 text-center border border-gray-300 w-full">
-                    {{ (isset($row['debet_kon']) && $row['debet_kon'] <> 0) ? number_format($row['debet_kon'],2,'.','`') : '-' }}
+
+            <div class="w-[110px]">
+                <div class="flex flex-col w-[110px]">
+                    <div class="flex-1 p-1 text-center border border-gray-300 w-full h-[15px]">
+                        {{ (isset($row['debet_kon']) && $row['debet_kon'] <> 0) ? number_format($row['debet_kon'],2,'.','`') : '-' }}
+                    </div>
+                    <div class="flex-1 p-1 text-center border border-gray-300 w-full">
+                        {{ (isset($row['debet_kol_kon']) && $row['debet_kol_kon'] <> 0) ? number_format($row['debet_kol_kon'],2,'.','`') : '-' }}
+                    </div>
+                    <div class="flex-1 p-1 text-center border border-gray-300 w-full">&nbsp;</div>
+
                 </div>
-                <div class="flex-1 p-1 text-center border border-gray-300 w-full">
-                    {{ (isset($row['debet_kon']) && $row['debet_kon'] <> 0) ? number_format($row['debet_kol_kon'],2,'.','`') : '-' }}
-                </div>
-                <div class="flex-1 p-1 text-center border border-gray-300 w-full">&nbsp;</div>
             </div>
-            <div class="flex flex-col w-[110px] ">
-                <div class="flex-1 p-1 text-center border border-gray-300 w-full">
-                    {{ (isset($row['debet_kon']) && round( (float) $row['debet_kon']) <> 0) ? number_format($row['kredit_kon'],2,'.','`') : '-' }}
+            <div class="w-[110px] ">
+                <div class="flex flex-col w-[110px] ">
+                    <div class="flex-1 p-1 text-center border border-gray-300 w-full">
+                        {{ (isset($row['kredit_kon']) && round( (float) $row['kredit_kon']) <> 0) ? number_format($row['kredit_kon'],2,'.','`') : '-' }}
+                    </div>
+                    <div class="flex-1 p-1 text-center border border-gray-300 w-full">
+                        {{ (isset($row['kredit_kol_kon']) && round( (float) $row['kredit_kol_kon']) <> 0) ? number_format($row['kredit_kol_kon'],2,'.','`') : '-' }}
+                    </div>
+                    <div class="flex-1 p-1 text-center border border-gray-300 w-full">&nbsp;</div>
                 </div>
-                <div class="flex-1 p-1 text-center border border-gray-300 w-full">
-                    {{ (isset($row['debet_kon']) && round( (float) $row['debet_kon']) <> 0) ? number_format($row['kredit_kol_kon'],2,'.','`') : '-' }}
-                </div>
-                <div class="flex-1 p-1 text-center border border-gray-300 w-full">&nbsp;</div>
             </div>
-            <div class="flex flex-col w-[110px] ">
-                <div class="flex-1 p-1 text-center border border-gray-300 w-full">
+            <div class="w-[110px] ">
+                <div class="flex flex-col w-[110px] ">
+                    <div class="flex-1 p-1 text-center border border-gray-300 w-full">
 
-                    {{--                    @if( !empty( $row['curica'] ) && empty($row['qr_loaded']['image_loaded']) )--}}
-                    {{--                        файл qr кода {{ $row['curica'] }} не загружен--}}
-                    {{--                    @endif--}}
+                        {{--                    @if( !empty( $row['curica'] ) && empty($row['qr_loaded']['image_loaded']) )--}}
+                        {{--                        файл qr кода {{ $row['curica'] }} не загружен--}}
+                        {{--                    @endif--}}
 
-{{--                    <nobr>--}}
-{{--                        <input type="text" value="{{$row['curica']}}" class="w-full"/>--}}
-{{--                    </nobr>--}}
+                        {{--                    <nobr>--}}
+                        {{--                        <input type="text" value="{{$row['curica']}}" class="w-full"/>--}}
+                        {{--                    </nobr>--}}
 
-                    @if( !empty( $row['curica'] ) && !empty($row['qr_loaded']['image_loaded']) )
+                        @if( !empty( $row['curica'] ) && !empty($row['qr_loaded']['image_loaded']) )
 
-                        <A href="#{{$row['curica']}}"
-                           {{--                           wire:click.prevent="switchQr({{$row['id']}})"--}}
-                           onclick="toggleBlock('qr{{ $row['id'] }}'); return false;"
-                           class="text-blue-700 underline" target="_blank">QR&nbsp;код для&nbsp;перевода</A>
+                            <A href="#{{$row['curica']}}"
+                               {{--                           wire:click.prevent="switchQr({{$row['id']}})"--}}
+                               onclick="toggleBlock('qr{{ $row['id'] }}'); return false;"
+                               class="text-blue-700 underline" target="_blank">QR&nbsp;код для&nbsp;перевода</A>
 
-                        {{--                        @if( isset($show_qr[$row['id']]) && $show_qr[$row['id']] )--}}
-                        {{--                            @if(!empty($row['qr_loaded']['image_loaded']) )--}}
-                        <div id="qr{{ $row['id'] }}" style="display: none;" class="mt-2 table-animate">
-                            <img src="{{ $row['qr_loaded']['image_loaded'] }}" class="mx-auto w-[120px]"/>
-                        </div>
-                        {{--                            @endif--}}
-                        {{--                        @endif--}}
+                            {{--                        @if( isset($show_qr[$row['id']]) && $show_qr[$row['id']] )--}}
+                            {{--                            @if(!empty($row['qr_loaded']['image_loaded']) )--}}
+                            <div id="qr{{ $row['id'] }}" style="display: none;" class="mt-2 table-animate">
+                                <img src="{{ $row['qr_loaded']['image_loaded'] }}" class="mx-auto w-[120px]"/>
+                            </div>
+                            {{--                            @endif--}}
+                            {{--                        @endif--}}
 
-                    @else
-                        -
-                    @endif
+                        @else
+                            -
+                        @endif
 
-                </div>
-                <div class="flex-1 p-1 text-center border border-gray-300 w-full">
+                    </div>
+                    <div class="flex-1 p-1 text-center border border-gray-300 w-full">
 
-                    @if( !empty( $row['b_i_k'] ) )
-                        <a href="#"
-                           {{--                           wire:click.prevent="switchForUl({{ $row['id'] }})"--}}
-                           onclick="toggleBlock('ul{{ $row['id'] }}'); return false;"
-                           class="text-blue-500 underline hover:text-blue-700">
-                            Для ЮЛ
-                        </a>
-                    @endif
+                        @if( !empty( $row['b_i_k'] ) )
+                            <a href="#"
+                               {{--                           wire:click.prevent="switchForUl({{ $row['id'] }})"--}}
+                               onclick="toggleBlock('ul{{ $row['id'] }}'); return false;"
+                               class="text-blue-500 underline hover:text-blue-700">
+                                Для ЮЛ
+                            </a>
+                        @else
+                            -
+                        @endif
 
-                </div>
+                    </div>
 
-                <div class="flex-1 p-1 text-center border border-gray-300 w-full">
-                    {{--                    Аналог--}}
-                    @if( !empty($row['analog'] ) )
-                        <a href="#"
-                           {{--                           wire:click.prevent="switchAnalogi({{$row['id']}})"--}}
-                           onclick="toggleBlock('analog{{ $row['id'] }}'); return false;"
-                           class="text-blue-700 underline">Аналог</a>
-                    @endif
+                    <div class="flex-1 p-1 text-center border border-gray-300 w-full">
+                        {{--                    Аналог--}}
+                        @if( !empty($row['analog'] ) )
+                            <a href="#"
+                               {{--                           wire:click.prevent="switchAnalogi({{$row['id']}})"--}}
+                               onclick="toggleBlock('analog{{ $row['id'] }}'); return false;"
+                               class="text-blue-700 underline">Аналог</a>
+                        @else
+                            -
+                        @endif
 
+                    </div>
                 </div>
             </div>
             {{--            <div class="flex flex-col w-[110px] p-1 text-center border border-gray-300">--}}
@@ -205,11 +209,11 @@
                 <div class="flex flex-row-reverse">
                     <div class="bg-orange-100 p-6 rounded-lg shadow-lg w-[600px] table-animate ">
 
-                        <span
-                            onclick="toggleBlock('analog{{ $row['id'] }}'); return false;"
-                            class="float-right cursor-pointer text-white py-1 px-2 rounded bg-red-200 hover:bg-red-600 text-[10px]">
-                            X
-                        </span>
+<span
+    onclick="toggleBlock('analog{{ $row['id'] }}'); return false;"
+    class="float-right cursor-pointer text-white py-1 px-2 rounded bg-red-200 hover:bg-red-600 text-[10px]">
+    X
+</span>
                         Аналог:<br/>
                         {!! $row['analog'] !!}
 
@@ -225,11 +229,11 @@
             <div class="m-2" id="ul{{ $row['id'] }}" style="display: none;">
                 <div class="flex flex-row-reverse">
                     <div class="bg-orange-100 p-6 rounded-lg shadow-lg w-[600px] table-animate ">
-                                                <span
-                                                    onclick="toggleBlock('ul{{ $row['id'] }}'); return false;"
-                                                    class="float-right cursor-pointer text-white py-1 px-2 rounded bg-red-200 hover:bg-red-600 text-[10px]">
-                            X
-                        </span>
+                        <span
+                            onclick="toggleBlock('ul{{ $row['id'] }}'); return false;"
+                            class="float-right cursor-pointer text-white py-1 px-2 rounded bg-red-200 hover:bg-red-600 text-[10px]">
+    X
+</span>
 
                         <h3 class="text-lg font-bold mb-4">Данные для Юр.Лиц</h3>
                         <table class="w-full border border-gray-200">
@@ -429,9 +433,9 @@
 
         @foreach( $data as $row )
             <div class="flex flex-row gap-2 bg-gray-100 p-2 rounded
-    ml-[{{ ($row['uroven']-1)*40 }}px]
-    mb-[2px]
-    "
+ml-[{{ ($row['uroven']-1)*40 }}px]
+mb-[2px]
+"
                  style="border-left: 2px solid orange;"
             >
 

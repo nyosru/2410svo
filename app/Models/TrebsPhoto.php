@@ -16,7 +16,6 @@ class TrebsPhoto extends Model
         return $this->belongsTo(SvoTrebItem::class,  'svo_trebs_item_id', 'id');
     }
 
-
     /**
      * Связь "многие к одному" с Photo.
      */

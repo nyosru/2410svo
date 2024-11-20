@@ -89,7 +89,7 @@
             <div class="flex-1 p-1 text-center border border-gray-300">&nbsp;</div>
         </div>
         <div class="flex flex-col w-[110px] ">
-            <div class="flex-1 p-1 text-center border border-gray-300">Дебет</div>
+            <div class="flex-1 p-1 text-center border border-gray-300">Кредит</div>
             <div class="flex-1 p-1 text-center border border-gray-300">Кол</div>
             <div class="flex-1 p-1 text-center border border-gray-300">&nbsp;</div>
         </div>
