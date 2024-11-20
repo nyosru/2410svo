@@ -27,20 +27,43 @@ class DataScan extends Component
     public $scanResult;
     public $shopPhotosWithoutPhotos;
     public $listFiles = [];
+    public $listRealFilesInDb = [];
+    public $filesNoInDb = [];
+    public $sizeNoFiles = 0;
 
 
-    public function mount()
+    public function mount(): void
     {
         $this->checkNoFiles();
+        $this->checkOffFiles();
     }
 
 
+    /**
+     * получаем список ссылок на реальные в файлы в бд
+     * @return mixed
+     */
     public function checkFiles()
     {
-        $this->listFiles = Photo::whereNotNull('image_loaded')->whereNotNull('preview_loaded')->pluck(
-            'image',
-            'image_loaded'
-        );
+        $t1 = Photo::whereNotNull('image_loaded')->whereNotNull('preview_loaded')->pluck('preview_loaded');
+        $t = Photo::whereNotNull('image_loaded')->whereNotNull('preview_loaded')->pluck('image_loaded');
+
+        // Объединяем результаты и удаляем повторы
+        $res = $t1->merge($t)
+//            ->merge($svoTrebQrPhotos)
+            ->unique()
+            ->sort()
+            ->filter(function ($value) {
+                return is_string($value); // Оставляем только строки
+            })
+            ->values() // Преобразуем в индексированный массив
+            ->toArray(); // Преобразуем коллекцию в массив
+
+        $this->listFiles = array_map(function ($f) {
+            return basename($f);
+        }, $res);
+
+//        return $res2;
     }
 
     public function checkNoFiles(): array
@@ -119,6 +142,46 @@ class DataScan extends Component
     }
 
 
+    public function listRealFilesInDb(): array
+    {
+        $this->listRealFilesInDb = [];
+//        return;
+
+        // Получаем уникальные названия файлов из ShopPhoto
+        $shopPhotos = Photo::select('image_loaded')
+            ->distinct()
+            ->pluck('image_loaded');
+        $shopPhotos2 = Photo::select('preview_loaded')
+            ->distinct()
+            ->pluck('preview_loaded');
+
+//        // Получаем уникальные названия файлов из SvoTrebItem
+//        $svoTrebPhotos = TrebsPhoto::select('photo_url')
+//            ->distinct()
+//            ->pluck('photo_url');
+//
+//        // Получаем уникальные названия файлов из SvoTrebItem
+//        $svoTrebQrPhotos = SvoTrebItem::select('curica')
+//            ->distinct()
+//            ->pluck('curica');
+
+        // Объединяем результаты и удаляем повторы
+        $this->listRealFilesInDb = $shopPhotos->merge($shopPhotos2)
+//            ->merge($svoTrebQrPhotos)
+            ->unique()
+            ->sort()
+            ->filter(function ($value) {
+                return is_string($value); // Оставляем только строки
+            })
+            ->values() // Преобразуем в индексированный массив
+            ->toArray(); // Преобразуем коллекцию в массив
+
+//        dd($this->shopPhotosWithoutPhotos->toArray());
+
+        return $this->listRealFilesInDb;
+    }
+
+
     public function scanFile()
     {
         // Валидация для основного файла
@@ -148,6 +211,56 @@ class DataScan extends Component
         }
         return;
     }
+
+
+    /**
+     * Собираем массив из файлов, что лежат на сервере и не используются на сайте (из папки storage/app/public/images).
+     * Также вычисляем общий размер файлов, отсутствующих в БД.
+     *
+     * @return array
+     */
+    public function checkOffFiles(): array
+    {
+        // Получить файлы из папки /storage/app/public/images
+        $folderFiles = Storage::disk('public')->files('images');
+
+        // Убираем путь `public/images/`, оставляем только имена файлов
+        $folderFileNames = array_map(function ($f) {
+            return basename($f);
+        }, $folderFiles);
+//dd($folderFileNames);
+        // Получаем список файлов из базы
+//        $databaseFiles = $this->listAllFiles('real_all');
+        $databaseFiles = $this->listRealFilesInDb();
+        $databaseFilesNames = array_map(function ($f) {
+            return basename($f);
+        }, $databaseFiles);
+//dd($databaseFilesNames );
+
+        // Находим файлы в папке, которых нет в базе
+        $list = array_diff($folderFileNames, $databaseFilesNames);
+        $this->filesNoInDb = array_values($list);
+
+        // Рассчитываем общий размер файлов, отсутствующих в БД
+        $this->sizeNoFiles = array_reduce(
+            $this->filesNoInDb,
+            function ($carry, $file) {
+                // Проверяем размер файла через Storage
+                return $carry + Storage::disk('public')->size("images/{$file}");
+            },
+            0 // Начальное значение суммы
+        );
+
+        $this->sizeNoFiles = round($this->sizeNoFiles / 1024 / 1024, 2);
+
+        \Log::info('Файлы в папке, которых нет в БД:', [
+            'missingInDb' => $this->filesNoInDb,
+            'totalSize' => $this->sizeNoFiles
+        ]);
+
+        return $this->filesNoInDb; // Возвращаем массив с отсутствующими файлами
+    }
+
 
     public function uploadImages()
     {
@@ -186,7 +299,7 @@ class DataScan extends Component
 
 //                    \Log::info('$previewCreated', $previewCreated);
 
-                    if( ($previewCreated['result']) ) {
+                    if (($previewCreated['result'])) {
                         $previewPath = 'storage/images/' . $previewCreated['preview_name'];
                         $previewUrl = asset($previewPath);
                     }
@@ -198,7 +311,7 @@ class DataScan extends Component
                         ['image' => $originalFileName], // Условие поиска
                         [
                             'image_loaded' => '/storage/' . $imageName, // Поля для обновления
-                            'preview_loaded' => '/'.$previewPath
+                            'preview_loaded' => '/' . $previewPath
                         ]
                     );
 
@@ -254,7 +367,8 @@ class DataScan extends Component
 
             // Проверяем MIME-тип
             $mimeType = mime_content_type($originalFile);
-            if (!in_array($mimeType, ['image/jpeg', 'image/png'])) {
+//            if (!in_array($mimeType, ['image/jpeg', 'image/png'])) {
+            if (!in_array($mimeType, ['image/jpeg'])) {
                 throw new \Exception("Неподдерживаемый формат файла: $mimeType");
             }
 

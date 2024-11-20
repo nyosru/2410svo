@@ -13,8 +13,8 @@
         </div>
     @endif
 
-    <div class="flex">
-        <div class="w-1/2">
+    <div class="flex ">
+        <div class="w-1/2 md:w-1/4 ">
             <form wire:submit.prevent="scanFile">
                 <label>Сканировать файл</label>
                 <br/>
@@ -34,10 +34,13 @@
             {{--            @error('uploadedImages') <span class="text-red-500">{{ $message }}</span> @enderror--}}
             {{--            @error('uploadedImages.*') <span class="text-red-500">{{ $message }}</span> @enderror--}}
 
+
+            {{--            {{ print_r($filesNoInDb ?? 'x') }}--}}
+
         </div>
 
         <!-- Секция для загрузки нескольких картинок -->
-        <div class="w-1/4 pl-4">
+        <div class="w-1/2 md:w-1/4 pl-4">
             <form wire:submit.prevent="uploadImages">
                 <label class="block bg-green-200 p-1"><b>Загрузить картинки</b></label>
                 <br/>
@@ -50,15 +53,15 @@
                 <button type="submit" class="bg-blue-300 p-2 rounded mt-4">Загрузить картинки</button>
             </form>
         </div>
-        <div class="w-1/4 pl-4">
-            <div class="block bg-yellow-200 p-1"><b>картинки<br/>
-                    ещё&nbsp;не&nbsp;загружены:</b>
-            </div>
+        <div class="w-1/2 md:w-1/4 pl-4">
+            <h3 class="bg-orange-400 p-2">картинки ещё&nbsp;не&nbsp;загружены:</h3>
             @if( !empty($shopPhotosWithoutPhotos) )
-                @foreach( $shopPhotosWithoutPhotos as $image )
-                    {{ $image }}
-                    <br/>
-                @endforeach
+                <div class="w-full border border-1" style="max-height: 200px; overflow: auto;">
+                    @foreach( $shopPhotosWithoutPhotos as $image )
+                        {{ $image }}
+                        <br/>
+                    @endforeach
+                </div>
             @else
                 Отлично, все фотки загружены
             @endif
@@ -69,17 +72,35 @@
             <div class="block bg-green-200 p-1"><b>картинки<br/>
                     которые загружены:</b>
             </div>
+
             {{--                        {{ print_r($listFiles) }}--}}
             @if( !empty( $listFiles ) )
-                @foreach( $listFiles as $k => $f )
-                    <a href="{{ $k }}" target="_blank" class="text-blue-400 underline">{{ $f }}</a><br/>
-                @endforeach
+                <div class="w-full border border-1" style="max-height: 200px; overflow: auto;">
+                    @foreach( $listFiles as $f )
+                        <a href="/storage/images/{{ $f }}" target="_blank" class="text-blue-400 underline">{{ $f }}</a><br/>
+                    @endforeach
+                </div>
             @else
+
                 <br/>
                 <button wire:click="checkFiles" class="bg-green-300 p-1 rounded">Показать</button>
                 <br/>
 
             @endif
+        </div>
+    </div>
+
+    <div class="flex flex-row">
+        <div class="w-1/3">
+            <h3 class="bg-orange-400 p-2">Файлы на сервере которые не используются на сайте</h3>
+            <button class="p-1 bg-green-300 rounded">Удалить все ({{ $sizeNoFiles }}Mb)</button>
+            <br/>
+            <div class="w-full border border-1" style="max-height: 200px; overflow: auto;">
+                @foreach( $filesNoInDb as $f )
+                    <a href="/storage/images/{{ $f }}" target="_blank">{{ $f }}</a> <br/>
+                @endforeach
+            </div>
+
         </div>
     </div>
 

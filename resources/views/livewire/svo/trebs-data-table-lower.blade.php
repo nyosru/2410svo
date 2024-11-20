@@ -141,9 +141,9 @@
                     {{--                        файл qr кода {{ $row['curica'] }} не загружен--}}
                     {{--                    @endif--}}
 
-                    <nobr>
-                        <input type="text" value="{{$row['curica']}}" class="w-full"/>
-                    </nobr>
+{{--                    <nobr>--}}
+{{--                        <input type="text" value="{{$row['curica']}}" class="w-full"/>--}}
+{{--                    </nobr>--}}
 
                     @if( !empty( $row['curica'] ) && !empty($row['qr_loaded']['image_loaded']) )
 
