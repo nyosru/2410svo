@@ -42,7 +42,7 @@
                     {{ $item->firma }}
                     <Br/>
                     @endif
-                    {{ $item->yur_adres }}
+                    <a href="https://yandex.ru/maps/?text={{ $item->yur_adres }}" class="text-blue-400 underline"  target="_blank" >{{ $item->yur_adres }}</a>
             </div>
         </div>
         <div class="flex flex-col w-[200px]">
