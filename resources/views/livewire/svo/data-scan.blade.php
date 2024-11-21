@@ -25,7 +25,8 @@
                         <option value="">-- выберите --</option>
                         <option value="shop">Магазин (добро)</option>
                         <option value="trebs">Требы</option>
-                        <option value="fin">Фин отчёт</option>
+{{--                        <option value="fin">Фин отчёт</option>--}}
+                        <option value="contact">Контакты</option>
                     </select>
                     <br/>
                     <br/>

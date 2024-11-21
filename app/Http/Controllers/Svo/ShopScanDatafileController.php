@@ -7,11 +7,16 @@ use App\Http\Controllers\Service\StringController;
 use App\Models\FinReport;
 use App\Models\ShopItem;
 use App\Models\ShopPhoto;
+use App\Models\SvoContact;
 use App\Models\SvoTrebItem;
 use App\Models\TrebsPhoto;
+
 use App\TDO\FinReportTDO;
 use App\TDO\ShopCsvDataTdo;
+use App\TDO\SvoContactTDO;
 use App\TDO\TrebsCsvDataTdo;
+use App\DTO\SvoContactDTO;
+
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -69,6 +74,8 @@ class ShopScanDatafileController extends Controller
                 } elseif ($type == 'trebs') {
                     SvoTrebItem::truncate();
                     TrebsPhoto::truncate();
+                } elseif ($type == 'contact') {
+                    SvoContact::truncate();
                 } elseif ($type == 'fin') {
                     FinReport::truncate();
                 }
@@ -127,6 +134,13 @@ class ShopScanDatafileController extends Controller
                                 }
                             }
                         }
+                    } elseif ($type == 'contact') {
+
+                        $data = self::prepareDataContact($line);
+//                        dd($data);
+                        $tdo = new SvoContactTDO($data['data']);
+                        $item = SvoContact::create($tdo->toArray());
+
                     } elseif ($type == 'fin') {
                         $data = self::prepareDataFinOtchet($line);
                         $tdo = new FinReportTDO($data['data']);
@@ -266,6 +280,42 @@ class ShopScanDatafileController extends Controller
             } else {
                 $return['data'][self::$header[$k]] = trim($v);
             }
+        }
+
+        return $return;
+    }
+
+    /**
+     * подготовка данных для добавления в дто фин отчёты
+     * @param String $line
+     * @return Array
+     * header\in\data
+     */
+    static public function prepareDataContact(string $line): array
+    {
+        $return = [];
+        $return['header'] = self::$header;
+        $return['in'] =
+        $columns = explode(';', $line);
+        $return['data'] = [];
+        foreach ($columns as $k => $v) {
+//            if (self::$header[$k] == "debet_nach" ||
+//                self::$header[$k] == "kredit_nach" ||
+//                self::$header[$k] == "debet" ||
+//                self::$header[$k] == "kredit" ||
+//                self::$header[$k] == "debet_kon" ||
+//                self::$header[$k] == "kredit_kon" ||
+//                self::$header[$k] == "deb_kol_nach" ||
+//                self::$header[$k] == "kred_kol_nach" ||
+//                self::$header[$k] == "deb_kol" ||
+//                self::$header[$k] == "kred_kol" ||
+//                self::$header[$k] == "deb_kol_kon" ||
+//                self::$header[$k] == "kred_kol_kon"
+//            ) {
+//                $return['data'][self::$header[$k]] = round((float)trim($v), 2);
+//            } else {
+            $return['data'][self::$header[$k]] = trim($v);
+//            }
         }
 
         return $return;

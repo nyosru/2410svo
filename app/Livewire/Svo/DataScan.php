@@ -5,6 +5,7 @@ namespace App\Livewire\Svo;
 use App\Http\Controllers\Svo\ShopScanDatafileController;
 use App\Models\Photo;
 use App\Models\ShopPhoto;
+use App\Models\SvoContact;
 use App\Models\SvoTrebItem;
 use App\Models\TrebsPhoto;
 use Illuminate\Support\Facades\Storage;
@@ -45,7 +46,6 @@ class DataScan extends Component
      */
     public function checkFiles()
     {
-
         $t1 = Photo::whereNotNull('image_loaded')->whereNotNull('preview_loaded')->pluck('preview_loaded');
         $t = Photo::whereNotNull('image_loaded')->whereNotNull('preview_loaded')->pluck('image_loaded');
 
@@ -63,7 +63,6 @@ class DataScan extends Component
         $this->listFiles = array_map(function ($f) {
             return basename($f);
         }, $res);
-
 //        return $res2;
     }
 
@@ -126,9 +125,14 @@ class DataScan extends Component
             ->distinct()
             ->pluck('curica');
 
+  $contactPhotos = SvoContact::select('foto')
+            ->distinct()
+            ->pluck('foto');
+
         // Объединяем результаты и удаляем повторы
         $this->listFiles = $shopPhotos->merge($svoTrebPhotos)
             ->merge($svoTrebQrPhotos)
+            ->merge($contactPhotos)
             ->unique()
             ->sort()
             ->filter(function ($value) {
@@ -185,6 +189,7 @@ class DataScan extends Component
 
     public function scanFile()
     {
+
         // Валидация для основного файла
 //        $this->validate([
 //            'type_file' => 'required',
@@ -197,6 +202,8 @@ class DataScan extends Component
                 $savedFile = $this->uploadedFile1->storeAs('svo', 'Dobro.csv');
             } elseif ($this->type_file == 'trebs') {
                 $savedFile = $this->uploadedFile1->storeAs('svo', 'Trebs.csv');
+            } elseif ($this->type_file == 'contact') {
+                $savedFile = $this->uploadedFile1->storeAs('svo', 'Contact.csv');
             } elseif ($this->type_file == 'fin') {
                 $savedFile = $this->uploadedFile1->storeAs('svo', 'IMOCB.csv');
             }
@@ -265,6 +272,7 @@ class DataScan extends Component
 
     public function uploadImages()
     {
+
         // Валидация изображений
 //        $this->validate([
 //            'uploadedImages' => 'required|array|min:1',  // Минимум одно изображение
