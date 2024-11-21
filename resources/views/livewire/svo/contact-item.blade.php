@@ -1,15 +1,15 @@
-<div class="w-[900px] mx-auto">
+<div class="w-[1000px] mx-auto">
 
     {{--    {{ print_r($item->getAttributes()) }}--}}
-    <div class="flex flex-row w-[900px] hover:bg-gray-100 ">
+    <div class="flex flex-row w-[1000px] hover:bg-gray-100 ">
 
         <div class="w-[300px] flex items-center justify-center p-2">
             @if( empty($item->photoLoaded->preview_loaded) )
-                {{--                <div class="w-[160px] h-[160px] rounded" style="border: 1px solid gray;">&nbsp;</div>--}}
+                {{-- <div class="w-[160px] h-[160px] rounded" style="border: 1px solid gray;">&nbsp;</div>--}}
                 <img src="icon/ava.png"/>
             @else
                 <img src="{{ $item->photoLoaded->image_loaded ?? '' }}"
-                     {{--                     onclick="showModal('{{ $item->photoLoaded->image_loaded }}')"--}}
+                     {{-- onclick="showModal('{{ $item->photoLoaded->image_loaded }}')"--}}
                      class="w-[120px]"/>
             @endif
         </div>
