@@ -31,10 +31,13 @@ class DataScan extends Component
     public $listRealFilesInDb = [];
     public $filesNoInDb = [];
     public $sizeNoFiles = 0;
+    public $secret_for_scan = '';
+    public $secret_for_scan_value = 0;
 
 
     public function mount(): void
     {
+        $this->secret_for_scan_value = env('SECRET_FOR_SCAN',rand());
         $this->checkNoFiles();
         $this->checkOffFiles();
     }
