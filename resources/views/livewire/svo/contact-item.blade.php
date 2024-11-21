@@ -1,7 +1,7 @@
 <div class="w-[1000px] mx-auto">
 
     {{--    {{ print_r($item->getAttributes()) }}--}}
-    <div class="flex flex-row w-[1000px] hover:bg-gray-100 ">
+    <div class="flex flex-row w-[1000px] hover:bg-gray-100 hover:shadow rounded-xl">
 
         <div class="w-[300px] flex items-center justify-center p-2">
             @if( empty($item->photoLoaded->preview_loaded) )
@@ -33,15 +33,16 @@
                            target="_blank">{{ parse_url($item->sayt_tab, PHP_URL_HOST) }}</a>
                     @endif
                 </div>
-{{--            </div>--}}
-            {{-- Ячейка, которая должна быть прижата к нижней границе --}}
-{{--            <div class="mt-auto">--}}
+                {{--            </div>--}}
+                {{-- Ячейка, которая должна быть прижата к нижней границе --}}
+                {{--            <div class="mt-auto">--}}
 
                 @if( !empty($item->gruppa) )
                     {{ $item->gruppa }}
                     <Br/>
                 @endif
-                <a href="https://yandex.ru/maps/?text={{ $item->yur_adres }}" class="text-[18px] text-blue-400 underline"
+                <a href="https://yandex.ru/maps/?text={{ $item->yur_adres }}"
+                   class="text-[18px] text-blue-400 underline"
                    target="_blank">{{ $item->yur_adres }}</a>
             </div>
         </div>
@@ -69,7 +70,7 @@
                            {{--                   class="text-blue-400 underline"--}}
                            class="mt-1 block w-full bg-yellow-300 text-center px-3 py-1 rounded text-[16px]"
                            title="Позвонить"
-                        ><img src="/icon/phone.png" class="w-[18px] inline mr-2" /> {{ $item->telefon }}</a>
+                        ><img src="/icon/phone.png" class="w-[18px] inline mr-2"/> {{ $item->telefon }}</a>
                     </div>
                 @endif
                 @if( !empty($item->mylo) )
@@ -78,7 +79,7 @@
                            onclick="toggleBlock('m{{ $item->id }}'); return false;"
                            {{--                   class="text-blue-400 underline"--}}
                            class="mt-1 block w-full bg-yellow-300 text-center px-3 py-1 rounded text-[14px]"
-                        ><img src="/icon/mail.png" class="w-[18px] inline mr-2" /> Вступить</a>
+                        ><img src="/icon/mail.png" class="w-[18px] inline mr-2"/> Вступить</a>
                     </div>
                 @endif
             </div>
