@@ -22,7 +22,7 @@
                 <div class="bg-yellow-400 p-2">Сканировать файл</div>
                 <div class="p-3">
                     <select wire:model="type_file" required class="w-full p-1">
-                        <option value="">-- выберите --</option>
+                        <option value="auto">Автоопределение (по названию файла)</option>
                         <option value="shop">Магазин (добро)</option>
                         <option value="trebs">Требы</option>
 {{--                        <option value="fin">Фин отчёт</option>--}}
@@ -31,6 +31,13 @@
                     <br/>
                     <br/>
                     <input type="file" wire:model="uploadedFile1"/>
+                    <br/>
+                    <br/>
+                    <b>Автоопределение:</b><br/>
+                    Контакты: ППД.csv<br/>
+                    Магазин: Dobro.csv<br/>
+                    Требы: TrebaElka.csv<br/>
+
                     <br/>
                     @error('uploadedFile1') <span class="text-red-500">{{ $message }}</span> @enderror
                     <br/>

@@ -125,7 +125,7 @@ class DataScan extends Component
             ->distinct()
             ->pluck('curica');
 
-  $contactPhotos = SvoContact::select('foto')
+        $contactPhotos = SvoContact::select('foto')
             ->distinct()
             ->pluck('foto');
 
@@ -189,7 +189,6 @@ class DataScan extends Component
 
     public function scanFile()
     {
-
         // Валидация для основного файла
 //        $this->validate([
 //            'type_file' => 'required',
@@ -198,24 +197,45 @@ class DataScan extends Component
 
         // Сохранение файла в зависимости от выбранного типа
         try {
-            if ($this->type_file == 'shop') {
+            $tf = $this->type_file;
+
+            if ($this->type_file == 'auto') {
+                $file_name = $this->uploadedFile1->getClientOriginalName();
+//                session()->flash('error', $file_name );
+                if ($file_name == 'Dobro.csv') {
+                    $tf = 'shop';
+                } elseif ($file_name == 'TrebaElka.csv') {
+                    $tf = 'trebs';
+                } elseif ($file_name == 'ППД.csv') {
+                    $tf = 'contact';
+                } else {
+                    session()->flash('error', 'Тип файла не определён, проверте название файла и повторите загрузку');
+                }
+            }
+
+            if ($tf == 'shop') {
                 $savedFile = $this->uploadedFile1->storeAs('svo', 'Dobro.csv');
-            } elseif ($this->type_file == 'trebs') {
+            } elseif ($tf == 'trebs') {
                 $savedFile = $this->uploadedFile1->storeAs('svo', 'Trebs.csv');
-            } elseif ($this->type_file == 'contact') {
+            } elseif ($tf == 'contact') {
                 $savedFile = $this->uploadedFile1->storeAs('svo', 'Contact.csv');
-            } elseif ($this->type_file == 'fin') {
+            } elseif ($tf == 'fin') {
                 $savedFile = $this->uploadedFile1->storeAs('svo', 'IMOCB.csv');
+            } else {
+                session()->flash('error', 'Файл не загружен, проверте название файла и повторите загрузку');
             }
 
             // Вызов сканирования и сохранение результата
-            $this->scanResult = (array)ShopScanDatafileController::scan($savedFile, $this->type_file);
+            $this->scanResult = (array)ShopScanDatafileController::scan($savedFile, $tf);
 //dd($this->scanResult);
             $this->checkNoFiles();
 
             session()->flash('message', 'Файл успешно сканирован!');
         } catch (\Exception $e) {
-            session()->flash('error', 'Ошибка при сканировании файла: ' . $e->getMessage());
+            session()->flash('error', 'Ошибка при сканировании файла: ' . $e->getMessage()
+                .' / '.$e->getFile()
+                .' / '.$e->getLine()
+            );
         }
         return;
     }
@@ -272,7 +292,6 @@ class DataScan extends Component
 
     public function uploadImages()
     {
-
         // Валидация изображений
 //        $this->validate([
 //            'uploadedImages' => 'required|array|min:1',  // Минимум одно изображение
