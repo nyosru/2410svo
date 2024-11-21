@@ -18,7 +18,7 @@
             <div>
                 <div class="float-right text-[12px] pr-2">
 
-                    {{ $item->gruppa ?? '' }}
+                    {{ $item->firma ?? '' }}
                     {{--                    <br/>--}}
                     {{--                    <span class="text-[16px]">--}}
 
@@ -33,12 +33,12 @@
                            target="_blank">{{ parse_url($item->sayt_tab, PHP_URL_HOST) }}</a>
                     @endif
                 </div>
-            </div>
+{{--            </div>--}}
             {{-- Ячейка, которая должна быть прижата к нижней границе --}}
-            <div class="mt-auto">
+{{--            <div class="mt-auto">--}}
 
-                @if( !empty($item->firma) )
-                    {{ $item->firma }}
+                @if( !empty($item->gruppa) )
+                    {{ $item->gruppa }}
                     <Br/>
                 @endif
                 <a href="https://yandex.ru/maps/?text={{ $item->yur_adres }}" class="text-[18px] text-blue-400 underline"
