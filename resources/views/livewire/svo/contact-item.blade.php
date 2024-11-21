@@ -1,6 +1,6 @@
 <div class="w-[800px] mx-auto">
 
-{{--    {{ print_r($item->getAttributes()) }}--}}
+    {{--    {{ print_r($item->getAttributes()) }}--}}
     <div class="flex flex-row w-[900px] hover:bg-gray-100 ">
 
         <div class="w-[300px] flex items-center justify-center p-2">
@@ -9,7 +9,7 @@
                 <img src="icon/ava.png"/>
             @else
                 <img src="{{ $item->photoLoaded->image_loaded ?? '' }}"
-{{--                     onclick="showModal('{{ $item->photoLoaded->image_loaded }}')"--}}
+                     {{--                     onclick="showModal('{{ $item->photoLoaded->image_loaded }}')"--}}
                      class="w-[120px]"/>
             @endif
         </div>
@@ -19,33 +19,33 @@
                 <div class="float-right text-[12px] pr-2">
 
                     {{ $item->gruppa ?? '' }}
-{{--                    <br/>--}}
-{{--                    <span class="text-[16px]">--}}
+                    {{--                    <br/>--}}
+                    {{--                    <span class="text-[16px]">--}}
 
-{{--                </span>--}}
+                    {{--                </span>--}}
                 </div>
                 {{-- ячейка 2 --}}
                 <div class="text-lg font-semibold">
                     {{ $item->m_o_l }}
+                    @if( !empty($item->sayt_tab) )
+                        <br/>
+                        <a href="{{ $item->sayt_tab }}" class="text-blue-400 underline"
+                           target="_blank">{{ parse_url($item->sayt_tab, PHP_URL_HOST) }}</a>
+                    @endif
                 </div>
             </div>
             {{-- Ячейка, которая должна быть прижата к нижней границе --}}
             <div class="mt-auto">
 
-                @if( !empty($item->sayt_tab) )
-                    <a href="{{ $item->sayt_tab }}" class="text-blue-400 underline" target="_blank">{{ parse_url($item->sayt_tab, PHP_URL_HOST) }}</a>
-                @endif
-
-                <br/>
-                <br/>
-                    @if( !empty($item->firma) )
+                @if( !empty($item->firma) )
                     {{ $item->firma }}
                     <Br/>
-                    @endif
-                    <a href="https://yandex.ru/maps/?text={{ $item->yur_adres }}" class="text-blue-400 underline"  target="_blank" >{{ $item->yur_adres }}</a>
+                @endif
+                <a href="https://yandex.ru/maps/?text={{ $item->yur_adres }}" class="text-[18px] text-blue-400 underline"
+                   target="_blank">{{ $item->yur_adres }}</a>
             </div>
         </div>
-        <div class="flex flex-col w-[200px]">
+        <div class="flex flex-col w-[250px]">
             {{--            <div class="text-right">--}}
             {{--                {{ number_format($item->tsena1,0,'','`') }} ₽<br/>--}}
             {{--                {{ number_format($item->tsena2,0,'','`') }} ₽<br/>--}}
@@ -65,11 +65,11 @@
                 @if( !empty($item->telefon) )
                     <div>
                         <a href="tel:{{ $item->telefon }}"
-{{--                           onclick="toggleBlock('m{{ $item->id }}'); return false;"--}}
+                           {{--                           onclick="toggleBlock('m{{ $item->id }}'); return false;"--}}
                            {{--                   class="text-blue-400 underline"--}}
                            class="mt-1 block w-full bg-yellow-300 text-center px-3 py-1 rounded text-[16px]"
                            title="Позвонить"
-                        >{{ $item->telefon }}</a>
+                        ><img src="/icon/phone.png" class="w-[18px] inline mr-2" /> {{ $item->telefon }}</a>
                     </div>
                 @endif
                 @if( !empty($item->mylo) )
@@ -78,7 +78,7 @@
                            onclick="toggleBlock('m{{ $item->id }}'); return false;"
                            {{--                   class="text-blue-400 underline"--}}
                            class="mt-1 block w-full bg-yellow-300 text-center px-3 py-1 rounded text-[14px]"
-                        >Мыло</a>
+                        ><img src="/icon/mail.png" class="w-[18px] inline mr-2" /> Вступить</a>
                     </div>
                 @endif
             </div>
@@ -86,19 +86,16 @@
     </div>
 
     @if( !empty($item->mylo) )
-        <div class="m-2" id="m{{ $item->id }}" style="display: none;">
 
+        <div class="m-2" id="m{{ $item->id }}" style="display: none;">
             <div class="flex flex-row-reverse">
                 <div class="bg-orange-100 p-6 rounded-lg shadow-lg w-[600px] table-animate ">
-
-<span
-    onclick="toggleBlock('m{{ $item->id }}'); return false;"
-    class="float-right cursor-pointer text-white py-1 px-2 rounded bg-red-200 hover:bg-red-600 text-[10px]">
-    X
-</span>
-
+                    <span
+                        onclick="toggleBlock('m{{ $item->id }}'); return false;"
+                        class="float-right cursor-pointer text-white py-1 px-2 rounded bg-red-200 hover:bg-red-600 text-[10px]">
+                        X
+                    </span>
                     {!! $item->mylo !!}
-
                 </div>
             </div>
         </div>
@@ -127,13 +124,13 @@
                 text-[10px]
                 ">
 
-{{--            @if($item->photoLoaded->image_loaded->isNotEmpty())--}}
-{{--                @foreach($item->photos as $photo)--}}
-                    @if(!empty($item->photoLoaded->image_loaded) )
-                        <img src="{{ $item->photoLoaded->image_loaded  }}" class="mx-auto w-[120px]"/>
-                    @endif
-{{--                @endforeach--}}
-{{--            @endif--}}
+            {{--            @if($item->photoLoaded->image_loaded->isNotEmpty())--}}
+            {{--                @foreach($item->photos as $photo)--}}
+            @if(!empty($item->photoLoaded->image_loaded) )
+                <img src="{{ $item->photoLoaded->image_loaded  }}" class="mx-auto w-[120px]"/>
+            @endif
+            {{--                @endforeach--}}
+            {{--            @endif--}}
 
         </div>
 
