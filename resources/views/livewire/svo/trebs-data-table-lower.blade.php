@@ -77,12 +77,12 @@
 <div class="w-[120px]">
 {{ (isset($row['debet_kon']) && $row['debet_kon'] <> 0) ? number_format($row['debet_kon'],2,'.','`') : '-' }}
 <br/>
-{{ (isset($row['debet_kol_kon']) && $row['debet_kol_kon'] <> 0) ? number_format($row['debet_kol_kon'],2,'.','`') : '-' }}
+Кол: {{ (isset($row['debet_kol_kon']) && $row['debet_kol_kon'] <> 0) ? number_format($row['debet_kol_kon'],2,'.','`') : '-' }}
 </div>
 <div class="w-[120px]">
 {{ (isset($row['kredit_kon']) && round( (float) $row['kredit_kon']) <> 0) ? number_format($row['kredit_kon'],2,'.','`') : '-' }}
 <br/>
-{{ (isset($row['kredit_kol_kon']) && round( (float) $row['kredit_kol_kon']) <> 0) ? number_format($row['kredit_kol_kon'],2,'.','`') : '-' }}
+Кол: {{ (isset($row['kredit_kol_kon']) && round( (float) $row['kredit_kol_kon']) <> 0) ? number_format($row['kredit_kol_kon'],2,'.','`') : '-' }}
 </div>
 
 
