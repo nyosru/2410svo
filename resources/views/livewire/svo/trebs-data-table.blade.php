@@ -71,6 +71,8 @@
 
     @endif
 
+
+
 <livewire:svo.trebs-data-table-lower :data_head="$data_head"
                                      wire:lazy
 />
