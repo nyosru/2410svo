@@ -1,5 +1,8 @@
-<div class="mb-[100px] block w-[1200px] mx-auto bg-white shadow-md rounded-lg overflow-hidden border border-gray-300">
+<div class="mb-[100px] block w-[1200px] mx-auto
+{{--bg-white shadow-md rounded-lg overflow-hidden border border-gray-300--}}
+">
 
+    @if(1==2)
     <!-- Header Row -->
     <div class="flex flex-row bg-gray-200
 {{--sticky top-[40px]--}}
@@ -65,6 +68,8 @@
 {{--        </div>--}}
 {{--        <!-- Add more rows as needed -->--}}
 {{--    </div>--}}
+
+    @endif
 
 <livewire:svo.trebs-data-table-lower :data_head="$data_head"
                                      wire:lazy
