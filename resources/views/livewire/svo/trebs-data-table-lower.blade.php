@@ -4,6 +4,8 @@
         <div class="flex flex-row xw-[1200px]
          w-[{{ 1200-(( $row['uroven'] ?? 1 )-1)*20 }}px]
 
+        hover:bg-gray-100
+
         @if( $row['uroven'] > 1 )
         border-l-2 border-l-red
         @endif
@@ -109,9 +111,15 @@
                         @endif
 
                     </b>
-                        @if( !empty($item->site_tab) )
-                            <br/><a href="{{ $item->site_tab }}" class="underline text-blue-500" target="_blank">{{ parse_url($item->site_tab, PHP_URL_HOST) }}</a>
+
+
+
+                        @if( !empty($row['site_tab']) )
+                            <br/><a href="{{ $row['site_tab'] }}" class="underline text-blue-500" target="_blank">{{ parse_url($row['site_tab'], PHP_URL_HOST) }}</a>
                         @endif
+
+
+
                     {{--                    @if( $row['comment'] )--}}
                     {{--                        <br/>--}}
                     {{--                        <span class="text-[14px]">--}}
