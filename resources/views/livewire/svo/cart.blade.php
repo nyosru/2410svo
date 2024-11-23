@@ -10,8 +10,8 @@
         <form wire:submit="sendOrder">
             <div class="flex flex-col w-full border border-gray-300">
                 <!-- Заголовок -->
-                <div class="hidden md:flex w-full bg-gray-100 text-sm font-semibold">
-                    <div class="flex-1 px-4 py-2 border">Товар</div>
+                <div class="flex flex-row w-full bg-gray-100 text-sm font-semibold">
+                    <div class="w-[50%] px-4 py-2 border">Товар</div>
                     <div class="w-[20%] px-4 py-2 border text-center">Количество</div>
                     <div class="w-[15%] px-4 py-2 border text-right">Цена</div>
                     <div class="w-[15%] px-4 py-2 border text-right">Сумма</div>
@@ -19,17 +19,17 @@
 
                 <!-- Товары в корзине -->
                 @foreach($cartItems as $item)
-                    <div class="flex flex-col md:flex-row md:items-center w-full border-b border-gray-300 py-2">
+                    <div class="flex flex-row items-center w-full border-b border-gray-300 py-2">
                         <!-- Название товара и описание -->
-                        <div class="flex-1 px-4 border-b md:border-none md:py-2">
+                        <div class="w-[50%] px-4 border-b md:border-none md:py-2">
                             <div class="text-lg font-semibold">{{ $item['item']->naimenovanie }}</div>
                             <small>{{ $item['item']->dobavka }}</small>
                         </div>
 
 
                         <!-- Количество -->
-                        <div class="w-full md:w-[20%] px-4 flex flex-col items-center md:flex-row justify-center border-b md:border-none py-2">
-                            <div class="flex items-center justify-center">
+                        <div class="w-[20%] px-4 items-center justify-center py-2">
+                            <div class="w-full flex items-center justify-center mx-auto">
                                 <button wire:click="decrementQuantity({{ $item['item']->id }})" class="px-2 bg-gray-300 mr-1">-</button>
                                 <button wire:click="decrementQuantity10({{ $item['item']->id }})" class="px-2 bg-gray-300">-10</button>
                                 <input type="text"
@@ -43,12 +43,12 @@
 
 
                         <!-- Цена -->
-                        <div class="w-full md:w-[15%] px-4 text-right text-sm md:ml-4 md:py-2">
+                        <div class="w-[15%] px-4 text-right text-sm ml-4 py-2">
                             {{ number_format($item['item']->tsena3, 2, '.', '`') }}
                         </div>
 
                         <!-- Сумма -->
-                        <div class="w-full md:w-[15%] px-4 text-right text-sm md:py-2">
+                        <div class="w-[15%] px-4 text-right text-sm py-2">
                             {{ number_format(round($item['quantity'] * $item['item']->tsena3, 2), 2, '.', '`') }}
                         </div>
                     </div>
