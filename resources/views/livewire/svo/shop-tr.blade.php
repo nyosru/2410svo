@@ -90,28 +90,20 @@
 
     @if( !empty($item->analog) )
         <div class="m-2" id="analog{{ $item->id }}" style="display: none;">
-
             <div class="flex flex-row-reverse">
                 <div class="bg-orange-100 p-6 rounded-lg shadow-lg w-[600px] table-animate ">
-
-<span
-    onclick="toggleBlock('analog{{ $item->id }}'); return false;"
-    class="float-right cursor-pointer text-white py-1 px-2 rounded bg-red-200 hover:bg-red-600 text-[10px]">
-    X
-</span>
+                    <span
+                        onclick="toggleBlock('analog{{ $item->id }}'); return false;"
+                        class="float-right cursor-pointer text-white py-1 px-2 rounded bg-red-200 hover:bg-red-600 text-[10px]">
+                        X
+                    </span>
                     Аналог:<br/>
                     {!! $item->analog !!}
-
                 </div>
             </div>
         </div>
     @endif
 </div>
-
-
-
-
-
 
 
 @if(1==2)
