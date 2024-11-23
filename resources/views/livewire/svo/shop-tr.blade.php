@@ -46,13 +46,14 @@
                 <div class="text-lg font-semibold">
                     {{ $item->naimenovanie }} {{ $item->dobavka }}
                 </div>
-            </div>
-            {{-- Ячейка, которая должна быть прижата к нижней границе --}}
-            <div class="mt-auto text-blue-400 underline">
                 @if( !empty($item->sayt_tab) )
                     <a href="{{ $item->sayt_tab }}" target="_blank">{{ parse_url($item->sayt_tab, PHP_URL_HOST) }}</a>
                 @endif
             </div>
+            {{-- Ячейка, которая должна быть прижата к нижней границе --}}
+{{--            <div class="mt-auto text-blue-400 underline">--}}
+
+{{--            </div>--}}
         </div>
         <div class="flex flex-col w-[200px]">
             <div class="text-right">
