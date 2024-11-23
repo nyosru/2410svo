@@ -57,7 +57,7 @@
                 <!-- Общая сумма -->
                 <div class="flex w-full font-semibold">
                     <div class="flex-1 px-4 py-2 border text-right">Итого:</div>
-                    <div class="w-[15%] px-4 py-2 border text-right">{{ number_format(round(collect($cartItems)->sum(fn($item) => $item['quantity'] * $item['item']->price1), 2), 2, '.', '`') }}</div>
+                    <div class="w-[15%] px-4 py-2 border text-right">{{ number_format(round(collect($cartItems)->sum(fn($item) => $item['quantity'] * $item['item']->tsena3), 2), 2, '.', '`') }}</div>
                 </div>
             </div>
 
