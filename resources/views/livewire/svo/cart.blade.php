@@ -22,8 +22,8 @@
                     <div class="flex flex-col md:flex-row md:items-center w-full border-b border-gray-300 py-2">
                         <!-- Название товара и описание -->
                         <div class="flex-1 px-4 border-b md:border-none md:py-2">
-                            <div class="text-lg font-semibold">{{ $item['item']->name }}</div>
-                            <small>{{ $item['item']->additive }}</small>
+                            <div class="text-lg font-semibold">{{ $item['item']->naimenovanie }}</div>
+                            <small>{{ $item['item']->dobavka }}</small>
                         </div>
 
 
@@ -44,12 +44,12 @@
 
                         <!-- Цена -->
                         <div class="w-full md:w-[15%] px-4 text-right text-sm md:ml-4 md:py-2">
-                            {{ number_format($item['item']->price1, 2, '.', '`') }}
+                            {{ number_format($item['item']->tsena3, 2, '.', '`') }}
                         </div>
 
                         <!-- Сумма -->
                         <div class="w-full md:w-[15%] px-4 text-right text-sm md:py-2">
-                            {{ number_format(round($item['quantity'] * $item['item']->price1, 2), 2, '.', '`') }}
+                            {{ number_format(round($item['quantity'] * $item['item']->tsena3, 2), 2, '.', '`') }}
                         </div>
                     </div>
                 @endforeach

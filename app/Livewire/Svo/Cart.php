@@ -81,10 +81,10 @@ class Cart extends Component
             if( $v['quantity'] == 0 )
                 continue;
 
-            $sum =  round($v['item']->tsena1*$v['quantity'],2 ) ;
+            $sum =  round($v['item']->tsena3*$v['quantity'],2 ) ;
 
             $msg1 .= '+ '.$v['item']->naimenovanie.' / '.$v['item']->dobavka. PHP_EOL
-                .' ('.$v['item']->tsena1.' р * '.$v['quantity'].'шт) = '.number_format( $sum ,2,'.','`') .' руб'. PHP_EOL. PHP_EOL;
+                .' ('.$v['item']->tsena3.' р * '.$v['quantity'].'шт) = '.number_format( $sum ,2,'.','`') .' руб'. PHP_EOL. PHP_EOL;
 
             $itogo += $sum;
         }
