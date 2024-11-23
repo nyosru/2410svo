@@ -3,9 +3,9 @@
     {{--    {{ print_r($item->getAttributes()) }}--}}
     <div class="flex flex-row w-[1100px] hover:bg-gray-100 ">
 
-        <div class="w-[300px] flex items-center justify-center p-2">
+        <div class="w-[180px] flex items-center justify-center p-2">
             @if( empty($item->photos) )
-                <div class="w-[160px] h-[160px] rounded" style="border: 1px solid gray;">&nbsp;</div>
+                <div class="max-w-[160px] max-h-[160px] rounded" style="border: 1px solid gray;">&nbsp;</div>
             @else
                 @foreach ($item->photos as $photo)
 
