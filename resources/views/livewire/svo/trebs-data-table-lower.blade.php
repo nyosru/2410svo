@@ -105,11 +105,13 @@
                             {{$row['doc'] ?? ''}} ,
                             {{$row['nom_str'] ?? ''}}
                             </span>
+
                         @endif
 
-
                     </b>
-
+                        @if( !empty($item->site_tab) )
+                            <br/><a href="{{ $item->site_tab }}" class="underline text-blue-500" target="_blank">{{ parse_url($item->site_tab, PHP_URL_HOST) }}</a>
+                        @endif
                     {{--                    @if( $row['comment'] )--}}
                     {{--                        <br/>--}}
                     {{--                        <span class="text-[14px]">--}}
