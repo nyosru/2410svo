@@ -1,7 +1,7 @@
-<div class="w-[800px] mx-auto">
+<div class="w-[1100px] mx-auto">
 
     {{--    {{ print_r($item->getAttributes()) }}--}}
-    <div class="flex flex-row w-[900px] hover:bg-gray-100 ">
+    <div class="flex flex-row w-[1100px] hover:bg-gray-100 ">
 
         <div class="w-[300px] flex items-center justify-center p-2">
             @if( empty($item->photos) )
@@ -47,42 +47,46 @@
                     {{ $item->naimenovanie }} {{ $item->dobavka }}
                 </div>
                 @if( !empty($item->sayt_tab) )
-                    <a href="{{ $item->sayt_tab }}" class="underline text-blue-500" target="_blank">{{ parse_url($item->sayt_tab, PHP_URL_HOST) }}</a>
+                    <a href="{{ $item->sayt_tab }}" class="underline text-blue-500"
+                       target="_blank">{{ parse_url($item->sayt_tab, PHP_URL_HOST) }}</a>
                 @endif
             </div>
             {{-- Ячейка, которая должна быть прижата к нижней границе --}}
-{{--            <div class="mt-auto text-blue-400 underline">--}}
+            {{--            <div class="mt-auto text-blue-400 underline">--}}
 
-{{--            </div>--}}
+            {{--            </div>--}}
         </div>
-        <div class="flex flex-col w-[200px]">
-            <div class="text-right">
+        <div class="flex flex-col w-[200px] ">
+            <div class="text-right pr-2">
                 {{ number_format($item->tsena1,0,'','`') }} ₽<br/>
                 {{ number_format($item->tsena2,0,'','`') }} ₽<br/>
                 {{ number_format($item->tsena3,0,'','`') }} ₽<br/>
             </div>
-            <div>
-                {{-- купить --}}
-                @if ($inCart)
-                    <a href="{{ route('svo.cart') }}"
-                       class="block bg-green-400 text-center text-white px-3 py-1 rounded">В&nbsp;корзине</a>
-                @else
-                    <button wire:click="addToCart" class="block w-full bg-yellow-300 text-center px-3 py-1 rounded">
-                        Заказать
-                    </button>
-                @endif
-            </div>
+        </div>
+        <div class="flex flex-col w-[200px] ">
+            {{-- купить --}}
+            @if ($inCart)
+                <a href="{{ route('svo.cart') }}"
+                   class="block bg-green-400 text-center text-white px-3 py-1 rounded">В&nbsp;корзине</a>
+            @else
+                <button wire:click="addToCart" class="block w-full bg-yellow-300 text-center px-3 py-1 rounded">
+                    Заказать
+                </button>
+            @endif
+
             @if( !empty($item->analog) )
                 <div>
                     <a href="#"
                        onclick="toggleBlock('analog{{ $item->id }}'); return false;"
                        {{--                   class="text-blue-400 underline"--}}
                        class="mt-1 block w-full bg-yellow-300 text-center px-3 py-1 rounded text-[14px]"
-                    >предложить аналог</a>
+                    >Предложить аналог</a>
                 </div>
             @endif
+
         </div>
     </div>
+
 
     @if( !empty($item->analog) )
         <div class="m-2" id="analog{{ $item->id }}" style="display: none;">
@@ -103,8 +107,6 @@
         </div>
     @endif
 </div>
-
-
 
 
 
@@ -214,7 +216,8 @@ p-1">
             <!-- Фото товара -->
             <div class="flex-shrink-0 w-24 h-24">
                 @foreach ($item->photos as $photo)
-                    <img src="{{ $photo->photo_url }}" alt="Фото {{ $item->name }}" class="w-full h-full object-cover">
+                    <img src="{{ $photo->photo_url }}" alt="Фото {{ $item->name }}"
+                         class="w-full h-full object-cover">
                 @endforeach
             </div>
 
@@ -248,7 +251,8 @@ p-1">
 
 
                 @if ($inCart)
-                    <a href="{{ route('svo.cart') }}" class="block bg-green-400 xtext-white px-3 py-1 rounded">Перейти в&nbsp;корзину</a>
+                    <a href="{{ route('svo.cart') }}" class="block bg-green-400 xtext-white px-3 py-1 rounded">Перейти
+                        в&nbsp;корзину</a>
                 @else
                     <button wire:click="addToCart" class="block w-full bg-yellow-300 xtext-white px-3 py-1 rounded">
                         Заказать
@@ -323,7 +327,8 @@ p-1">
                             <a href="{{ route('svo.cart') }}" class="bg-green-400 p-1 rounded">Перейти в корзину</a>
                         @else
 
-                            <button wire:click="addToCart" class="block-inline mx-auto bg-yellow-400 p-1 rounded">Купить
+                            <button wire:click="addToCart" class="block-inline mx-auto bg-yellow-400 p-1 rounded">
+                                Купить
                             </button>
 
                         @endif
