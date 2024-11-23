@@ -47,7 +47,7 @@
                     {{ $item->naimenovanie }} {{ $item->dobavka }}
                 </div>
                 @if( !empty($item->sayt_tab) )
-                    <a href="{{ $item->sayt_tab }}" target="_blank">{{ parse_url($item->sayt_tab, PHP_URL_HOST) }}</a>
+                    <a href="{{ $item->sayt_tab }}" class="underline text-blue-500" target="_blank">{{ parse_url($item->sayt_tab, PHP_URL_HOST) }}</a>
                 @endif
             </div>
             {{-- Ячейка, которая должна быть прижата к нижней границе --}}
