@@ -30,14 +30,14 @@
                         <!-- Количество -->
                         <div class="w-[20%] px-4 items-center justify-center py-2">
                             <div class="w-full flex items-center justify-center mx-auto">
-                                <button wire:click="decrementQuantity({{ $item['item']->id }})" class="px-2 bg-gray-300 mr-1">-</button>
-                                <button wire:click="decrementQuantity10({{ $item['item']->id }})" class="px-2 bg-gray-300">-10</button>
+                                <button type="button" wire:click="decrementQuantity({{ $item['item']->id }})" class="px-2 bg-gray-300 mr-1">-</button>
+                                <button type="button" wire:click="decrementQuantity10({{ $item['item']->id }})" class="px-2 bg-gray-300">-10</button>
                                 <input type="text"
                                        readonly
                                        class="w-[50px] text-center mx-1 border border-gray-300"
                                        value="{{ $item['quantity'] }}" />
-                                <button wire:click="incrementQuantity10({{ $item['item']->id }})" class="px-2 bg-gray-300">+10</button>
-                                <button wire:click="incrementQuantity({{ $item['item']->id }})" class="px-2 bg-gray-300 ml-1">+</button>
+                                <button type="button" wire:click="incrementQuantity10({{ $item['item']->id }})" class="px-2 bg-gray-300">+10</button>
+                                <button type="button" wire:click="incrementQuantity({{ $item['item']->id }})" class="px-2 bg-gray-300 ml-1">+</button>
                             </div>
                         </div>
 
