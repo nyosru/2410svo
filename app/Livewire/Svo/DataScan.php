@@ -207,28 +207,29 @@ class DataScan extends Component
 //                session()->flash('error', $file_name );
                 if ($file_name == 'dobro.csv') {
                     $tf = 'shop';
-                    $savedFile = $this->uploadedFile1->storeAs('svo', 'Dobro.csv');
+
                 } elseif ($file_name == 'trebaelka.csv') {
                     $tf = 'trebs';
-                    $savedFile = $this->uploadedFile1->storeAs('svo', 'Trebs.csv');
+//                    $savedFile = $this->uploadedFile1->storeAs('svo', 'Trebs.csv');
                 } elseif ($file_name == 'ппд.csv') {
                     $tf = 'contact';
-                    $savedFile = $this->uploadedFile1->storeAs('svo', 'Contact.csv');
+//                    $savedFile = $this->uploadedFile1->storeAs('svo', 'Contact.csv');
                 } else {
                     session()->flash('error', 'Тип файла не определён, проверте название файла и повторите загрузку');
                 }
             } elseif ($tf == 'shop') {
-                $savedFile = $this->uploadedFile1->storeAs('svo', 'Dobro.csv');
+//                $savedFile = $this->uploadedFile1->storeAs('svo', 'Dobro.csv');
             } elseif ($tf == 'trebs') {
-                $savedFile = $this->uploadedFile1->storeAs('svo', 'Trebs.csv');
+//                $savedFile = $this->uploadedFile1->storeAs('svo', 'Trebs.csv');
             } elseif ($tf == 'contact') {
-                $savedFile = $this->uploadedFile1->storeAs('svo', 'Contact.csv');
+//                $savedFile = $this->uploadedFile1->storeAs('svo', 'Contact.csv');
             } elseif ($tf == 'fin') {
-                $savedFile = $this->uploadedFile1->storeAs('svo', 'IMOCB.csv');
+//                $savedFile = $this->uploadedFile1->storeAs('svo', 'IMOCB.csv');
             } else {
                 session()->flash('error', 'Файл не загружен, проверте название файла и повторите загрузку');
             }
 
+            $savedFile = $this->uploadedFile1->storeAs('svo', 'data_'.$tf.'.csv');
             // Вызов сканирования и сохранение результата
             $this->scanResult = (array)ShopScanDatafileController::scan($savedFile, $tf);
 //dd($this->scanResult);
