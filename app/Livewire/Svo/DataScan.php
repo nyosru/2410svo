@@ -203,6 +203,7 @@ class DataScan extends Component
             $tf = $this->type_file;
 
             if ($tf == 'auto') {
+
                 $file_name = mb_strtolower($this->uploadedFile1->getClientOriginalName(), 'UTF-8');
 //                session()->flash('error', $file_name );
                 if ($file_name == 'dobro.csv') {
@@ -215,19 +216,21 @@ class DataScan extends Component
                     $tf = 'contact';
 //                    $savedFile = $this->uploadedFile1->storeAs('svo', 'Contact.csv');
                 } else {
-                    session()->flash('error', 'Тип файла не определён, проверте название файла и повторите загрузку');
+                    session()->flash('error', 'Тип файла не определён, ('.$file_name.') проверте название файла и повторите загрузку');
                 }
-            } elseif ($tf == 'shop') {
-//                $savedFile = $this->uploadedFile1->storeAs('svo', 'Dobro.csv');
-            } elseif ($tf == 'trebs') {
-//                $savedFile = $this->uploadedFile1->storeAs('svo', 'Trebs.csv');
-            } elseif ($tf == 'contact') {
-//                $savedFile = $this->uploadedFile1->storeAs('svo', 'Contact.csv');
-            } elseif ($tf == 'fin') {
-//                $savedFile = $this->uploadedFile1->storeAs('svo', 'IMOCB.csv');
-            } else {
-                session()->flash('error', 'Файл не загружен, проверте название файла и повторите загрузку');
             }
+//            elseif ($tf == 'shop') {
+////                $savedFile = $this->uploadedFile1->storeAs('svo', 'Dobro.csv');
+//            } elseif ($tf == 'trebs') {
+////                $savedFile = $this->uploadedFile1->storeAs('svo', 'Trebs.csv');
+//            } elseif ($tf == 'contact') {
+////                $savedFile = $this->uploadedFile1->storeAs('svo', 'Contact.csv');
+//            } elseif ($tf == 'fin') {
+////                $savedFile = $this->uploadedFile1->storeAs('svo', 'IMOCB.csv');
+//            }
+//            else {
+//                session()->flash('error', 'Файл не загружен, проверте название файла и повторите загрузку');
+//            }
 
             $savedFile = $this->uploadedFile1->storeAs('svo', 'data_'.$tf.'.csv');
             // Вызов сканирования и сохранение результата
