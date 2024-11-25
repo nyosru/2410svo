@@ -215,17 +215,20 @@ class DataScan extends Component
                     session()->flash('error', 'Тип файла не определён, проверте название файла и повторите загрузку');
                 }
             }
-
-            if ($tf == 'shop') {
-                $savedFile = $this->uploadedFile1->storeAs('svo', 'Dobro.csv');
-            } elseif ($tf == 'trebs') {
-                $savedFile = $this->uploadedFile1->storeAs('svo', 'Trebs.csv');
-            } elseif ($tf == 'contact') {
-                $savedFile = $this->uploadedFile1->storeAs('svo', 'Contact.csv');
-            } elseif ($tf == 'fin') {
-                $savedFile = $this->uploadedFile1->storeAs('svo', 'IMOCB.csv');
-            } else {
-                session()->flash('error', 'Файл не загружен, проверте название файла и повторите загрузку');
+            try {
+                if ($tf == 'shop') {
+                    $savedFile = $this->uploadedFile1->storeAs('svo', 'Dobro.csv');
+                } elseif ($tf == 'trebs') {
+                    $savedFile = $this->uploadedFile1->storeAs('svo', 'Trebs.csv');
+                } elseif ($tf == 'contact') {
+                    $savedFile = $this->uploadedFile1->storeAs('svo', 'Contact.csv');
+                } elseif ($tf == 'fin') {
+                    $savedFile = $this->uploadedFile1->storeAs('svo', 'IMOCB.csv');
+                } else {
+                    session()->flash('error', 'Файл не загружен, проверте название файла и повторите загрузку');
+                }
+            } catch (\Exception $ex) {
+                echo $ex->getMessage();
             }
 
             // Вызов сканирования и сохранение результата
