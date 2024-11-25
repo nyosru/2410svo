@@ -37,7 +37,7 @@ class DataScan extends Component
 
     public function mount(): void
     {
-        $this->secret_for_scan_value = env('SECRET_FOR_SCAN',rand());
+        $this->secret_for_scan_value = env('SECRET_FOR_SCAN', rand());
         $this->checkNoFiles();
         $this->checkOffFiles();
     }
@@ -202,14 +202,14 @@ class DataScan extends Component
         try {
             $tf = $this->type_file;
 
-            if ($this->type_file == 'auto') {
-                $file_name = $this->uploadedFile1->getClientOriginalName();
+            if ($tf == 'auto') {
+                $file_name = mb_strtolower($this->uploadedFile1->getClientOriginalName(), 'UTF-8');
 //                session()->flash('error', $file_name );
-                if ($file_name == 'Dobro.csv') {
+                if ($file_name == 'dobro.csv') {
                     $tf = 'shop';
-                } elseif ($file_name == 'TrebaElka.csv') {
+                } elseif ($file_name == 'trebaelka.csv') {
                     $tf = 'trebs';
-                } elseif ($file_name == 'ППД.csv') {
+                } elseif ($file_name == 'ппд.csv') {
                     $tf = 'contact';
                 } else {
                     session()->flash('error', 'Тип файла не определён, проверте название файла и повторите загрузку');
@@ -235,9 +235,11 @@ class DataScan extends Component
 
             session()->flash('message', 'Файл успешно сканирован!');
         } catch (\Exception $e) {
-            session()->flash('error', 'Ошибка при сканировании файла: ' . $e->getMessage()
-                .' / '.$e->getFile()
-                .' / '.$e->getLine()
+            session()->flash(
+                'error',
+                'Ошибка при сканировании файла: ' . $e->getMessage()
+                . ' / ' . $e->getFile()
+                . ' / ' . $e->getLine()
             );
         }
         return;
