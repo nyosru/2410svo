@@ -1,7 +1,7 @@
 <div class="w-[1100px] mx-auto">
 
     {{--    {{ print_r($item->getAttributes()) }}--}}
-    <div class="flex flex-row w-[1100px] hover:bg-gray-100 ">
+    <div class="flex flex-row w-[1100px] hover:bg-gray-100 py-3">
 
         <div class="w-[180px] flex items-center justify-center p-2">
             @if( empty($item->photos) )

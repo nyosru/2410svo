@@ -107,6 +107,7 @@ class ShopScanDatafileController extends Controller
             // тащим заголовки
             if ($nn == 0) {
                 self::$header = explode(';', $line);
+//                self::$header = str_getcsv($line);
 
                 // Применение транслитерации к каждому элементу заголовков
                 foreach (self::$header as &$headerElement) {
@@ -251,7 +252,8 @@ class ShopScanDatafileController extends Controller
         $return['in'] =
         $columns = explode(';', $line);
 
-//        dd($columns);
+//        $columns2 = str_getcsv($line);
+//        dd([$columns,$columns2]);
 
         foreach ($columns as $k => $v) {
             $v = trim($v);
