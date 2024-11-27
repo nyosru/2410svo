@@ -151,10 +151,10 @@ class ShopScanDatafileController extends Controller
                 } //
                 elseif ($type == 'contact') {
 //
-//                        $data = self::prepareDataContact($line);
-////                        dd($data);
-//                        $tdo = new SvoContactTDO($data['data']);
-//                        $item = SvoContact::create($tdo->toArray());
+                    $data = self::prepareDataContact($line);
+//                        dd($data);
+                    $tdo = new SvoContactTDO($data['data']);
+                    $item = SvoContact::create($tdo->toArray());
 //
 //                    } elseif ($type == 'fin') {
 //                        $data = self::prepareDataFinOtchet($line);
@@ -164,49 +164,48 @@ class ShopScanDatafileController extends Controller
 //
                 } //
                 elseif ($type == 'trebs') {
-//                        $data = self::prepareDataTrebs($line);
-////                        dd($data);
-//                        $tdo = new TrebsCsvDataTdo($data['data']);
-//
-////                        if( $data['data']['uroven'] == 2 )
-////                            dd([$data,$tdo]);
-//
-//                        if ($tdo->uroven == 2) {
-//                            $tdo->setUpId(self::$now_up_id[1]);
-//                        } elseif ($tdo->uroven == 3) {
-//                            $tdo->setUpId(self::$now_up_id[2]);
-//                        } elseif ($tdo->uroven == 4) {
-//                            $tdo->setUpId(self::$now_up_id[3]);
-//                        }
-//
-//                        $item = SvoTrebItem::create($tdo->toArray());
-//
-////                    dd(__LINE__);
-//
-//
-//                        // Если есть фотографии, добавляем их
-//                        if (!empty($tdo->photo)) {
-////                            dd($tdo->photo);
-//                            $photos = explode('+', $tdo->photo);
-////                            dd($photos);
-//                            foreach ($photos as $photoUrl) {
-//                                if (!empty($photoUrl)) {
-//                                    TrebsPhoto::create([
-//                                        'svo_trebs_item_id' => $item->id,
-//                                        'photo_url' => trim($photoUrl),
-//                                    ]);
-//                                }
-//                            }
-//                        }
-//
-//
-//                        if ($item->uroven == 1) {
-//                            self::$now_up_id = [1 => $item->id];
-//                        } elseif ($item->uroven == 2) {
-//                            self::$now_up_id[2] = $item->id;
-//                        } elseif ($item->uroven == 3) {
-//                            self::$now_up_id[3] = $item->id;
-//                        }
+                    $data = self::prepareDataTrebs($line);
+//                        dd($data);
+                    $tdo = new TrebsCsvDataTdo($data['data']);
+
+//                        if( $data['data']['uroven'] == 2 )
+//                            dd([$data,$tdo]);
+
+                    if ($tdo->uroven == 2) {
+                        $tdo->setUpId(self::$now_up_id[1]);
+                    } elseif ($tdo->uroven == 3) {
+                        $tdo->setUpId(self::$now_up_id[2]);
+                    } elseif ($tdo->uroven == 4) {
+                        $tdo->setUpId(self::$now_up_id[3]);
+                    }
+
+                    $item = SvoTrebItem::create($tdo->toArray());
+
+//                    dd(__LINE__);
+
+
+                    // Если есть фотографии, добавляем их
+                    if (!empty($tdo->photo)) {
+//                            dd($tdo->photo);
+                        $photos = explode('+', $tdo->photo);
+//                            dd($photos);
+                        foreach ($photos as $photoUrl) {
+                            if (!empty($photoUrl)) {
+                                TrebsPhoto::create([
+                                    'svo_trebs_item_id' => $item->id,
+                                    'photo_url' => trim($photoUrl),
+                                ]);
+                            }
+                        }
+                    }
+
+                    if ($item->uroven == 1) {
+                        self::$now_up_id = [1 => $item->id];
+                    } elseif ($item->uroven == 2) {
+                        self::$now_up_id[2] = $item->id;
+                    } elseif ($item->uroven == 3) {
+                        self::$now_up_id[3] = $item->id;
+                    }
                 }
 ////                    dd(__LINE__);
                 $return['line_to_db']++;
