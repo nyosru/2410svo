@@ -51,8 +51,13 @@ class ShopScanDatafileController extends Controller
         ];
 
         if (Storage::exists($file)) {
-            $content = Storage::get($file);
-            $content = iconv('windows-1251', 'utf-8', $content);
+
+            setlocale(LC_ALL, 'ru_RU.UTF-8');
+
+            $content0 = Storage::get($file);
+//            $content = iconv('windows-1251', 'utf-8', $content);
+            $content = mb_convert_encoding($content0, "UTF-8", "WINDOWS-1251");
+            $content0 = '';
             $lines = array_filter(explode("\n", $content));
             $return['file_have_line'] = count($lines);
         }
@@ -74,22 +79,22 @@ class ShopScanDatafileController extends Controller
 //            // Извлекаем заголовки и данные
 //            $data_head = explode(';', array_shift($lines));
 //
-//            if (!empty($lines)) {
+            if (!empty($lines)) {
 //                // Очищаем таблицу перед импортом новых данных
 //
-//                Schema::disableForeignKeyConstraints();
-//                if ($type == 'shop') {
-//                    ShopItem::truncate();
-//                    ShopPhoto::truncate();
-//                } elseif ($type == 'trebs') {
-//                    SvoTrebItem::truncate();
-//                    TrebsPhoto::truncate();
-//                } elseif ($type == 'contact') {
-//                    SvoContact::truncate();
-//                } elseif ($type == 'fin') {
-//                    FinReport::truncate();
-//                }
-//                Schema::enableForeignKeyConstraints();
+                Schema::disableForeignKeyConstraints();
+                if ($type == 'shop') {
+                    ShopItem::truncate();
+                    ShopPhoto::truncate();
+                } elseif ($type == 'trebs') {
+                    SvoTrebItem::truncate();
+                    TrebsPhoto::truncate();
+                } elseif ($type == 'contact') {
+                    SvoContact::truncate();
+                } elseif ($type == 'fin') {
+                    FinReport::truncate();
+                }
+                Schema::enableForeignKeyConstraints();
 //
 //
 //        // Переименование файла после успешного импорта
@@ -101,60 +106,64 @@ class ShopScanDatafileController extends Controller
 //        }
 ////            }
 //
-        $nn = 0;
+                $nn = 0;
 
-        foreach ($lines as $line) {
-            // тащим заголовки
-            if ($nn == 0) {
-                self::$header = explode(';', $line);
+                foreach ($lines as $line) {
+                    $return['colvo_separator'][] = $line;
+                    $return['colvo_separator'][] = substr_count($line, ';');
+
+                    // тащим заголовки
+                    if ($nn == 0) {
+                        self::$header = explode(';', $line);
 //                self::$header = str_getcsv($line);
 
-                // Применение транслитерации к каждому элементу заголовков
-                foreach (self::$header as &$headerElement) {
-                    $headerElement = Str::snake(StringController::transliterate($headerElement));
-                }
+                        // Применение транслитерации к каждому элементу заголовков
+                        foreach (self::$header as &$headerElement) {
+                            $headerElement = Str::snake(StringController::transliterate($headerElement));
+                        }
 //                    dd(self::$header);
-                $return['header'] = self::$header;
+                        $return['header'] = self::$header;
 
-                $nn++;
-                continue;
-            }
+                        $nn++;
+                        continue;
+                    }
 //                dd(self::$header);
 
-            try {
-                // Создаем объект TDO для обработки данных
-                if ($type == 'shop') {
+                    try {
+                        // Создаем объект TDO для обработки данных
+                        if ($type == 'shop') {
 //                    if(1==2) {
-                    $return['columns'] =
-                    $columns = self::prepareDataShop($line, self::$header);
+                            $return['columns'] =
+                            $columns = self::prepareDataShop($line, self::$header);
 //                    }
 
 //                        dd($columns);
-                    if (1 == 1) {
-                        $tdo = new ShopCsvDataTdo($columns['data']);
-                        $shopItem = ShopItem::create($tdo->toArray());
+                            if (1 == 1) {
+                                $tdo = new ShopCsvDataTdo($columns['data']);
 
-                        // Если есть фотографии, добавляем их
-                        if (!empty($tdo->foto)) {
-                            $photos = explode('+', $tdo->foto);
-                            foreach ($photos as $photoUrl) {
-                                if (!empty($photoUrl)) {
-                                    ShopPhoto::create([
-                                        'shop_item_id' => $shopItem->id,
-                                        'photo_url' => trim($photoUrl),
-                                    ]);
+                                $shopItem = ShopItem::create($tdo->toArray());
+
+                                // Если есть фотографии, добавляем их
+                                if (!empty($tdo->foto)) {
+                                    $photos = explode('+', $tdo->foto);
+                                    foreach ($photos as $photoUrl) {
+                                        if (!empty($photoUrl)) {
+                                            ShopPhoto::create([
+                                                'shop_item_id' => $shopItem->id,
+                                                'photo_url' => trim($photoUrl),
+                                            ]);
+                                        }
+                                    }
                                 }
-                            }
-                        }
-                    } //
+                            } //
 
-                } //
-                elseif ($type == 'contact') {
+                        } //
+                        elseif ($type == 'contact') {
 //
-                    $data = self::prepareDataContact($line);
+                            $data = self::prepareDataContact($line);
 //                        dd($data);
-                    $tdo = new SvoContactTDO($data['data']);
-                    $item = SvoContact::create($tdo->toArray());
+                            $tdo = new SvoContactTDO($data['data']);
+                            $item = SvoContact::create($tdo->toArray());
 //
 //                    } elseif ($type == 'fin') {
 //                        $data = self::prepareDataFinOtchet($line);
@@ -162,60 +171,60 @@ class ShopScanDatafileController extends Controller
 //                        $item = FinReport::create($tdo->toArray());
 ////                        dd($data);
 //
-                } //
-                elseif ($type == 'trebs') {
-                    $data = self::prepareDataTrebs($line);
+                        } //
+                        elseif ($type == 'trebs') {
+                            $data = self::prepareDataTrebs($line);
 //                        dd($data);
-                    $tdo = new TrebsCsvDataTdo($data['data']);
+                            $tdo = new TrebsCsvDataTdo($data['data']);
 
 //                        if( $data['data']['uroven'] == 2 )
 //                            dd([$data,$tdo]);
 
-                    if ($tdo->uroven == 2) {
-                        $tdo->setUpId(self::$now_up_id[1]);
-                    } elseif ($tdo->uroven == 3) {
-                        $tdo->setUpId(self::$now_up_id[2]);
-                    } elseif ($tdo->uroven == 4) {
-                        $tdo->setUpId(self::$now_up_id[3]);
-                    }
+                            if ($tdo->uroven == 2) {
+                                $tdo->setUpId(self::$now_up_id[1]);
+                            } elseif ($tdo->uroven == 3) {
+                                $tdo->setUpId(self::$now_up_id[2]);
+                            } elseif ($tdo->uroven == 4) {
+                                $tdo->setUpId(self::$now_up_id[3]);
+                            }
 
-                    $item = SvoTrebItem::create($tdo->toArray());
+                            $item = SvoTrebItem::create($tdo->toArray());
 
 //                    dd(__LINE__);
 
 
-                    // Если есть фотографии, добавляем их
-                    if (!empty($tdo->photo)) {
+                            // Если есть фотографии, добавляем их
+                            if (!empty($tdo->photo)) {
 //                            dd($tdo->photo);
-                        $photos = explode('+', $tdo->photo);
+                                $photos = explode('+', $tdo->photo);
 //                            dd($photos);
-                        foreach ($photos as $photoUrl) {
-                            if (!empty($photoUrl)) {
-                                TrebsPhoto::create([
-                                    'svo_trebs_item_id' => $item->id,
-                                    'photo_url' => trim($photoUrl),
-                                ]);
+                                foreach ($photos as $photoUrl) {
+                                    if (!empty($photoUrl)) {
+                                        TrebsPhoto::create([
+                                            'svo_trebs_item_id' => $item->id,
+                                            'photo_url' => trim($photoUrl),
+                                        ]);
+                                    }
+                                }
+                            }
+
+                            if ($item->uroven == 1) {
+                                self::$now_up_id = [1 => $item->id];
+                            } elseif ($item->uroven == 2) {
+                                self::$now_up_id[2] = $item->id;
+                            } elseif ($item->uroven == 3) {
+                                self::$now_up_id[3] = $item->id;
                             }
                         }
-                    }
-
-                    if ($item->uroven == 1) {
-                        self::$now_up_id = [1 => $item->id];
-                    } elseif ($item->uroven == 2) {
-                        self::$now_up_id[2] = $item->id;
-                    } elseif ($item->uroven == 3) {
-                        self::$now_up_id[3] = $item->id;
+////                    dd(__LINE__);
+                        $return['line_to_db']++;
+                    } //
+                    catch (Exception $exp) {
+                        $return['exp'][] = $exp;
+                        dd($exp);
                     }
                 }
-////                    dd(__LINE__);
-                $return['line_to_db']++;
-            } //
-            catch (Exception $exp) {
-                $return['exp'][] = $exp;
-                dd($exp);
             }
-        }
-
         return $return;
     }
 
