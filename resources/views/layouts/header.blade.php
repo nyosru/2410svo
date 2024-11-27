@@ -1,14 +1,14 @@
 <header>
     <div class="p-5 block bg-green-200 text-[3rem] font-bold"
-    style="background-image: url('/svo/image/bg.jpg'); background-size: cover; background-position: center center;"
+         style="background-image: url('/svo/image/bg.jpg'); background-size: cover; background-position: center center;"
     >
-{{--        ЦПУСВО.рф--}}
+        {{--        ЦПУСВО.рф--}}
         <a href="/" title="ЦПУСВО.рф">
-{{--        <img src="/svo/image/logo.jpg" class="ml-[15%] w-[10rem]" />--}}
-        <img src="/svo/image/logo2.png" class="ml-[15%] w-[10rem]" />
+            {{--        <img src="/svo/image/logo.jpg" class="ml-[15%] w-[10rem]" />--}}
+            <img src="/svo/image/logo2.png" class="ml-[15%] w-[10rem]"/>
         </a>
     </div>
-    <livewire:svo.menu />
+    <livewire:svo.menu/>
 </header>
 
 

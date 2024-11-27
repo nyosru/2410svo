@@ -1,4 +1,4 @@
-<nav id="mainNav"  class="space-x-4 text-center p-2 text-2xl mb-2">
+<nav id="mainNav"  style="z-index:500;" class="space-x-4 text-center p-2 text-2xl mb-2">
 
     <a wire:navigate href="{{ route('index') }}"
        class=" p-2 {{ Route::is('index') ? 'bg-orange-500 text-white' : '' }}">Главная</a>
