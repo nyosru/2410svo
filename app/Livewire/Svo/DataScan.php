@@ -22,7 +22,7 @@ class DataScan extends Component
 {
     use WithFileUploads;
 
-    public $type_file;
+    public $type_file = 'auto';
     public $uploadedFile1;
     public $uploadedImages = [];  // Для хранения нескольких изображений
     public $scanResult;
@@ -192,6 +192,10 @@ class DataScan extends Component
 
     public function scanFile()
     {
+
+        $result = [];
+        $this->scanResult = [];
+
         // Валидация для основного файла
 //        $this->validate([
 //            'type_file' => 'required',
@@ -200,46 +204,33 @@ class DataScan extends Component
 
         // Сохранение файла в зависимости от выбранного типа
         try {
-            $tf = $this->type_file;
-
-            if ($tf == 'auto') {
-
-                $file_name = mb_strtolower($this->uploadedFile1->getClientOriginalName(), 'UTF-8');
-//                session()->flash('error', $file_name );
-                if ($file_name == 'dobro.csv') {
-                    $tf = 'shop';
-
-                } elseif ($file_name == 'trebaelka.csv') {
-                    $tf = 'trebs';
-//                    $savedFile = $this->uploadedFile1->storeAs('svo', 'Trebs.csv');
-                } elseif ($file_name == 'ппд.csv') {
-                    $tf = 'contact';
-//                    $savedFile = $this->uploadedFile1->storeAs('svo', 'Contact.csv');
-                } else {
-                    session()->flash('error', 'Тип файла не определён, ('.$file_name.') проверте название файла и повторите загрузку');
-                }
+//            dd($this->uploadedFile1);
+            $fname = $this->uploadedFile1->getClientOriginalName();
+            $file_name = mb_strtolower($fname, 'UTF-8');
+            $tf = '';
+            if (str_contains($file_name, 'dobro')) {
+                $tf = 'shop';
+            } elseif (str_contains($file_name, 'treba')) {
+                $tf = 'trebs';
+            } elseif (str_contains($file_name, 'ппд')) {
+                $tf = 'contact';
+            } else {
+                session()->flash(
+                    'error',
+                    'Тип файла не определён, (' . $file_name . ') проверте название файла и повторите загрузку'
+                );
             }
-//            elseif ($tf == 'shop') {
-////                $savedFile = $this->uploadedFile1->storeAs('svo', 'Dobro.csv');
-//            } elseif ($tf == 'trebs') {
-////                $savedFile = $this->uploadedFile1->storeAs('svo', 'Trebs.csv');
-//            } elseif ($tf == 'contact') {
-////                $savedFile = $this->uploadedFile1->storeAs('svo', 'Contact.csv');
-//            } elseif ($tf == 'fin') {
-////                $savedFile = $this->uploadedFile1->storeAs('svo', 'IMOCB.csv');
-//            }
-//            else {
-//                session()->flash('error', 'Файл не загружен, проверте название файла и повторите загрузку');
-//            }
 
-            $savedFile = $this->uploadedFile1->storeAs('svo', 'data_'.$tf.'.csv');
+            $savedFile = $this->uploadedFile1->storeAs('svo', 'data_' . $tf . '.csv');
+
             // Вызов сканирования и сохранение результата
-            $this->scanResult = (array)ShopScanDatafileController::scan($savedFile, $tf);
-//dd($this->scanResult);
-            $this->checkNoFiles();
+            $this->scanResult = ShopScanDatafileController::scan($savedFile, $tf);
 
+            $this->checkNoFiles();
             session()->flash('message', 'Файл успешно сканирован!');
-        } catch (\Exception $e) {
+        }
+        //
+        catch( \Exception $e ) {
             session()->flash(
                 'error',
                 'Ошибка при сканировании файла: ' . $e->getMessage()
@@ -249,7 +240,6 @@ class DataScan extends Component
         }
         return;
     }
-
 
     /**
      * Собираем массив из файлов, что лежат на сервере и не используются на сайте (из папки storage/app/public/images).

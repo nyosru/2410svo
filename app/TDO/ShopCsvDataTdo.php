@@ -27,10 +27,10 @@ class ShopCsvDataTdo
         $this->sayt_tab = $data['sayt_tab'] ?? null;
         $this->analog = $data['analog'] ?? null;
         $this->foto = $data['foto'] ?? null;
-        $this->deb_kol_kon = (float)$data['deb_kol_kon'] ?? 0;
-        $this->tsena1 = (float)$data['tsena1'] ?? 0;
-        $this->tsena2 = (float)$data['tsena2'] ?? 0;
-        $this->tsena3 = (float)$data['tsena3'] ?? 0;
+        $this->deb_kol_kon = $data['deb_kol_kon'] ?? 0;
+        $this->tsena1 = $data['tsena1'] ?? 0;
+        $this->tsena2 = $data['tsena2'] ?? 0;
+        $this->tsena3 = $data['tsena3'] ?? 0;
     }
 
     public function toArray(): array

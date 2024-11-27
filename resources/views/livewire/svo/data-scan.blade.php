@@ -24,21 +24,24 @@
     <div class="w-1/2 md:w-1/4 mb-[2vh]
      bg-gradient-to-br from-yellow-200 to-white
      ">
-        <form wire:submit.prevent="scanFile">
+        <form wire:submit.prevent="scanFile" >
             <div class="bg-yellow-400 p-2">Сканировать файл</div>
             <div class="p-3">
-                <select wire:model="type_file" required class="w-full p-1">
-                    <option value="auto">Автоопределение (по названию файла)</option>
-                    <option value="shop">Магазин (добро)</option>
-                    <option value="trebs">Требы</option>
+{{--                <select wire:model="type_file" required class="w-full p-1">--}}
+{{--                    <option value="auto">Автоопределение (по названию файла)</option>--}}
+{{--                    <option value="shop">Магазин (добро)</option>--}}
+{{--                    <option value="trebs">Требы</option>--}}
 {{--                        <option value="fin">Фин отчёт</option>--}}
-                    <option value="contact">Контакты</option>
-                </select>
+{{--                    <option value="contact">Контакты</option>--}}
+{{--                </select>--}}
+{{--                <br/>--}}
+{{--                <br/>--}}
+
+                <input type="file" wire:model="uploadedFile1" required />
+
                 <br/>
                 <br/>
-                <input type="file" wire:model="uploadedFile1"/>
-                <br/>
-                <br/>
+
                 <b>Автоопределение:</b><br/>
                 Контакты: ППД.csv<br/>
                 Магазин: Dobro.csv<br/>

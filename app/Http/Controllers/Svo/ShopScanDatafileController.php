@@ -36,10 +36,11 @@ class ShopScanDatafileController extends Controller
      * @param $file
      * @param $type
      * @param Request $request
-     * @return Array
+     * @return array
      */
 
-    static public function scan($file = '', $type = ''): array
+//    static public function scan($file = '', $type = ''): Array
+    static public function scan($file = '', $type = '')
     {
         $return = [
             'input_file' => $file,
@@ -48,77 +49,87 @@ class ShopScanDatafileController extends Controller
             't' => time(),
             'exp' => []
         ];
-//        $filePath = self::$csvFile;
-        $filePath = $file;
-        $return['file'] = $filePath;
-        $return['file_puth'] = Storage::path($filePath);
-        $return['file_e'] = Storage::exists($filePath);
 
-//        dd($return);
-
-        if (Storage::exists($filePath)) {
-            $fileContent = iconv('windows-1251', 'utf-8', Storage::get($filePath));
-            $lines = array_filter(explode("\n", $fileContent));
+        if (Storage::exists($file)) {
+            $content = Storage::get($file);
+            $content = iconv('windows-1251', 'utf-8', $content);
+            $lines = array_filter(explode("\n", $content));
             $return['file_have_line'] = count($lines);
+        }
 
-            // Извлекаем заголовки и данные
-//            $this->data_head = explode(';', array_shift($lines));
+//        return $return;
 
-            if (!empty($lines)) {
-                // Очищаем таблицу перед импортом новых данных
 
-                Schema::disableForeignKeyConstraints();
-                if ($type == 'shop') {
-                    ShopItem::truncate();
-                    ShopPhoto::truncate();
-                } elseif ($type == 'trebs') {
-                    SvoTrebItem::truncate();
-                    TrebsPhoto::truncate();
-                } elseif ($type == 'contact') {
-                    SvoContact::truncate();
-                } elseif ($type == 'fin') {
-                    FinReport::truncate();
+//
+//
+////        $filePath = self::$csvFile;
+//        $filePath = $file;
+//        $return['file'] = $filePath;
+//        $return['file_puth'] = Storage::path($filePath);
+//        $return['file_e'] = Storage::exists($filePath);
+//
+////        dd($return);
+//
+//
+//            // Извлекаем заголовки и данные
+//            $data_head = explode(';', array_shift($lines));
+//
+//            if (!empty($lines)) {
+//                // Очищаем таблицу перед импортом новых данных
+//
+//                Schema::disableForeignKeyConstraints();
+//                if ($type == 'shop') {
+//                    ShopItem::truncate();
+//                    ShopPhoto::truncate();
+//                } elseif ($type == 'trebs') {
+//                    SvoTrebItem::truncate();
+//                    TrebsPhoto::truncate();
+//                } elseif ($type == 'contact') {
+//                    SvoContact::truncate();
+//                } elseif ($type == 'fin') {
+//                    FinReport::truncate();
+//                }
+//                Schema::enableForeignKeyConstraints();
+//
+//
+//        // Переименование файла после успешного импорта
+//        if (1 == 2) {
+//            $currentDateTime = now()->format('Y-m-d_H-i-s');
+//            $newFileName = pathinfo($filePath, PATHINFO_FILENAME) . "_$currentDateTime.csv";
+//            $newFilePath = 'svo/' . $newFileName;
+//            Storage::move($filePath, $newFilePath);
+//        }
+////            }
+//
+        $nn = 0;
+
+        foreach ($lines as $line) {
+            // тащим заголовки
+            if ($nn == 0) {
+                self::$header = explode(';', $line);
+
+                // Применение транслитерации к каждому элементу заголовков
+                foreach (self::$header as &$headerElement) {
+                    $headerElement = Str::snake(StringController::transliterate($headerElement));
                 }
-                Schema::enableForeignKeyConstraints();
-
-
-                // Переименование файла после успешного импорта
-                if (1 == 2) {
-                    $currentDateTime = now()->format('Y-m-d_H-i-s');
-                    $newFileName = pathinfo($filePath, PATHINFO_FILENAME) . "_$currentDateTime.csv";
-                    $newFilePath = 'svo/' . $newFileName;
-                    Storage::move($filePath, $newFilePath);
-                }
-            }
-
-            $nn = 0;
-
-            foreach ($lines as $line) {
-                if ($nn == 0) {
-                    self::$header = explode(';', $line);
-
-                    // Применение транслитерации к каждому элементу заголовков
-                    foreach (self::$header as &$headerElement) {
-//                        if ($type == 'fin' || $type == 'shop') {
-                        $headerElement = Str::snake(StringController::transliterate($headerElement));
-//                        } else {
-//                            $headerElement = StringController::transliterate($headerElement);
-//                        }
-                    }
-
 //                    dd(self::$header);
+                $return['header'] = self::$header;
 
-                    $nn++;
-                    continue;
-                }
-
+                $nn++;
+                continue;
+            }
 //                dd(self::$header);
 
-                try {
-                    // Создаем объект TDO для обработки данных
-                    if ($type == 'shop') {
-                        $columns = self::prepareDataShop($line);
+            try {
+                // Создаем объект TDO для обработки данных
+                if ($type == 'shop') {
+//                    if(1==2) {
+                    $return['columns'] =
+                    $columns = self::prepareDataShop($line, self::$header);
+//                    }
+
 //                        dd($columns);
+                    if (1 == 1) {
                         $tdo = new ShopCsvDataTdo($columns['data']);
                         $shopItem = ShopItem::create($tdo->toArray());
 
@@ -134,74 +145,77 @@ class ShopScanDatafileController extends Controller
                                 }
                             }
                         }
-                    } elseif ($type == 'contact') {
+                    } //
 
-                        $data = self::prepareDataContact($line);
-//                        dd($data);
-                        $tdo = new SvoContactTDO($data['data']);
-                        $item = SvoContact::create($tdo->toArray());
-
-                    } elseif ($type == 'fin') {
-                        $data = self::prepareDataFinOtchet($line);
-                        $tdo = new FinReportTDO($data['data']);
-                        $item = FinReport::create($tdo->toArray());
-//                        dd($data);
-
-                    } elseif ($type == 'trebs') {
-                        $data = self::prepareDataTrebs($line);
-//                        dd($data);
-                        $tdo = new TrebsCsvDataTdo($data['data']);
-
-//                        if( $data['data']['uroven'] == 2 )
-//                            dd([$data,$tdo]);
-
-                        if ($tdo->uroven == 2) {
-                            $tdo->setUpId(self::$now_up_id[1]);
-                        } elseif ($tdo->uroven == 3) {
-                            $tdo->setUpId(self::$now_up_id[2]);
-                        } elseif ($tdo->uroven == 4) {
-                            $tdo->setUpId(self::$now_up_id[3]);
-                        }
-
-                        $item = SvoTrebItem::create($tdo->toArray());
-
-//                    dd(__LINE__);
-
-
-                        // Если есть фотографии, добавляем их
-                        if (!empty($tdo->photo)) {
-//                            dd($tdo->photo);
-                            $photos = explode('+', $tdo->photo);
-//                            dd($photos);
-                            foreach ($photos as $photoUrl) {
-                                if (!empty($photoUrl)) {
-                                    TrebsPhoto::create([
-                                        'svo_trebs_item_id' => $item->id,
-                                        'photo_url' => trim($photoUrl),
-                                    ]);
-                                }
-                            }
-                        }
-
-
-                        if ($item->uroven == 1) {
-                            self::$now_up_id = [1 => $item->id];
-                        } elseif ($item->uroven == 2) {
-                            self::$now_up_id[2] = $item->id;
-                        } elseif ($item->uroven == 3) {
-                            self::$now_up_id[3] = $item->id;
-                        }
-                    }
-//                    dd(__LINE__);
-                    $return['line_to_db']++;
-                } catch
-                (Exception $exp) {
-                    $return['exp'][] = $exp;
+                } //
+                elseif ($type == 'contact') {
+//
+//                        $data = self::prepareDataContact($line);
+////                        dd($data);
+//                        $tdo = new SvoContactTDO($data['data']);
+//                        $item = SvoContact::create($tdo->toArray());
+//
+//                    } elseif ($type == 'fin') {
+//                        $data = self::prepareDataFinOtchet($line);
+//                        $tdo = new FinReportTDO($data['data']);
+//                        $item = FinReport::create($tdo->toArray());
+////                        dd($data);
+//
+                } //
+                elseif ($type == 'trebs') {
+//                        $data = self::prepareDataTrebs($line);
+////                        dd($data);
+//                        $tdo = new TrebsCsvDataTdo($data['data']);
+//
+////                        if( $data['data']['uroven'] == 2 )
+////                            dd([$data,$tdo]);
+//
+//                        if ($tdo->uroven == 2) {
+//                            $tdo->setUpId(self::$now_up_id[1]);
+//                        } elseif ($tdo->uroven == 3) {
+//                            $tdo->setUpId(self::$now_up_id[2]);
+//                        } elseif ($tdo->uroven == 4) {
+//                            $tdo->setUpId(self::$now_up_id[3]);
+//                        }
+//
+//                        $item = SvoTrebItem::create($tdo->toArray());
+//
+////                    dd(__LINE__);
+//
+//
+//                        // Если есть фотографии, добавляем их
+//                        if (!empty($tdo->photo)) {
+////                            dd($tdo->photo);
+//                            $photos = explode('+', $tdo->photo);
+////                            dd($photos);
+//                            foreach ($photos as $photoUrl) {
+//                                if (!empty($photoUrl)) {
+//                                    TrebsPhoto::create([
+//                                        'svo_trebs_item_id' => $item->id,
+//                                        'photo_url' => trim($photoUrl),
+//                                    ]);
+//                                }
+//                            }
+//                        }
+//
+//
+//                        if ($item->uroven == 1) {
+//                            self::$now_up_id = [1 => $item->id];
+//                        } elseif ($item->uroven == 2) {
+//                            self::$now_up_id[2] = $item->id;
+//                        } elseif ($item->uroven == 3) {
+//                            self::$now_up_id[3] = $item->id;
+//                        }
                 }
+////                    dd(__LINE__);
+                $return['line_to_db']++;
+            } //
+            catch (Exception $exp) {
+                $return['exp'][] = $exp;
+                dd($exp);
             }
-//            dd(__LINE__);
         }
-//        return response()->json($return);
+
         return $return;
     }
 
@@ -231,21 +245,33 @@ class ShopScanDatafileController extends Controller
      * @return Array
      * header\in\data
      */
-    static public function prepareDataShop(string $line): array
+    static public function prepareDataShop(string $line, array $header): array
     {
         $return = ['data' => []];
         $return['in'] =
         $columns = explode(';', $line);
+
+//        dd($columns);
+
         foreach ($columns as $k => $v) {
-            if (
-                self::$header[$k] == 'tsena1' ||
-                self::$header[$k] == 'tsena2' ||
-                self::$header[$k] == 'tsena3') {
-                $return['data'][self::$header[$k]] = round((float)trim($v), 2);
-            } else {
-                $return['data'][self::$header[$k]] = trim($v);
+            $v = trim($v);
+
+            if (isset($header[$k])) {
+                if (
+                    $header[$k] == 'tsena1' ||
+                    $header[$k] == 'tsena2' ||
+                    $header[$k] == 'tsena3') {
+                    $return['data'][$header[$k]] = round((float)$v, 2);
+                } elseif ($header[$k] == 'deb_kol_kon') {
+                    $return['data'][$header[$k]] = round((float)$v, 0);
+                } else {
+                    $return['data'][$header[$k]] = $v;
+                }
             }
         }
+
+//        dd($return['data']);
+
         return $return;
     }
 
