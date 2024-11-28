@@ -55,7 +55,7 @@ class Shop extends Component
         }
 
         // Выполняем запрос с пагинацией
-        $data = $query->paginate(20);
+        $data = $query->paginate(30);
 
         return view('livewire.svo.shop', [
             'data1' => $data,
