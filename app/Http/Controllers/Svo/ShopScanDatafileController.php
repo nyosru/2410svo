@@ -256,6 +256,7 @@ class ShopScanDatafileController extends Controller
      */
     static public function prepareDataShop(string $line, array $header): array
     {
+
         $return = ['data' => []];
         $return['in'] =
         $columns = explode(';', $line);
@@ -264,9 +265,11 @@ class ShopScanDatafileController extends Controller
 //        dd([$columns,$columns2]);
 
         foreach ($columns as $k => $v) {
+
             $v = trim($v);
 
             if (isset($header[$k])) {
+
                 if (
                     $header[$k] == 'tsena1' ||
                     $header[$k] == 'tsena2' ||
