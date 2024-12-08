@@ -43,11 +43,19 @@
                 <br/>
 
                 <b>Автоопределение:</b><br/>
-                Контакты: ППД.csv<br/>
-                Магазин: Dobro.csv<br/>
+                Контакты: ППД.csv
+                <br/>
+                <br/>
+                Магазин: Dobro.csv
+                <br/>
+                <br/>
                 Требы: TrebaElka.csv<br/>
 
+                Пример файла <a href="/svo/TrebaElka.csv" class="text-blue-400 underline" target="_blank" >TrebaElka.csv</a>
+
                 <br/>
+                <br/>
+
                 @error('uploadedFile1') <span class="text-red-500">{{ $message }}</span> @enderror
                 <br/>
                 <div class="text-center" >
