@@ -20,6 +20,8 @@ $d = function () {
 Route::get('/fin', \App\Livewire\Svo\FinDataTable::class)->name('fin');
 Route::get('/contact', \App\Livewire\Svo\Contact::class)->name('contact');
 
+Route::get('/pomnim', \App\Livewire\Svo\Pomnim::class)->name('pomnim');
+
 Route::get('/i/{page?}', \App\Livewire\Svo\Page::class)->name('page');
 
 Route::group([

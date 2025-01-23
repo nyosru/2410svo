@@ -14,6 +14,9 @@
     <a wire:navigate href="{{ route('trebs') }}"
        class=" p-2 {{ Route::is('trebs') ? 'bg-orange-500 text-white' : '' }}">Требы</a>
 
+    <a wire:navigate href="{{ route('pomnim') }}"
+       class=" p-2 {{ Route::is('pomnim') ? 'bg-orange-500 text-white' : '' }}">Мы помним</a>
+
 {{--    <a wire:navigate href="{{ route('fin') }}"--}}
 {{--       class=" p-2 {{ Route::is('fin') ? 'bg-orange-500 text-white' : '' }}">Фин&nbsp;отчёт</a>--}}
 
