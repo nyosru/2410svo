@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FileDownloadController;
 use Illuminate\Support\Facades\Route;
 
 //Route::get('/', \App\Livewire\Counter::class)->name('index');
@@ -28,6 +29,8 @@ Route::group([
     'as' => 'svo.',
 //    'domain' => (env('APP_ENV', 'local') == 'local') ? 'php-cat.local' : 'php-cat.com'
 ], $d );
+
+Route::get('/download-fin', [FileDownloadController::class, 'downloadFin'])->name('file.download.fin');
 
 
 //Route::get('/', function () {
