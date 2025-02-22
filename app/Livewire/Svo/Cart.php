@@ -21,6 +21,14 @@ class Cart extends Component
         $this->cartItems = Session::get('cart', []);
     }
 
+    public function removeFromCart($itemId)
+    {
+        if (isset($this->cartItems[$itemId])) {
+            unset($this->cartItems[$itemId]);
+            Session::put('cart', $this->cartItems);
+        }
+    }
+
     public function incrementQuantity($itemId)
     {
         if (isset($this->cartItems[$itemId])) {

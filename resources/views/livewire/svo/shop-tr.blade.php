@@ -79,8 +79,8 @@
                     <a href="#"
                        onclick="toggleBlock('analog{{ $item->id }}'); return false;"
                        {{--                   class="text-blue-400 underline"--}}
-                       class="mt-1 block w-full bg-yellow-300 text-center px-3 py-1 rounded text-[14px]"
-                    >Предложить аналог</a>
+                       class="mt-1 block w-full bg-orange-300 text-center px-3 py-1 rounded xtext-[14px]"
+                    >Аналог</a>
                 </div>
             @endif
 
