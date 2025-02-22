@@ -184,7 +184,7 @@
                 @if( !empty($row['analog'] ) )
                     <a href="#"
                        onclick="toggleBlock('analog{{ $row['id'] }}'); return false;"
-                       class="mt-1 px-2 py-1 text-black block text-center rounded bg-orange-300"
+                       class="mt-1 px-2 py-1 text-black block text-center rounded bg-gray-200 hover:bg-gray-300 "
                     >Аналог</a>
 
                 @endif

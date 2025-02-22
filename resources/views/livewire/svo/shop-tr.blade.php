@@ -67,9 +67,9 @@
             {{-- купить --}}
             @if ($inCart)
                 <a href="{{ route('svo.cart') }}"
-                   class="block bg-green-400 text-center text-white px-3 py-1 rounded">В&nbsp;корзине</a>
+                   class="block bg-green-400 hover:bg-green-500 text-center text-white px-3 py-1 rounded">В&nbsp;корзине</a>
             @else
-                <button wire:click="addToCart" class="block w-full bg-yellow-300 text-center px-3 py-1 rounded">
+                <button wire:click="addToCart" class="block w-full bg-yellow-300 hover:bg-yellow-400 text-center px-3 py-1 rounded">
                     Заказать
                 </button>
             @endif
@@ -79,7 +79,7 @@
                     <a href="#"
                        onclick="toggleBlock('analog{{ $item->id }}'); return false;"
                        {{--                   class="text-blue-400 underline"--}}
-                       class="mt-1 block w-full bg-orange-300 text-center px-3 py-1 rounded xtext-[14px]"
+                       class="mt-1 block w-full bg-gray-200 hover:bg-gray-300 text-center px-3 py-1 rounded xtext-[14px]"
                     >Аналог</a>
                 </div>
             @endif
