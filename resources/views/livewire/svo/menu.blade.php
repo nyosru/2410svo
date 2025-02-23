@@ -1,29 +1,29 @@
-<nav id="mainNav"  style="z-index:500;" class="space-x-4 text-center p-2 text-2xl mb-2">
+<nav id="mainNav"  style="z-index:500;" class="space-x-4 text-center p-2 rounded text-2xl mb-2">
 
     <a wire:navigate href="{{ route('index') }}"
-       class=" p-2 {{ Route::is('index') ? 'bg-orange-500 text-white' : '' }}">Главная</a>
+       class=" p-2 rounded {{ Route::is('index') ? 'bg-[#fe0000] text-[#feff00]' : '' }}">Главная</a>
 
     <a wire:navigate href="{{ route('svo.shop') }}"
-       class=" p-2 {{ Route::is('svo.shop') ? 'bg-orange-500 text-white' : '' }}">Добро</a>
+       class=" p-2 rounded {{ Route::is('svo.shop') ? 'bg-[#fe0000] text-[#feff00]' : '' }}">Добро</a>
 
     @if($cartItemsCount > 0)
     <a wire:navigate href="{{ route('svo.cart') }}"
-       class=" p-2 {{ ( Route::is('svo.cart') || Route::is('svo.cart.ok') ) ? 'bg-orange-500 text-white' : '' }}">Корзина</a>
+       class=" p-2 rounded {{ ( Route::is('svo.cart') || Route::is('svo.cart.ok') ) ? 'bg-[#fe0000] text-[#feff00]' : '' }}">Корзина</a>
     @endif
 
     <a wire:navigate href="{{ route('trebs') }}"
-       class=" p-2 {{ Route::is('trebs') ? 'bg-orange-500 text-white' : '' }}">Требы</a>
+       class=" p-2 rounded {{ Route::is('trebs') ? 'bg-[#fe0000] text-[#feff00]' : '' }}">Требы</a>
 
     <a wire:navigate href="{{ route('pomnim') }}"
-       class=" p-2 {{ Route::is('pomnim') ? 'bg-orange-500 text-white' : '' }}">Мы помним</a>
+       class=" p-2 rounded {{ Route::is('pomnim') ? 'bg-[#fe0000] text-[#feff00]' : '' }}">Мы помним</a>
 
 {{--    <a wire:navigate href="{{ route('fin') }}"--}}
-{{--       class=" p-2 {{ Route::is('fin') ? 'bg-orange-500 text-white' : '' }}">Фин&nbsp;отчёт</a>--}}
+{{--       class=" p-2 rounded {{ Route::is('fin') ? 'bg-[#fe0000] text-[#feff00]' : '' }}">Фин&nbsp;отчёт</a>--}}
 
 {{--    <a wire:navigate href="{{ route('page', ['page' => 'contact']) }}"--}}
-{{--       class=" p-2 {{ Route::is('page') && request('page') === 'contact' ? 'bg-orange-500 text-white' : '' }}">Контакты</a>--}}
+{{--       class=" p-2 rounded {{ Route::is('page') && request('page') === 'contact' ? 'bg-[#fe0000] text-[#feff00]' : '' }}">Контакты</a>--}}
 
     <a wire:navigate href="{{ route('contact') }}"
-       class=" p-2 {{ Route::is('contact') ? 'bg-orange-500 text-white' : '' }}">Контакты</a>
+       class=" p-2 rounded {{ Route::is('contact') ? 'bg-[#fe0000] text-[#feff00]' : '' }}">Контакты</a>
 
 </nav>
