@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title','ЦПУСВО.рф')</title>
+{{--    <script src="https://cdn.tailwindcss.com"></script>--}}
+    <link href="/css/output.css?v={{ filemtime(public_path('/css/output.css')) }}" rel="stylesheet">
+
+{{--    <script src="/svo/css.css"></script>--}}
+    <link src="/svo/css.css" rel="stylesheet" />
+{{--    111--}}
     @stack('styles')
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/svo/css.css"></script>
+{{--222--}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="apple-touch-icon" sizes="57x57" href="/svo/favicon/apple-icon-57x57.png">
@@ -146,5 +151,6 @@
 
 @livewireScripts
 @stack('scripts')
+
 </body>
 </html>
