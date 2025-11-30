@@ -44,7 +44,7 @@ jobs:
           username: ${{ env.VPS_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY_DOCKER24 }}
           script: |
-            docker exec ${{ env.DOCKER_CONTAINER_NAME }} cd ${{ env.DIR }} && php artisan migrate
+            docker exec ${{ env.DOCKER_CONTAINER_NAME }} php artisan migrate
             docker exec ${{ env.DOCKER_CONTAINER_NAME }} cd ${{ env.DIR }} && composer i --no-dev
           # cd ${{ env.DIR_DOCKER }}
 
