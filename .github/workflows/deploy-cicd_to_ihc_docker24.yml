@@ -45,8 +45,8 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY_DOCKER24 }}
           script: |
             cd ${{ env.DIR_DOCKER }}
-            docker exec ${{ env.DOCKER_CONTAINER_NAME }} php artisan migrate
-            docker exec ${{ env.DOCKER_CONTAINER_NAME }} composer i --no-dev
+            docker exec ${{ env.DOCKER_CONTAINER_NAME }} cd ${{ env.DIR }} && php artisan migrate
+            docker exec ${{ env.DOCKER_CONTAINER_NAME }} cd ${{ env.DIR }} && composer i --no-dev
 
   update:
     runs-on: ubuntu-latest
@@ -60,7 +60,7 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY_DOCKER24 }}
           script: |
             cd ${{ env.DIR_DOCKER }}
-            docker exec ${{ env.DOCKER_CONTAINER_NAME }} npm i && npm run build
+            docker exec ${{ env.DOCKER_CONTAINER_NAME }} cd ${{ env.DIR }} && npm i && npm run build
 
 
 #
