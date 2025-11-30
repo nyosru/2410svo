@@ -44,8 +44,8 @@ jobs:
           username: ${{ env.VPS_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY_DOCKER24 }}
           script: |
-            docker exec ${{ env.DOCKER_CONTAINER_NAME }} php artisan migrate
-            docker exec ${{ env.DOCKER_CONTAINER_NAME }} cd ${{ env.DIR }} && composer i --no-dev
+            docker exec -w /home/2410svo ${{ env.DOCKER_CONTAINER_NAME }} php artisan migrate
+            docker exec -w /home/2410svo ${{ env.DOCKER_CONTAINER_NAME }} composer i --no-dev
           # cd ${{ env.DIR_DOCKER }}
 
   update:
@@ -59,7 +59,7 @@ jobs:
           username: ${{ env.VPS_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY_DOCKER24 }}
           script: |
-            docker exec ${{ env.DOCKER_CONTAINER_NAME }} cd ${{ env.DIR }} && npm i && npm run build
+            docker exec -w /home/2410svo ${{ env.DOCKER_CONTAINER_NAME }} npm i && npm run build
           # cd ${{ env.DIR_DOCKER }}
 
 
