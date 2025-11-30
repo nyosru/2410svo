@@ -59,7 +59,8 @@ jobs:
           username: ${{ env.VPS_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY_DOCKER24 }}
           script: |
-            docker exec -w /home/2410svo ${{ env.DOCKER_CONTAINER_NAME }} npm i && npm run build
+            docker exec -w /home/2410svo ${{ env.DOCKER_CONTAINER_NAME }} npm i
+            docker exec -w /home/2410svo ${{ env.DOCKER_CONTAINER_NAME }} npm run build
           # cd ${{ env.DIR_DOCKER }}
 
 
