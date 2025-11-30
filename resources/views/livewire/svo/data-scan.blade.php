@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    <input type="text" wire:model.live="secret_for_scan" class="w-[100px]"
+    <input type="text" name="size-xl" wire:model.live="secret_for_scan" class="w-[100px]"
            style="position:absolute; top: 15px; right: 15px;"/>
 
     @if( $secret_for_scan == $secret_for_scan_value )
