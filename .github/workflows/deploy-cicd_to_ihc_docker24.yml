@@ -44,9 +44,9 @@ jobs:
           username: ${{ env.VPS_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY_DOCKER24 }}
           script: |
-            cd ${{ env.DIR_DOCKER }}
             docker exec ${{ env.DOCKER_CONTAINER_NAME }} cd ${{ env.DIR }} && php artisan migrate
             docker exec ${{ env.DOCKER_CONTAINER_NAME }} cd ${{ env.DIR }} && composer i --no-dev
+          # cd ${{ env.DIR_DOCKER }}
 
   update:
     runs-on: ubuntu-latest
@@ -59,8 +59,8 @@ jobs:
           username: ${{ env.VPS_USERNAME }}
           key: ${{ secrets.DEPLOY_KEY_DOCKER24 }}
           script: |
-            cd ${{ env.DIR_DOCKER }}
             docker exec ${{ env.DOCKER_CONTAINER_NAME }} cd ${{ env.DIR }} && npm i && npm run build
+          # cd ${{ env.DIR_DOCKER }}
 
 
 #
