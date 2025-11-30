@@ -33,7 +33,7 @@ jobs:
             git reset --hard ${{ env.GIT_BRANCH }}
 
 
-  update:
+  update0:
     runs-on: ubuntu-latest
     needs: deploy
     steps:
@@ -47,7 +47,22 @@ jobs:
             cd ${{ env.DIR_DOCKER }}
             docker exec ${{ env.DOCKER_CONTAINER_NAME }} php artisan migrate
             docker exec ${{ env.DOCKER_CONTAINER_NAME }} composer i --no-dev
-#            docker exec -it base12narek npm run prod
+
+  update:
+    runs-on: ubuntu-latest
+    needs: update0
+    steps:
+      - name: "install npm"
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.VPS_IP }}
+          username: ${{ env.VPS_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY_DOCKER24 }}
+          script: |
+            cd ${{ env.DIR_DOCKER }}
+            docker exec ${{ env.DOCKER_CONTAINER_NAME }} npm i && npm run build
+
+
 #
 #  deploy_composer_stop:
 #    runs-on: ubuntu-latest
