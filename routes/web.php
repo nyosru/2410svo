@@ -4,7 +4,8 @@ use App\Http\Controllers\FileDownloadController;
 use Illuminate\Support\Facades\Route;
 
 //Route::get('/', \App\Livewire\Counter::class)->name('index');
-Route::get('/', \App\Livewire\Svo\Page::class)->name('index');
+//Route::get('/', \App\Livewire\Svo\Page::class)->name('index');
+Route::redirect('/', '/shop')->name('index');
 
 //Route::get('/trebs', \App\Livewire\Svo\Trebs::class)->name('trebs');
 Route::get('/trebs', \App\Livewire\Svo\TrebsDataTable::class)->name('trebs');

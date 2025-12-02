@@ -1,7 +1,7 @@
 <nav id="mainNav"  style="z-index:500;" class="space-x-4 text-center p-2 rounded text-2xl mb-2">
 
-    <a wire:navigate href="{{ route('index') }}"
-       class=" px-4 py-1 rounded {{ Route::is('index') ? 'bg-[#fe0000] text-[#feff00]' : '' }}">Главная</a>
+{{--    <a wire:navigate href="{{ route('index') }}"--}}
+{{--       class=" px-4 py-1 rounded {{ Route::is('index') ? 'bg-[#fe0000] text-[#feff00]' : '' }}">Главная</a>--}}
 
     <a wire:navigate href="{{ route('svo.shop') }}"
        class=" px-4 py-1 rounded {{ Route::is('svo.shop') ? 'bg-[#fe0000] text-[#feff00]' : '' }}">Добро</a>
